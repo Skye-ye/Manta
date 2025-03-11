@@ -1,6 +1,5 @@
 #![no_std]
 #![no_main]
-#![feature(const_binary_heap_constructor)]
 
 extern crate alloc;
 use alloc::collections::BinaryHeap;

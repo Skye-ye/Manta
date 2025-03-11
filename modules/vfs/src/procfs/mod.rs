@@ -47,7 +47,9 @@ pub fn init_procfs(root_dentry: Arc<dyn Dentry>) -> SysResult<()> {
     let kernel_dentry = sys_dentry.create("kernel", InodeMode::DIR)?;
     let pid_max_dentry = kernel_dentry.create("pid_max", InodeMode::FILE)?;
     let pid_max_file = pid_max_dentry.open()?;
-    block_on(async { pid_max_file.write("32768\0".as_bytes()).await });
+    block_on(async {
+        let _ = pid_max_file.write("32768\0".as_bytes()).await;
+    });
 
     let self_dentry: Arc<dyn Dentry> =
         SimpleDentry::new("self", root_dentry.super_block(), Some(root_dentry.clone()));

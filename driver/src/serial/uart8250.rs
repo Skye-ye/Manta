@@ -9,9 +9,8 @@ use core::fmt::Write;
 use bitflags::{bitflags, Flags};
 use log::info;
 
-use crate::wait_for;
-
 use super::UartDriver;
+use crate::wait_for;
 
 // the UART control registers.
 // some have different meanings for

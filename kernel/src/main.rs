@@ -10,10 +10,8 @@
 #![feature(const_trait_impl)]
 #![feature(effects)]
 #![feature(sync_unsafe_cell)]
-#![feature(stdsimd)]
 #![feature(riscv_ext_intrinsics)]
 #![feature(map_try_insert)]
-#![feature(byte_slice_trim_ascii)]
 #![feature(new_uninit)]
 #![allow(clippy::mut_from_ref)]
 

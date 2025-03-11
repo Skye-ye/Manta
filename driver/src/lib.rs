@@ -104,7 +104,7 @@ struct Stdout;
 
 impl Write for Stdout {
     fn write_str(&mut self, s: &str) -> fmt::Result {
-        if let Some(serial) = unsafe { UART0.get() } {
+        if let Some(serial) = UART0.get() {
             block_on(async { serial.write(s.as_bytes()).await });
             Ok(())
         } else {

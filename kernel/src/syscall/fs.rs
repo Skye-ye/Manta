@@ -1007,7 +1007,7 @@ impl Syscall<'_> {
             return Err(SysError::EINVAL);
         }
 
-        let mut off_in = if off_in.not_null() {
+        let off_in = if off_in.not_null() {
             let off_in = off_in.into_mut(task)?;
             if *off_in.deref() < 0 {
                 return Err(SysError::EINVAL);
@@ -1016,7 +1016,7 @@ impl Syscall<'_> {
         } else {
             None
         };
-        let mut off_out = if off_out.not_null() {
+        let off_out = if off_out.not_null() {
             let off_out = off_out.into_mut(task)?;
             if *off_out.deref() < 0 {
                 return Err(SysError::EINVAL);

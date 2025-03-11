@@ -8,6 +8,7 @@ pub struct SbiStdout;
 impl fmt::Write for SbiStdout {
     fn write_str(&mut self, s: &str) -> fmt::Result {
         for s in s.as_bytes() {
+            #[allow(deprecated)]
             sbi_rt::legacy::console_putchar(*s as usize);
         }
         Ok(())

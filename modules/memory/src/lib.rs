@@ -2,7 +2,6 @@
 #![no_main]
 #![feature(alloc_error_handler)]
 #![feature(const_trait_impl)]
-#![feature(stdsimd)]
 #![feature(riscv_ext_intrinsics)]
 #![feature(step_trait)]
 #![feature(sync_unsafe_cell)]

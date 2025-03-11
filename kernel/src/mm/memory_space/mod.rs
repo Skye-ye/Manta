@@ -245,7 +245,7 @@ impl MemorySpace {
             interp = interp.strip_suffix("\0").unwrap_or(&interp).to_string();
             log::info!("[load_dl] interp {}", interp);
 
-            let mut interps: Vec<String> = vec![interp.clone()];
+            let interps: Vec<String> = vec![interp.clone()];
 
             log::info!("interp {}", interp);
 

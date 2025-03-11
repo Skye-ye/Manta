@@ -4,17 +4,22 @@ target = "riscv64gc-unknown-none-elf"
 [source.crates-io]
 replace-with = "vendored-sources"
 
-[source."git+https://github.com/ChenRuiwei/lwext4_rust.git"]
-git = "https://github.com/ChenRuiwei/lwext4_rust.git"
-replace-with = "vendored-sources"
-
 [source."git+https://github.com/ChenRuiwei/rust-fatfs?branch=smp"]
 git = "https://github.com/ChenRuiwei/rust-fatfs"
 branch = "smp"
 replace-with = "vendored-sources"
 
+[source."git+https://github.com/Skye-ye/lwext4_rust.git?rev=19a0d97"]
+git = "https://github.com/Skye-ye/lwext4_rust.git"
+rev = "19a0d97"
+replace-with = "vendored-sources"
+
 [source."git+https://github.com/Stone749990226/smoltcp.git"]
 git = "https://github.com/Stone749990226/smoltcp.git"
+replace-with = "vendored-sources"
+
+[source."git+https://github.com/os-module/visionfive2-sd.git"]
+git = "https://github.com/os-module/visionfive2-sd.git"
 replace-with = "vendored-sources"
 
 [source."git+https://github.com/rcore-os/bitmap-allocator"]

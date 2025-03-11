@@ -38,7 +38,7 @@ spin = { version = "0.9", features = ["lazy"] }
 riscv = "0.11"
 virtio-drivers = { version = "0.7" }
 paste = "1.0"
-strum = { version = "0.26", default_features = false, features = ["derive"] }
+strum = { version = "0.26", default-features = false, features = ["derive"] }
 numeric-enum-macro = "0.2.0"
 async-trait = "0.1"
 downcast-rs = { version = "1.2", default-features = false }

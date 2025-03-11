@@ -64,7 +64,7 @@ ENV PATH=${HOME}/riscv64-linux-musl-cross/bin:$PATH
 ENV RUSTUP_HOME=/usr/local/rustup \
     CARGO_HOME=/usr/local/cargo \
     PATH=/usr/local/cargo/bin:$PATH \
-    RUST_VERSION=nightly-2024-02-03 \
+    RUST_VERSION=nightly-2024-06-19 \
     PROFILE=minimal
 RUN set -eux; \
     wget --progress=dot:giga https://sh.rustup.rs -O rustup-init; \

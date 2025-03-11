@@ -21,7 +21,7 @@ memory = { path = "../memory/" }
 
 bitflags = "2.5"
 async-trait = "0.1"
-strum = { version = "0.26", default_features = false, features = ["derive"] }
+strum = { version = "0.26", default-features = false, features = ["derive"] }
 spin = "0.9"
 log = "0.4"
 crate_interface = "0.1"

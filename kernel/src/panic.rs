@@ -8,6 +8,7 @@ use arch::interrupts::disable_interrupt;
 use backtrace::backtrace;
 use logging::LOG_INITIALIZED;
 use sbi_print::sbi_println;
+#[allow(deprecated)]
 use sbi_rt::legacy::shutdown;
 
 use crate::processor::hart::local_hart;
@@ -27,14 +28,15 @@ fn panic(info: &PanicInfo) -> ! {
                 local_hart().hart_id(),
                 location.file(),
                 location.line(),
-                info.message().unwrap()
+                // Use the PanicMessage directly in the formatting
+                info.message()
             );
-        } else if let Some(msg) = info.message() {
-            sbi_println!("Panicked: {}", msg);
         } else {
-            sbi_println!("Unknown panic: {:?}", info);
+            // Use the PanicMessage directly in the formatting
+            sbi_println!("Panicked: {}", info.message());
         }
         backtrace();
+        #[allow(deprecated)]
         shutdown()
     }
 
@@ -51,7 +53,7 @@ fn panic(info: &PanicInfo) -> ! {
                 local_hart().hart_id(),
                 location.file(),
                 location.line(),
-                info.message().unwrap()
+                info.message()
             );
         } else {
             println!(
@@ -59,24 +61,22 @@ fn panic(info: &PanicInfo) -> ! {
                 local_hart().hart_id(),
                 location.file(),
                 location.line(),
-                info.message().unwrap()
+                info.message()
             );
         }
-    } else if let Some(msg) = info.message() {
+    } else {
+        let msg = info.message();
         if logging_initialized {
             log::error!("Panicked: {}", msg);
         } else {
             println!("Panicked: {}", msg);
         }
-    } else if logging_initialized {
-        log::error!("Unknown panic: {:?}", info);
-    } else {
-        println!("Unknown panic: {:?}", info);
     }
 
     log::error!("=============== BEGIN BACKTRACE ================");
     backtrace();
     log::error!("=============== END BACKTRACE ================");
 
+    #[allow(deprecated)]
     shutdown()
 }
