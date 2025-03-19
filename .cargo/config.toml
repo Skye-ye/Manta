@@ -9,9 +9,9 @@ git = "https://github.com/ChenRuiwei/rust-fatfs"
 branch = "smp"
 replace-with = "vendored-sources"
 
-[source."git+https://github.com/Skye-ye/lwext4_rust.git?rev=19a0d97"]
+[source."git+https://github.com/Skye-ye/lwext4_rust.git?rev=901281f"]
 git = "https://github.com/Skye-ye/lwext4_rust.git"
-rev = "19a0d97"
+rev = "901281f"
 replace-with = "vendored-sources"
 
 [source."git+https://github.com/Stone749990226/smoltcp.git"]
