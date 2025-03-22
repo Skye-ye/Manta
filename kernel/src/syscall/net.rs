@@ -290,12 +290,12 @@ impl Syscall<'_> {
                     TcpSocketOpt::CONGESTION => {
                         UserWritePtr::from(optval).write_cstr(&task, "reno")?;
                         UserWritePtr::<u32>::from(optlen).write(&task, 4)?
-                    }
-                    opt => {
-                        log::error!(
-                            "[sys_getsockopt] unsupported IPPROTO_TCP opt {opt:?} optlen:{optlen}"
-                        )
-                    }
+                    } /* opt => {
+                       * log::error!(
+                       * "[sys_getsockopt] unsupported IPPROTO_TCP opt {opt:?} optlen:{optlen}"
+                       * )
+                       * }
+                       */
                 };
             }
             SocketLevel::IPPROTO_IPV6 => todo!(),

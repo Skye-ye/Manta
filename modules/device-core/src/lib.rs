@@ -1,6 +1,5 @@
 #![no_std]
 #![no_main]
-#![feature(trait_upcasting)]
 
 extern crate alloc;
 pub mod error;

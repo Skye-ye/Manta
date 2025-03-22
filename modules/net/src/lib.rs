@@ -2,7 +2,6 @@
 
 #![no_std]
 #![no_main]
-#![feature(new_uninit)]
 
 extern crate alloc;
 use alloc::{boxed::Box, vec, vec::Vec};
@@ -376,8 +375,14 @@ impl DeviceWrapper {
 }
 
 impl Device for DeviceWrapper {
-    type RxToken<'a> = NetRxToken<'a> where Self: 'a;
-    type TxToken<'a> = NetTxToken<'a> where Self: 'a;
+    type RxToken<'a>
+        = NetRxToken<'a>
+    where
+        Self: 'a;
+    type TxToken<'a>
+        = NetTxToken<'a>
+    where
+        Self: 'a;
 
     fn receive(
         &mut self,

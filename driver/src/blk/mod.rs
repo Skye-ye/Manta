@@ -57,6 +57,7 @@ pub fn probe_virtio_blk(root: &Fdt) -> Option<Arc<VirtIoBlkDev>> {
     dev
 }
 
+#[allow(unused)]
 pub fn probe_vf2_sd(root: &Fdt) -> Option<Arc<Vf2SDImpl>> {
     // Parse SD Card Host Controller
     if let Some(sdhci) = root.find_node("/soc/sdio1@16020000") {

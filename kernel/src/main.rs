@@ -5,14 +5,11 @@
 #![feature(alloc_error_handler)]
 #![feature(core_intrinsics)]
 #![feature(let_chains)]
-#![feature(trait_upcasting)]
-#![feature(panic_info_message)]
 #![feature(const_trait_impl)]
-#![feature(effects)]
 #![feature(sync_unsafe_cell)]
 #![feature(riscv_ext_intrinsics)]
 #![feature(map_try_insert)]
-#![feature(new_uninit)]
+#![feature(new_zeroed_alloc)]
 #![allow(clippy::mut_from_ref)]
 
 mod boot;

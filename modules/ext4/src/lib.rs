@@ -25,10 +25,12 @@ pub use inode::*;
 type Mutex<T> = SpinNoIrqLock<T>;
 type Shared<T> = Arc<Mutex<T>>;
 
+#[allow(unused)]
 fn new_shared<T>(val: T) -> Shared<T> {
     Arc::new(Mutex::new(val))
 }
 
+#[allow(unused)]
 fn map_ext4_err(err: i32) -> SysError {
     match err {
         2 => SysError::ENOENT,

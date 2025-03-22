@@ -68,7 +68,6 @@ impl ShmIdDs {
         self.shm_lpid = lpid;
         // shm_nattch is decremented by one.
         self.shm_nattch -= 1;
-        debug_assert!(self.shm_nattch >= 0);
         if self.shm_nattch == 0 {
             return true;
         }

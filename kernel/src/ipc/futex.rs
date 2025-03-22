@@ -80,7 +80,6 @@ impl FutexManager {
                 log::info!("[futex_wake] {:?} has been woken", waiter);
                 waiter.wake();
             }
-            drop(waiters);
             log::info!(
                 "[futex_wake] wake {} waiters in key {:?}, expect to wake {} waiters",
                 n,

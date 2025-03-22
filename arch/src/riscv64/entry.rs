@@ -21,7 +21,7 @@ static mut BOOT_PAGE_TABLE: BootPageTable = {
 #[no_mangle]
 #[link_section = ".text.entry"]
 unsafe extern "C" fn _start(hart_id: usize, dtb_addr: usize) -> ! {
-    core::arch::asm!(
+    core::arch::naked_asm!(
         // 1. set boot stack
         // sp = boot_stack + (hartid + 1) * 64KB
         "
@@ -52,6 +52,5 @@ unsafe extern "C" fn _start(hart_id: usize, dtb_addr: usize) -> ! {
         boot_stack = sym BOOT_STACK,
         page_table = sym BOOT_PAGE_TABLE,
         virt_ram_offset = const VIRT_RAM_OFFSET,
-        options(noreturn),
     )
 }

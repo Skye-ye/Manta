@@ -1,6 +1,6 @@
 #![no_std]
 #![no_main]
-#![feature(new_uninit)]
+#![feature(new_zeroed_alloc)]
 
 mod dentry;
 mod file;

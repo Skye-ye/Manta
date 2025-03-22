@@ -35,6 +35,7 @@ pub fn clear_bss() {
     }
 }
 
+#[allow(unused)]
 pub fn start_other_harts(hart_id: usize) {
     for i in 0..board::harts() {
         if i == hart_id {

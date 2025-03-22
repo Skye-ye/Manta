@@ -146,16 +146,19 @@ pub fn local_hart() -> &'static mut Hart {
     }
 }
 
+#[allow(unused)]
 pub fn local_hart_preemptable() -> bool {
     unsafe { HART_PREEMPTABLE[local_hart().hart_id].load(core::sync::atomic::Ordering::SeqCst) }
 }
 
+#[allow(unused)]
 pub fn local_hart_enable_preemptable() {
     unsafe {
         HART_PREEMPTABLE[local_hart().hart_id].store(true, core::sync::atomic::Ordering::SeqCst)
     }
 }
 
+#[allow(unused)]
 pub fn local_hart_disable_preemptable() {
     unsafe {
         HART_PREEMPTABLE[local_hart().hart_id].store(false, core::sync::atomic::Ordering::SeqCst)

@@ -12,33 +12,33 @@ pub use virt::{VirtAddr, VirtPageNum};
 
 macro_rules! impl_arithmetic_with_usize {
     ($t:ty) => {
-        impl const core::ops::Add<usize> for $t {
+        impl core::ops::Add<usize> for $t {
             type Output = Self;
             #[inline]
             fn add(self, rhs: usize) -> Self {
                 Self(self.0 + rhs)
             }
         }
-        impl const core::ops::AddAssign<usize> for $t {
+        impl core::ops::AddAssign<usize> for $t {
             #[inline]
             fn add_assign(&mut self, rhs: usize) {
                 *self = *self + rhs;
             }
         }
-        impl const core::ops::Sub<usize> for $t {
+        impl core::ops::Sub<usize> for $t {
             type Output = Self;
             #[inline]
             fn sub(self, rhs: usize) -> Self {
                 Self(self.0 - rhs)
             }
         }
-        impl const core::ops::SubAssign<usize> for $t {
+        impl core::ops::SubAssign<usize> for $t {
             #[inline]
             fn sub_assign(&mut self, rhs: usize) {
                 *self = *self - rhs;
             }
         }
-        impl const core::ops::Sub<$t> for $t {
+        impl core::ops::Sub<$t> for $t {
             type Output = usize;
             #[inline]
             fn sub(self, rhs: $t) -> usize {
@@ -71,7 +71,7 @@ macro_rules! impl_fmt {
 macro_rules! impl_step {
     ($t:ty) => {
         impl core::iter::Step for $t {
-            fn steps_between(start: &Self, end: &Self) -> Option<usize> {
+            fn steps_between(start: &Self, end: &Self) -> (usize, Option<usize>) {
                 usize::steps_between(&start.0, &end.0)
             }
 
@@ -80,7 +80,7 @@ macro_rules! impl_step {
             }
 
             fn backward_checked(start: Self, count: usize) -> Option<Self> {
-                usize::forward_checked(start.0, count).map(<$t>::from)
+                usize::backward_checked(start.0, count).map(<$t>::from)
             }
         }
     };

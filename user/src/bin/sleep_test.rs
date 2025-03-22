@@ -7,7 +7,7 @@ use user_lib::*;
 
 fn sleepy() {
     let time: usize = 1000;
-    let mut rem = TimeSpec::from_ms(0);
+    let _rem = TimeSpec::from_ms(0);
     for i in 1..=5 {
         sleep(time);
         // let mut rem = TimeSpec::from_ms(0);

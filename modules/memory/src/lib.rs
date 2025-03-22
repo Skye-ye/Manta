@@ -5,6 +5,7 @@
 #![feature(riscv_ext_intrinsics)]
 #![feature(step_trait)]
 #![feature(sync_unsafe_cell)]
+#![feature(const_ops)]
 
 extern crate alloc;
 

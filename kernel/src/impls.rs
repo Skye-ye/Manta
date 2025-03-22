@@ -17,6 +17,7 @@ use crate::{
 };
 
 /// Print msg with color
+#[allow(unused)]
 pub fn print_in_color(args: fmt::Arguments, color_code: u8) {
     driver::_print(with_color!(color_code, "{}", args));
 }

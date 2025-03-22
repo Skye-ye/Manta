@@ -18,6 +18,7 @@ macro_rules! when_debug {
 }
 
 /// Used for debug.
+#[allow(unused)]
 pub fn exam_hash(buf: &[u8]) -> usize {
     let mut h: usize = 5381;
     for c in buf {
@@ -26,6 +27,8 @@ pub fn exam_hash(buf: &[u8]) -> usize {
     h
 }
 
+/// Spawn a timer task that runs a function periodically.
+#[allow(unused)]
 pub fn spawn_timer_tasks<F>(f: F, interval_secs: usize)
 where
     F: FnOnce() + Send + Copy + 'static,
@@ -39,6 +42,7 @@ where
     });
 }
 
+#[allow(unused)]
 pub fn spawn_timer_tasks_ms<F>(f: F, interval_millisecs: usize)
 where
     F: FnOnce() + Send + Copy + 'static,
@@ -52,6 +56,7 @@ where
     });
 }
 
+#[allow(unused)]
 pub fn print_proc_tree() {
     fn dfs_print(proc: Arc<Task>, level: usize, prefix: &str) {
         let indent = " ".repeat(level * 4);

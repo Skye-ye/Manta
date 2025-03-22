@@ -64,16 +64,21 @@ impl Inode for Ext4FileInode {
     }
 
     fn base_truncate(&self, len: usize) -> SysResult<()> {
-        self.file.lock().truncate(len as u64);
+        self.file
+            .lock()
+            .truncate(len as u64)
+            .map_err(SysError::from_i32)?;
         Ok(())
     }
 
     fn base_get_blk_idx(&self, offset: usize) -> SysResult<usize> {
         let mut file = self.file.lock();
         let origin_offset = file.tell();
-        file.seek(offset as i64, SEEK_SET);
+        file.seek(offset as i64, SEEK_SET)
+            .map_err(SysError::from_i32)?;
         let blk_idx = file.file_get_blk_idx().unwrap();
-        file.seek(origin_offset as i64, SEEK_SET);
+        file.seek(origin_offset as i64, SEEK_SET)
+            .map_err(SysError::from_i32)?;
         Ok(blk_idx as usize)
     }
 }

@@ -149,18 +149,18 @@ impl Dentry for Ext4Dentry {
                 };
             }
             match new_itype {
-                InodeType::Dir => lwext4_rmdir(&new.path()),
-                InodeType::File => lwext4_rmfile(&new.path()),
+                InodeType::Dir => lwext4_rmdir(&new.path()).map_err(SysError::from_i32),
+                InodeType::File => lwext4_rmfile(&new.path()).map_err(SysError::from_i32),
                 InodeType::SymLink => todo!(),
                 _ => todo!(),
             };
         }
         match old_itype {
             InodeType::Dir => {
-                lwext4_mvdir(&self.path(), &new.path());
+                lwext4_mvdir(&self.path(), &new.path()).map_err(SysError::from_i32)?;
             }
             InodeType::File => {
-                lwext4_mvfile(&self.path(), &new.path());
+                lwext4_mvfile(&self.path(), &new.path()).map_err(SysError::from_i32)?;
             }
             InodeType::SymLink => todo!(),
             _ => unimplemented!(),

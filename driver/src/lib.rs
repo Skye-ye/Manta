@@ -1,9 +1,6 @@
 #![no_std]
 #![no_main]
-#![feature(trait_upcasting)]
 #![feature(format_args_nl)]
-#![feature(const_mut_refs)]
-#![feature(const_slice_from_raw_parts_mut)]
 #![feature(associated_type_defaults)]
 
 extern crate alloc;
