@@ -14,13 +14,13 @@ use arch::memory::sfence_vma_vaddr;
 use async_utils::block_on;
 use config::{
     mm::{
-        is_aligned_to_page, round_down_to_page, DL_INTERP_OFFSET, MMAP_PRE_ALLOC_PAGES, PAGE_SIZE,
-        USER_ELF_PRE_ALLOC_PAGE_CNT, U_SEG_FILE_BEG, U_SEG_FILE_END, U_SEG_HEAP_BEG,
-        U_SEG_HEAP_END, U_SEG_SHARE_BEG, U_SEG_SHARE_END, U_SEG_STACK_BEG, U_SEG_STACK_END,
+        DL_INTERP_OFFSET, MMAP_PRE_ALLOC_PAGES, PAGE_SIZE, U_SEG_FILE_BEG, U_SEG_FILE_END,
+        U_SEG_HEAP_BEG, U_SEG_HEAP_END, U_SEG_SHARE_BEG, U_SEG_SHARE_END, U_SEG_STACK_BEG,
+        U_SEG_STACK_END, USER_ELF_PRE_ALLOC_PAGE_CNT, is_aligned_to_page, round_down_to_page,
     },
     process::USER_STACK_PRE_ALLOC_SIZE,
 };
-use memory::{pte::PTEFlags, PageTable, PhysAddr, VirtAddr, VirtPageNum};
+use memory::{PageTable, PhysAddr, VirtAddr, VirtPageNum, pte::PTEFlags};
 use page::Page;
 use range_map::RangeMap;
 use systype::{SysError, SysResult};
@@ -28,14 +28,14 @@ use vfs_core::{Dentry, File};
 use xmas_elf::ElfFile;
 
 use self::vm_area::VmArea;
-use super::{kernel_page_table, PageFaultAccessType};
+use super::{PageFaultAccessType, kernel_page_table};
 use crate::{
     mm::memory_space::vm_area::{MapPerm, VmAreaType},
     processor::{env::SumGuard, hart::current_task_ref},
     syscall::MmapFlags,
     task::{
-        aux::{generate_early_auxv, AuxHeader, AT_BASE, AT_NULL, AT_PHDR, AT_RANDOM},
         Task,
+        aux::{AT_BASE, AT_NULL, AT_PHDR, AT_RANDOM, AuxHeader, generate_early_auxv},
     },
 };
 
@@ -634,7 +634,9 @@ impl MemorySpace {
             } else {
                 // do split and unmap
                 let split_range = range.start..cmp::min(range.end, first_range.end);
-                log::debug!("[MemorySpace::unmap] split and remove left most vma {first_vma:?} in range {split_range:?}");
+                log::debug!(
+                    "[MemorySpace::unmap] split and remove left most vma {first_vma:?} in range {split_range:?}"
+                );
                 let (_, middle, _) = self.split_area(first_range, split_range);
                 if let Some(middle) = middle {
                     let mut vma = self.areas_mut().force_remove_one(middle.range_va());
@@ -697,7 +699,7 @@ impl MemorySpace {
     }
 
     pub unsafe fn switch_page_table(&self) {
-        self.page_table().switch();
+        unsafe { self.page_table().switch() };
     }
 }
 

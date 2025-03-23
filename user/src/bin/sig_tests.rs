@@ -172,7 +172,7 @@ use user_lib::*;
 //     }
 // }
 
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub fn main() -> i32 {
     // let tests: [(fn(), &str); 8] = [
     //     (user_sig_test_failsignum, "user_sig_test_failsignum"),

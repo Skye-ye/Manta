@@ -1,13 +1,13 @@
 use alloc::sync::Arc;
 
 use lwext4_rust::{
-    bindings::{ext4_flink, O_RDONLY, SEEK_CUR, SEEK_SET},
     InodeTypes,
+    bindings::{O_RDONLY, SEEK_CUR, SEEK_SET, ext4_flink},
 };
 use systype::{SysError, SysResult};
 use vfs_core::{Inode, InodeMeta, InodeMode, InodeType, Stat, SuperBlock};
 
-use crate::{map_ext4_err, map_ext4_type, LwExt4Dir, LwExt4File, Mutex, Shared};
+use crate::{LwExt4Dir, LwExt4File, Mutex, Shared, map_ext4_err, map_ext4_type};
 
 pub struct Ext4FileInode {
     meta: InodeMeta,

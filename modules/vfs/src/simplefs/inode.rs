@@ -1,6 +1,6 @@
 use alloc::sync::Arc;
 
-use config::mm::{round_up_to_page, PAGE_SIZE};
+use config::mm::{PAGE_SIZE, round_up_to_page};
 use page::{Page, PageCache};
 use systype::SysResult;
 use vfs_core::{Inode, InodeMeta, InodeMode, InodeState, Stat, SuperBlock};

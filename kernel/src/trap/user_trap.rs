@@ -18,12 +18,12 @@ use signal::{Sig, SigDetails, SigInfo};
 use systype::SysError;
 use timer::TIMER_MANAGER;
 
-use super::{set_kernel_trap, TrapContext};
+use super::{TrapContext, set_kernel_trap};
 use crate::{mm::PageFaultAccessType, syscall::Syscall, task::Task, trap::set_user_trap};
 
 /// handle an interrupt, exception, or system call from user space
 /// return if it is syscall and has been interrupted
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub async fn trap_handler(task: &Arc<Task>) -> bool {
     unsafe { set_kernel_trap() };
 
@@ -129,7 +129,7 @@ pub async fn trap_handler(task: &Arc<Task>) -> bool {
                 }
                 _ => {
                     panic!(
-                    "[trap_handler] Unsupported trap {cause:?}, stval = {stval:#x}!, sepc = {sepc:#x}"
+                        "[trap_handler] Unsupported trap {cause:?}, stval = {stval:#x}!, sepc = {sepc:#x}"
                     );
                 }
             }
@@ -138,12 +138,12 @@ pub async fn trap_handler(task: &Arc<Task>) -> bool {
     false
 }
 
-extern "C" {
+unsafe extern "C" {
     fn __return_to_user(cx: *mut TrapContext);
 }
 
 /// Trap return to user mode.
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub fn trap_return(task: &Arc<Task>) {
     log::info!("[kernel] trap return to user...");
     unsafe {

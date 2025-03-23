@@ -9,19 +9,19 @@ use async_trait::async_trait;
 use config::{
     board::BLOCK_SIZE,
     mm::{
-        align_offset_to_page, block_page_id, round_down_to_page, round_up_to_page,
-        MAX_BUFFERS_PER_PAGE, PAGE_MASK, PAGE_SIZE,
+        MAX_BUFFERS_PER_PAGE, PAGE_MASK, PAGE_SIZE, align_offset_to_page, block_page_id,
+        round_down_to_page, round_up_to_page,
     },
 };
-use downcast_rs::{impl_downcast, DowncastSync};
+use downcast_rs::{DowncastSync, impl_downcast};
 use memory::address;
 use page::Page;
 use spin::Mutex;
 use systype::{SysError, SysResult, SyscallResult};
 
 use crate::{
-    inode, Dentry, DirEntry, Inode, InodeState, InodeType, OpenFlags, PollEvents, SeekFrom,
-    SuperBlock,
+    Dentry, DirEntry, Inode, InodeState, InodeType, OpenFlags, PollEvents, SeekFrom, SuperBlock,
+    inode,
 };
 
 pub struct FileMeta {

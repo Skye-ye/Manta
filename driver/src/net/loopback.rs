@@ -1,8 +1,8 @@
 use alloc::{boxed::Box, collections::VecDeque, vec, vec::Vec};
 
 use device_core::{
-    error::{DevError, DevResult},
     DeviceCapabilities, EthernetAddress, Medium, NetBufPtrOps, NetDevice,
+    error::{DevError, DevResult},
 };
 
 /// The loopback interface operates at the network layer and handles the packets

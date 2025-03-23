@@ -2,18 +2,18 @@ use alloc::{boxed::Box, string::ToString, sync::Arc, vec::Vec};
 use core::{any::Any, ptr::NonNull};
 
 use device_core::{
-    error::{DevError, DevResult},
     DevId, Device, DeviceCapabilities, DeviceMajor, DeviceMeta, DeviceType, EthernetAddress,
     Medium, NetBufPtrOps, NetDevice,
+    error::{DevError, DevResult},
 };
 use virtio_drivers::{
     device::net::VirtIONetRaw,
-    transport::{mmio::MmioTransport, Transport},
+    transport::{Transport, mmio::MmioTransport},
 };
 
 use crate::{
-    net::{NetBuf, NetBufBox, NetBufPool, NET_BUF_LEN},
-    virtio::{as_dev_err, VirtioHalImpl},
+    net::{NET_BUF_LEN, NetBuf, NetBufBox, NetBufPool},
+    virtio::{VirtioHalImpl, as_dev_err},
 };
 
 pub type VirtIoNetDevImpl = VirtIoNetDev<MmioTransport, 32>;

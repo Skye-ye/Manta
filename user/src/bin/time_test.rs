@@ -8,7 +8,7 @@ extern crate user_lib;
 
 extern crate alloc;
 
-#[no_mangle]
+#[unsafe(no_mangle)]
 fn main() -> i32 {
     println!("begin time test");
     let mut timeval = TimeVal::default();

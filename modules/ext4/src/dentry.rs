@@ -2,8 +2,8 @@ use alloc::{ffi::CString, sync::Arc, vec, vec::Vec};
 use core::fmt::Error;
 
 use lwext4_rust::{
-    bindings::EEXIST, lwext4_check_inode_exist, lwext4_link, lwext4_mvdir, lwext4_mvfile,
-    lwext4_readlink, lwext4_rmdir, lwext4_rmfile, lwext4_symlink, InodeTypes,
+    InodeTypes, bindings::EEXIST, lwext4_check_inode_exist, lwext4_link, lwext4_mvdir,
+    lwext4_mvfile, lwext4_readlink, lwext4_rmdir, lwext4_rmfile, lwext4_symlink,
 };
 use systype::{SysError, SysResult};
 use vfs_core::{
@@ -12,8 +12,8 @@ use vfs_core::{
 };
 
 use crate::{
-    file::Ext4FileFile, inode::Ext4FileInode, readlink, Ext4DirFile, Ext4DirInode, Ext4LinkFile,
-    Ext4LinkInode, LwExt4Dir, LwExt4File,
+    Ext4DirFile, Ext4DirInode, Ext4LinkFile, Ext4LinkInode, LwExt4Dir, LwExt4File,
+    file::Ext4FileFile, inode::Ext4FileInode, readlink,
 };
 
 pub struct Ext4Dentry {
@@ -99,7 +99,7 @@ impl Dentry for Ext4Dentry {
         let sub_dentry = self.into_dyn().get_child_or_create(name);
         let path = sub_dentry.path();
         log::debug!("[Ext4Dentry::base_create] path:{path}, mode:{mode:?}");
-        let mut dir = inode.dir.lock();
+        let dir = inode.dir.lock();
         let new_inode: Arc<dyn Inode> = match mode.to_type() {
             InodeType::Dir => {
                 let new_dir = LwExt4Dir::create(&path).map_err(SysError::from_i32)?;

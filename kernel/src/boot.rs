@@ -15,7 +15,7 @@ pub fn print_banner() {
 
 /// Clear BSS segment at start up.
 pub fn clear_bss() {
-    extern "C" {
+    unsafe extern "C" {
         fn _sbss();
         fn _ebss();
     }

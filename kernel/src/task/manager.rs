@@ -10,7 +10,7 @@ use spin::Lazy;
 use sync::mutex::SpinNoIrqLock;
 use systype::SysResult;
 
-use super::{task::Task, PGid, Tid};
+use super::{PGid, Tid, task::Task};
 
 pub static TASK_MANAGER: Lazy<TaskManager> = Lazy::new(TaskManager::new);
 

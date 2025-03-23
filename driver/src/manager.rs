@@ -12,15 +12,15 @@ use config::{
 };
 use device_core::{DevId, Device, DeviceMajor, DeviceMeta, DeviceType};
 use log::{info, warn};
-use memory::{pte::PTEFlags, PhysAddr};
+use memory::{PhysAddr, pte::PTEFlags};
 use net::init_network;
 
 use crate::{
     blk::{probe_sdio_blk, probe_vf2_sd, probe_virtio_blk},
-    cpu::{probe_cpu, CPU},
+    cpu::{CPU, probe_cpu},
     kernel_page_table_mut,
     net::{loopback::LoopbackDev, probe_virtio_net, virtio::VirtIoNetDevImpl},
-    plic::{probe_plic, PLIC},
+    plic::{PLIC, probe_plic},
     println,
     serial::probe_char_device,
     virtio::probe_mmio_device,

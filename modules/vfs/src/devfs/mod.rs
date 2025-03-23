@@ -8,7 +8,7 @@ use self::{
     cpu_dma_latency::{CpuDmaLatencyDentry, CpuDmaLatencyInode},
     null::{NullDentry, NullInode},
     rtc::{RtcDentry, RtcInode},
-    tty::{TtyDentry, TtyFile, TtyInode, TTY},
+    tty::{TTY, TtyDentry, TtyFile, TtyInode},
     urandom::{UrandomDentry, UrandomInode},
     zero::{ZeroDentry, ZeroInode},
 };

@@ -4,11 +4,11 @@ use addr::SockAddr;
 use async_trait::async_trait;
 use log::warn;
 use net::{
+    IpEndpoint, IpListenEndpoint, NetPollState,
     addr::{UNSPECIFIED_ENDPOINT_V4, UNSPECIFIED_IPV4},
     poll_interfaces,
     tcp::TcpSocket,
     udp::UdpSocket,
-    IpEndpoint, IpListenEndpoint, NetPollState,
 };
 use spin::Mutex;
 use systype::{SysError, SysResult, SyscallResult};

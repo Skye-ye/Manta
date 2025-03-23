@@ -47,7 +47,7 @@ global_asm!(include_str!("trampoline.asm"));
 
 static FIRST_HART: AtomicBool = AtomicBool::new(true);
 
-#[no_mangle]
+#[unsafe(no_mangle)]
 fn rust_main(hart_id: usize, dtb_addr: usize) {
     if FIRST_HART
         .compare_exchange(true, false, Ordering::SeqCst, Ordering::SeqCst)

@@ -45,7 +45,7 @@ const TESTCASES: [&str; 32] = [
     "yield",
 ];
 
-#[no_mangle]
+#[unsafe(no_mangle)]
 fn main() -> i32 {
     println!("******************************");
     println!("begin running preliminary tests");

@@ -6,7 +6,7 @@ use alloc::sync::Arc;
 
 use device_core::DeviceType;
 use fdt::Fdt;
-use memory::{pte::PTEFlags, PhysAddr};
+use memory::{PhysAddr, pte::PTEFlags};
 pub use virtio::*;
 use visionfive2_sd::Vf2SdDriver;
 

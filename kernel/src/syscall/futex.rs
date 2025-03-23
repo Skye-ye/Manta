@@ -6,7 +6,7 @@ use time::timespec::TimeSpec;
 
 use super::Syscall;
 use crate::{
-    ipc::futex::{futex_manager, FutexHashKey, FutexOp, FutexWaiter, RobustListHead},
+    ipc::futex::{FutexHashKey, FutexOp, FutexWaiter, RobustListHead, futex_manager},
     mm::{FutexAddr, UserReadPtr, UserWritePtr},
 };
 

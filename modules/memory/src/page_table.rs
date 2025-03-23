@@ -7,16 +7,18 @@ use config::mm::{PAGE_SIZE, VIRT_RAM_OFFSET};
 use riscv::register::satp;
 
 use crate::{
-    address::{PhysPageNum, VirtAddr, VirtPageNum},
-    frame::{alloc_frame_tracker, FrameTracker},
-    pte::PTEFlags,
     PageTableEntry, PhysAddr,
+    address::{PhysPageNum, VirtAddr, VirtPageNum},
+    frame::{FrameTracker, alloc_frame_tracker},
+    pte::PTEFlags,
 };
 
 /// Write `page_table_token` into satp and sfence.vma
 pub unsafe fn switch_page_table(page_table_token: usize) {
     satp::write(page_table_token);
-    core::arch::riscv64::sfence_vma_all();
+    unsafe {
+        core::arch::riscv64::sfence_vma_all();
+    }
 }
 
 /// # Safety
@@ -78,7 +80,9 @@ impl PageTable {
 
     /// Switch to this pagetable
     pub unsafe fn switch(&self) {
-        switch_page_table(self.token());
+        unsafe {
+            switch_page_table(self.token());
+        }
     }
 
     /// Find the leaf pte and will create page table in need.

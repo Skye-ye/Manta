@@ -8,7 +8,7 @@ use core::{
 
 use arch::time::get_time_duration;
 use async_utils::{get_waker, suspend_now};
-use timer::{Timer, TIMER_MANAGER};
+use timer::{TIMER_MANAGER, Timer};
 
 use super::Task;
 use crate::{

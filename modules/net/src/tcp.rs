@@ -17,12 +17,12 @@ use systype::*;
 use timer::timelimited_task::ksleep_ms;
 
 use super::{
-    addr::{is_unspecified, UNSPECIFIED_ENDPOINT_V4},
-    SocketSetWrapper, ETH0, LISTEN_TABLE, SOCKET_SET,
+    ETH0, LISTEN_TABLE, SOCKET_SET, SocketSetWrapper,
+    addr::{UNSPECIFIED_ENDPOINT_V4, is_unspecified},
 };
 use crate::{
-    addr::UNSPECIFIED_IPV4, has_signal, Mutex, NetPollState, RCV_SHUTDOWN, SEND_SHUTDOWN,
-    SHUTDOWN_MASK, SHUT_RD, SHUT_RDWR, SHUT_WR, TCP_RX_BUF_LEN, TCP_TX_BUF_LEN,
+    Mutex, NetPollState, RCV_SHUTDOWN, SEND_SHUTDOWN, SHUT_RD, SHUT_RDWR, SHUT_WR, SHUTDOWN_MASK,
+    TCP_RX_BUF_LEN, TCP_TX_BUF_LEN, addr::UNSPECIFIED_IPV4, has_signal,
 };
 
 // State transitions:

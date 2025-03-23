@@ -20,7 +20,10 @@ use manager::DeviceManager;
 use memory::PageTable;
 use sbi_print::SbiStdout;
 use spin::Once;
-use sync::mutex::{SpinLock, SpinNoIrqLock};
+use sync::{
+    cell::static_cell::StaticCell,
+    mutex::{SpinLock, SpinNoIrqLock},
+};
 use virtio_drivers::transport;
 
 use crate::{
@@ -37,6 +40,10 @@ pub mod serial;
 pub mod virtio;
 
 type Mutex<T> = SpinLock<T>;
+
+pub static BLOCK_DEVICE: Once<Arc<dyn BlockDevice>> = Once::new();
+
+static DEVICE_MANAGER: StaticCell<DeviceManager> = StaticCell::new();
 
 pub fn init() {
     let device_tree = unsafe { fdt::Fdt::from_ptr(K_SEG_DTB_BEG as _).expect("Parse DTB failed") };
@@ -70,22 +77,16 @@ pub fn init() {
     manager.init_net();
 }
 
-pub static BLOCK_DEVICE: Once<Arc<dyn BlockDevice>> = Once::new();
-
-static mut DEVICE_MANAGER: Option<DeviceManager> = None;
-
 pub fn get_device_manager() -> &'static DeviceManager {
-    unsafe { DEVICE_MANAGER.as_ref().unwrap() }
+    DEVICE_MANAGER.get()
 }
 
 pub fn get_device_manager_mut() -> &'static mut DeviceManager {
-    unsafe { DEVICE_MANAGER.as_mut().unwrap() }
+    DEVICE_MANAGER.get_mut()
 }
 
 pub fn init_device_manager() {
-    unsafe {
-        DEVICE_MANAGER = Some(DeviceManager::new());
-    }
+    DEVICE_MANAGER.init(DeviceManager::new());
 }
 
 #[crate_interface::def_interface]

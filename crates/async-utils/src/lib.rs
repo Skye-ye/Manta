@@ -10,7 +10,7 @@ use core::{
     future::Future,
     ops::{Deref, DerefMut},
     pin::Pin,
-    task::{ready, Context, Poll, Waker},
+    task::{Context, Poll, Waker, ready},
 };
 
 /// Get the waker of the current future.

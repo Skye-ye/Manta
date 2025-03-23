@@ -3,17 +3,17 @@ use core::{cmp, fmt, ops::Range};
 
 use config::{
     board::BLOCK_SIZE,
-    mm::{block_page_offset, PAGE_SIZE},
+    mm::{PAGE_SIZE, block_page_offset},
 };
 use device_core::BlockDevice;
 use enum_as_inner::EnumAsInner;
 use intrusive_collections::LinkedList;
-use memory::{alloc_frame_tracker, FrameTracker, PhysPageNum};
+use memory::{FrameTracker, PhysPageNum, alloc_frame_tracker};
 use sync::mutex::SpinNoIrqLock;
 
 use crate::{
-    buffer_cache::{BufferHead, BufferHeadAdapter},
     BufferState,
+    buffer_cache::{BufferHead, BufferHeadAdapter},
 };
 
 #[derive(EnumAsInner)]

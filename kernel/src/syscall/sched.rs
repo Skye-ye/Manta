@@ -5,7 +5,7 @@ use systype::{SysError, SyscallResult};
 use super::Syscall;
 use crate::{
     mm::{UserReadPtr, UserWritePtr},
-    task::{resource::CpuMask, TASK_MANAGER},
+    task::{TASK_MANAGER, resource::CpuMask},
 };
 
 impl Syscall<'_> {

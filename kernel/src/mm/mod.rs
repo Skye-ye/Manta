@@ -16,15 +16,16 @@ use config::{
     mm::{K_SEG_DTB_BEG, MAX_DTB_SIZE, VIRT_RAM_OFFSET},
 };
 pub use memory::page_table::PageTable;
-use memory::{frame, heap, pte::PTEFlags, VirtAddr};
+use memory::{VirtAddr, frame, heap, pte::PTEFlags};
 pub use memory_space::MemorySpace;
+use sync::cell::static_cell::StaticCell;
 pub use user_ptr::{
     FutexAddr, PageFaultAccessType, UserMut, UserRdWrPtr, UserReadPtr, UserSlice, UserWritePtr,
 };
 
 /// Initialize heap allocator, frame allocator and kernel page table.
 pub fn init() {
-    extern "C" {
+    unsafe extern "C" {
         fn _ekernel();
     }
     heap::init_heap_allocator();
@@ -42,10 +43,10 @@ pub fn init() {
 /// Kernel space for all processes.
 ///
 /// There is no need to lock `KERNEL_PAGE_TABLE` since it won't be changed.
-static mut KERNEL_PAGE_TABLE: Option<PageTable> = None;
+static KERNEL_PAGE_TABLE: StaticCell<PageTable> = StaticCell::new();
 
 unsafe fn init_kernel_page_table() {
-    extern "C" {
+    unsafe extern "C" {
         fn _stext();
         fn _strampoline();
         fn _etrampoline();
@@ -149,21 +150,22 @@ unsafe fn init_kernel_page_table() {
     );
 
     log::debug!("[kernel] KERNEL SPACE init finished");
-
-    KERNEL_PAGE_TABLE = Some(kernel_page_table);
+    KERNEL_PAGE_TABLE.init(kernel_page_table);
 }
 
 pub fn kernel_page_table() -> &'static PageTable {
-    unsafe { KERNEL_PAGE_TABLE.as_ref().unwrap() }
+    KERNEL_PAGE_TABLE.get()
 }
 
 /// # Safety
 ///
 /// Should only hold mut ref when kernel init.
 pub fn kernel_page_table_mut() -> &'static mut PageTable {
-    unsafe { KERNEL_PAGE_TABLE.as_mut().unwrap() }
+    KERNEL_PAGE_TABLE.get_mut()
 }
 
 pub unsafe fn switch_kernel_page_table() {
-    kernel_page_table().switch();
+    unsafe {
+        kernel_page_table().switch();
+    }
 }

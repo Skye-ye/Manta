@@ -135,7 +135,7 @@ impl Task {
     }
 }
 
-extern "C" {
+unsafe extern "C" {
     fn _sigreturn_trampoline();
 }
 

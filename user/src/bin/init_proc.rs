@@ -26,7 +26,7 @@ fn run_cmd(cmd: &str) {
     }
 }
 
-#[no_mangle]
+#[unsafe(no_mangle)]
 fn main() -> i32 {
     run_cmd("busybox --install /bin");
     run_cmd("rm /bin/sh");

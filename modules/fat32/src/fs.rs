@@ -3,7 +3,7 @@ use alloc::sync::Arc;
 use device_core::BlockDevice;
 use vfs_core::{Dentry, FileSystemType, FileSystemTypeMeta, StatFs, SuperBlock, SuperBlockMeta};
 
-use crate::{as_sys_err, dentry::FatDentry, inode::dir::FatDirInode, DiskCursor, FatFs};
+use crate::{DiskCursor, FatFs, as_sys_err, dentry::FatDentry, inode::dir::FatDirInode};
 
 pub struct FatFsType {
     meta: FileSystemTypeMeta,

@@ -6,7 +6,7 @@ use core::mem::size_of;
 use sbi_print::sbi_println;
 
 pub fn backtrace() {
-    extern "C" {
+    unsafe extern "C" {
         fn _stext();
         fn _etext();
     }

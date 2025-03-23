@@ -125,16 +125,18 @@ impl Hart {
 }
 
 unsafe fn get_hart(hart_id: usize) -> &'static mut Hart {
-    &mut HARTS[hart_id]
+    unsafe { &mut HARTS[hart_id] }
 }
 
 /// Set hart control block according to `hard_id` and set register tp points to
 /// the hart control block.
 pub unsafe fn set_local_hart(hart_id: usize) {
-    let hart = get_hart(hart_id);
-    hart.set_hart_id(hart_id);
-    let hart_addr = hart as *const _ as usize;
-    asm!("mv tp, {}", in(reg) hart_addr);
+    unsafe {
+        let hart = get_hart(hart_id);
+        hart.set_hart_id(hart_id);
+        let hart_addr = hart as *const _ as usize;
+        asm!("mv tp, {}", in(reg) hart_addr);
+    }
 }
 
 /// Get the current `Hart` by `tp` register.

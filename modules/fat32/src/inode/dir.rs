@@ -2,7 +2,7 @@ use alloc::sync::Arc;
 
 use vfs_core::{Inode, InodeMeta, InodeMode, InodeType, Stat, SuperBlock};
 
-use crate::{new_shared, FatDir, Shared};
+use crate::{FatDir, Shared, new_shared};
 
 pub struct FatDirInode {
     meta: InodeMeta,

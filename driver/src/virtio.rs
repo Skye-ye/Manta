@@ -2,21 +2,20 @@ use alloc::sync::Arc;
 use core::{mem, ptr::NonNull};
 
 use config::mm::VIRT_RAM_OFFSET;
-use device_core::{error::DevError, Device, DeviceType};
+use device_core::{Device, DeviceType, error::DevError};
 use fdt::Fdt;
 use log::{error, warn};
-use memory::{alloc_frames, dealloc_frame, pte::PTEFlags, PhysAddr, PhysPageNum, VirtAddr};
+use memory::{PhysAddr, PhysPageNum, VirtAddr, alloc_frames, dealloc_frame, pte::PTEFlags};
 use net::init_network;
 use virtio_drivers::{
-    transport::{
-        self,
-        mmio::{MmioTransport, VirtIOHeader},
-        DeviceType as VirtIoDevType, Transport,
-    },
     BufferDirection,
+    transport::{
+        self, DeviceType as VirtIoDevType, Transport,
+        mmio::{MmioTransport, VirtIOHeader},
+    },
 };
 
-use crate::{blk::VirtIoBlkDev, kernel_page_table_mut, manager::DeviceManager, BLOCK_DEVICE};
+use crate::{BLOCK_DEVICE, blk::VirtIoBlkDev, kernel_page_table_mut, manager::DeviceManager};
 
 pub(crate) const fn as_dev_err(e: virtio_drivers::Error) -> DevError {
     use virtio_drivers::Error::*;
@@ -93,7 +92,7 @@ pub(crate) fn probe_mmio_device(
 
 impl DeviceManager {
     pub fn probe_virtio_device(&mut self, root: &Fdt) {
-        let mut init_net: bool = false;
+        let init_net: bool = false;
         let nodes = root.find_all_nodes("/soc/virtio_mmio");
         let mut reg;
         let mut base_paddr;

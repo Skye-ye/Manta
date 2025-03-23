@@ -5,7 +5,7 @@ use fatfs::{Read, Seek, Write};
 use systype::{SysError, SyscallResult};
 use vfs_core::{File, FileMeta, InodeType};
 
-use crate::{as_sys_err, dentry::FatDentry, inode::file::FatFileInode, FatFile, Shared};
+use crate::{FatFile, Shared, as_sys_err, dentry::FatDentry, inode::file::FatFileInode};
 
 pub struct FatFileFile {
     meta: FileMeta,

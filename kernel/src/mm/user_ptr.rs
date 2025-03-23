@@ -21,8 +21,8 @@ use systype::{SysError, SysResult};
 use super::memory_space::vm_area::MapPerm;
 use crate::{
     net::{
-        addr::{SockAddr, SockAddrIn, SockAddrIn6, SockAddrUn},
         SaFamily,
+        addr::{SockAddr, SockAddrIn, SockAddrIn6, SockAddrUn},
     },
     processor::{env::SumGuard, hart::current_task_ref},
     task::Task,
@@ -192,8 +192,10 @@ impl<'a, T> UserSlice<'a, T> {
     }
 
     pub unsafe fn new_unchecked(va: VirtAddr, len: usize) -> Self {
-        let slice = core::slice::from_raw_parts_mut(va.bits() as *mut T, len);
-        Self::new(slice)
+        unsafe {
+            let slice = core::slice::from_raw_parts_mut(va.bits() as *mut T, len);
+            Self::new(slice)
+        }
     }
 }
 

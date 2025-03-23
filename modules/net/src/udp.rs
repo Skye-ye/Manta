@@ -15,16 +15,16 @@ use spin::RwLock;
 use systype::{SysError, SysResult};
 
 use super::{
-    addr::{is_unspecified, UNSPECIFIED_ENDPOINT_V4},
-    SocketSetWrapper, SOCKET_SET,
+    SOCKET_SET, SocketSetWrapper,
+    addr::{UNSPECIFIED_ENDPOINT_V4, is_unspecified},
 };
 use crate::{
+    Mutex, NetPollState,
     addr::{
-        to_endpoint, LOCAL_ENDPOINT_V4, LOCAL_IPV4, UNSPECIFIED_IPV4, UNSPECIFIED_LISTEN_ENDPOINT,
+        LOCAL_ENDPOINT_V4, LOCAL_IPV4, UNSPECIFIED_IPV4, UNSPECIFIED_LISTEN_ENDPOINT, to_endpoint,
     },
     has_signal,
     portmap::PORT_MAP,
-    Mutex, NetPollState,
 };
 
 /// A UDP socket that provides POSIX-like APIs.
@@ -94,7 +94,9 @@ impl UdpSocket {
         // 但它们需要绑定到不同的地址
         if let Some((fd, prev_bound_addr)) = PORT_MAP.get(bound_addr.port) {
             if bound_addr == prev_bound_addr {
-                warn!("[UdpSocket::bind] The port is already used by another socket. Reuse the Arc of {fd}");
+                warn!(
+                    "[UdpSocket::bind] The port is already used by another socket. Reuse the Arc of {fd}"
+                );
                 // SOCKET_SET.remove(self.handle);
                 // self.overridden.store(true, Ordering::SeqCst);
                 // 这个check_bind函数到这里执行之后，该Udp复用原来的Socket

@@ -5,8 +5,8 @@ use alloc::sync::Arc;
 use config::board::BLOCK_SIZE;
 use device_core::BlockDevice;
 use lwext4_rust::{
-    bindings::{SEEK_CUR, SEEK_END, SEEK_SET},
     KernelDevOp,
+    bindings::{SEEK_CUR, SEEK_END, SEEK_SET},
 };
 use systype::SysResult;
 

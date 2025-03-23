@@ -4,6 +4,7 @@ use alloc::{boxed::Box, sync::Arc};
 
 use async_trait::async_trait;
 use config::board::BLOCK_SIZE;
+use sync::cell::static_cell::StaticCell;
 use systype::{SysError, SysResult, SyscallResult};
 use vfs_core::{
     Dentry, DentryMeta, DirEntry, File, FileMeta, Inode, InodeMeta, InodeMode, Stat, SuperBlock,
@@ -71,7 +72,7 @@ pub struct UrandomDentry {
     meta: DentryMeta,
 }
 
-pub static mut RNG: SimpleRng = SimpleRng::new();
+pub static RNG: StaticCell<SimpleRng> = StaticCell::new();
 
 impl UrandomDentry {
     pub fn new(
@@ -172,7 +173,7 @@ impl File for UrandomFile {
     }
 
     async fn read_at(&self, _offset: usize, buf: &mut [u8]) -> SyscallResult {
-        unsafe { RNG.fill_buf(buf) };
+        RNG.get_mut().fill_buf(buf);
         Ok(buf.len())
     }
 

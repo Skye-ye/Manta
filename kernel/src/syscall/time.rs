@@ -4,18 +4,18 @@ use core::time::Duration;
 use arch::time::{get_time_duration, get_time_ms, get_time_us};
 use systype::{SysError, SyscallResult};
 use time::{
+    CLOCK_DEVIATION, CLOCK_MONOTONIC, CLOCK_PROCESS_CPUTIME_ID, CLOCK_REALTIME,
+    CLOCK_THREAD_CPUTIME_ID,
     timespec::TimeSpec,
     timeval::{ITimerVal, TimeVal},
     tms::TMS,
-    CLOCK_DEVIATION, CLOCK_MONOTONIC, CLOCK_PROCESS_CPUTIME_ID, CLOCK_REALTIME,
-    CLOCK_THREAD_CPUTIME_ID,
 };
-use timer::{Timer, TIMER_MANAGER};
+use timer::{TIMER_MANAGER, Timer};
 
 use super::Syscall;
 use crate::{
     mm::{UserReadPtr, UserWritePtr},
-    task::signal::{alloc_timer_id, RealITimer},
+    task::signal::{RealITimer, alloc_timer_id},
 };
 
 impl Syscall<'_> {
@@ -119,7 +119,10 @@ impl Syscall<'_> {
             || clockid == CLOCK_THREAD_CPUTIME_ID
             || clockid == CLOCK_MONOTONIC
         {
-            log::error!("[sys_clock_settime] The clockid {} specified in a call to clock_settime() is not a settable clock.", clockid);
+            log::error!(
+                "[sys_clock_settime] The clockid {} specified in a call to clock_settime() is not a settable clock.",
+                clockid
+            );
             return Err(SysError::EINVAL);
         }
         let task = self.task;
@@ -130,7 +133,9 @@ impl Syscall<'_> {
         match clockid {
             CLOCK_REALTIME => {
                 if tp.into_ms() < get_time_ms() {
-                    log::error!("[sys_clock_settime] attempted to set the time to a value less than the current value of the CLOCK_MONOTONIC clock.");
+                    log::error!(
+                        "[sys_clock_settime] attempted to set the time to a value less than the current value of the CLOCK_MONOTONIC clock."
+                    );
                     return Err(SysError::EINVAL);
                 }
                 unsafe {

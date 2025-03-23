@@ -245,7 +245,9 @@ fn probe_serial_console(stdout: &fdt::node::FdtNode) -> Serial {
                     .as_usize()
                     .expect("Parse reg-shift to usize failed");
             }
-            log::info!("uart: base_paddr:{base_paddr:#x}, size:{size:#x}, reg_io_width:{reg_io_width}, reg_shift:{reg_shift}");
+            log::info!(
+                "uart: base_paddr:{base_paddr:#x}, size:{size:#x}, reg_io_width:{reg_io_width}, reg_shift:{reg_shift}"
+            );
 
             let uart = unsafe {
                 Uart::new(

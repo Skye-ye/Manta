@@ -10,15 +10,16 @@ use core::{cmp, iter::zip};
 
 use async_trait::async_trait;
 use lwext4_rust::{
+    InodeTypes,
     bindings::{O_RDONLY, O_RDWR, SEEK_SET},
-    lwext4_readlink, InodeTypes,
+    lwext4_readlink,
 };
 use systype::{SysError, SysResult, SyscallResult};
 use vfs_core::{DirEntry, File, FileMeta, Inode, InodeType, OpenFlags};
 
 use crate::{
-    dentry::Ext4Dentry, inode::Ext4FileInode, map_ext4_type, readlink, Ext4DirInode, Ext4LinkInode,
-    LwExt4Dir, LwExt4File, Shared,
+    Ext4DirInode, Ext4LinkInode, LwExt4Dir, LwExt4File, Shared, dentry::Ext4Dentry,
+    inode::Ext4FileInode, map_ext4_type, readlink,
 };
 
 pub struct Ext4DirFile {

@@ -22,8 +22,14 @@ type GlobalHeap = LockedLinkedHeap;
 static HEAP_ALLOCATOR: GlobalHeap = GlobalHeap::empty();
 
 /// heap space
-#[link_section = ".bss.heap"]
+#[unsafe(link_section = ".bss.heap")]
 static mut HEAP_SPACE: [u8; KERNEL_HEAP_SIZE] = [0; KERNEL_HEAP_SIZE];
+
+/// Get the heap space start address safely
+#[allow(unused)]
+fn get_heap_space_addr() -> usize {
+    core::ptr::addr_of_mut!(HEAP_SPACE) as usize
+}
 
 /// Panic when heap allocation error occurs.
 #[alloc_error_handler]
@@ -54,7 +60,7 @@ impl LockedBuddyHeap {
     }
 
     unsafe fn init(&self, start: usize, size: usize) {
-        self.0.lock().init(start, size)
+        unsafe { self.0.lock().init(start, size) }
     }
 }
 
@@ -70,7 +76,7 @@ unsafe impl GlobalAlloc for LockedBuddyHeap {
     }
 
     unsafe fn dealloc(&self, ptr: *mut u8, layout: Layout) {
-        self.0.lock().dealloc(NonNull::new_unchecked(ptr), layout)
+        unsafe { self.0.lock().dealloc(NonNull::new_unchecked(ptr), layout) }
     }
 }
 
@@ -109,13 +115,15 @@ unsafe impl GlobalAlloc for LockedLinkedHeap {
 
 /// Initiate heap allocator.
 pub fn init_heap_allocator() {
+    // Access as pointer without creating references
+    let heap_addr = core::ptr::addr_of_mut!(HEAP_SPACE) as usize;
+
     unsafe {
-        let start = HEAP_SPACE.as_ptr() as usize;
-        HEAP_ALLOCATOR.init(start, KERNEL_HEAP_SIZE);
+        HEAP_ALLOCATOR.init(heap_addr, KERNEL_HEAP_SIZE);
         log::info!(
             "[kernel] heap start {:#x}, end {:#x}",
-            start,
-            start + KERNEL_HEAP_SIZE
+            heap_addr,
+            heap_addr + KERNEL_HEAP_SIZE
         );
     }
 }

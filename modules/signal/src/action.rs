@@ -6,7 +6,7 @@ use bitflags::*;
 
 use crate::{
     siginfo::SigInfo,
-    sigset::{Sig, SigSet, NSIG},
+    sigset::{NSIG, Sig, SigSet},
 };
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]

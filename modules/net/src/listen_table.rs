@@ -12,7 +12,7 @@ use smoltcp::{
 };
 use systype::{SysError, SysResult};
 
-use super::{SocketSetWrapper, LISTEN_QUEUE_SIZE, SOCKET_SET};
+use super::{LISTEN_QUEUE_SIZE, SOCKET_SET, SocketSetWrapper};
 use crate::Mutex;
 
 const PORT_NUM: usize = 65536;

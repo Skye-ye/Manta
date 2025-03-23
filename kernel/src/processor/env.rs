@@ -53,9 +53,9 @@ impl EnvContext {
     pub unsafe fn auto_sum(&self) {
         log::trace!("[EnvContext::auto_sum] sum_cnt: {}", self.sum_cnt);
         if self.sum_cnt == 0 {
-            riscv::register::sstatus::clear_sum();
+            unsafe { riscv::register::sstatus::clear_sum() };
         } else {
-            riscv::register::sstatus::set_sum();
+            unsafe { riscv::register::sstatus::set_sum() };
         }
     }
 
@@ -88,6 +88,6 @@ impl EnvContext {
         arch::sstatus::write(self.sstatus);
         sepc::write(self.sepc);
         satp::write(self.satp);
-        sfence_vma_all();
+        unsafe { sfence_vma_all() };
     }
 }

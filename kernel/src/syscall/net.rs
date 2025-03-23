@@ -9,7 +9,7 @@ use vfs::pipefs::new_pipe;
 use vfs_core::OpenFlags;
 use virtio_drivers::PAGE_SIZE;
 
-use super::{fs::IoVec, Syscall};
+use super::{Syscall, fs::IoVec};
 use crate::{
     mm::{UserRdWrPtr, UserReadPtr, UserWritePtr},
     net::*,
@@ -40,7 +40,9 @@ impl Syscall<'_> {
         let fd = self
             .task
             .with_mut_fd_table(|table| table.alloc(Arc::new(socket), flags))?;
-        log::info!("[sys_socket] new socket {domain:?} {types:?} {flags:?} in fd {fd}, nonblock:{nonblock}");
+        log::info!(
+            "[sys_socket] new socket {domain:?} {types:?} {flags:?} in fd {fd}, nonblock:{nonblock}"
+        );
         Ok(fd)
     }
 

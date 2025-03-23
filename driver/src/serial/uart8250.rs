@@ -6,7 +6,7 @@
 
 use core::fmt::Write;
 
-use bitflags::{bitflags, Flags};
+use bitflags::{Flags, bitflags};
 use log::info;
 
 use super::UartDriver;

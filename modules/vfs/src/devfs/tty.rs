@@ -171,10 +171,10 @@ pub static TTY: Once<Arc<TtyFile>> = Once::new();
 
 pub struct TtyFile {
     meta: FileMeta,
-    pub(crate) inner: SpinNoIrqLock<TtyInner>,
+    inner: SpinNoIrqLock<TtyInner>,
 }
 
-struct TtyInner {
+pub struct TtyInner {
     fg_pgid: Pid,
     win_size: WinSize,
     termios: Termios,

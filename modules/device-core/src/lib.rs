@@ -8,7 +8,7 @@ use alloc::{boxed::Box, string::String, sync::Arc};
 use core::any::Any;
 
 use async_trait::async_trait;
-use downcast_rs::{impl_downcast, DowncastSync};
+use downcast_rs::{DowncastSync, impl_downcast};
 use error::DevResult;
 pub use smoltcp::phy::{DeviceCapabilities, Loopback, Medium};
 

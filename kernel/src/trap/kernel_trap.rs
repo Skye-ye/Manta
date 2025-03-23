@@ -33,7 +33,7 @@ fn panic_on_unknown_trap() {
 }
 
 /// Kernel trap handler
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub fn kernel_trap_handler() {
     let stval = stval::read();
     let scause = scause::read();
@@ -75,7 +75,7 @@ pub fn kernel_trap_handler() {
             | Exception::InstructionPageFault
             | Exception::LoadPageFault => {
                 log::info!(
-                        "[trap_handler] encounter page fault, addr {stval:#x}, instruction {sepc:#x} scause {cause:?}",
+                    "[trap_handler] encounter page fault, addr {stval:#x}, instruction {sepc:#x} scause {cause:?}",
                 );
                 let access_type = match e {
                     Exception::InstructionPageFault => PageFaultAccessType::RX,
@@ -108,13 +108,13 @@ pub fn kernel_trap_handler() {
     }
 }
 
-extern "C" {
+unsafe extern "C" {
     fn __user_rw_trap_vector();
 }
 
 pub unsafe fn set_kernel_user_rw_trap() {
     let trap_vaddr = __user_rw_trap_vector as usize;
-    set_trap_handler_vector(trap_vaddr);
+    unsafe { set_trap_handler_vector(trap_vaddr) };
     log::trace!("[user check] switch to user rw checking mode at stvec: {trap_vaddr:#x}",);
 }
 
@@ -124,7 +124,7 @@ pub fn will_read_fail(vaddr: usize) -> bool {
         debug_assert_eq!(curr_stvec, __user_rw_trap_vector as usize);
     });
 
-    extern "C" {
+    unsafe extern "C" {
         fn __try_read_user(ptr: usize) -> TryOpRet;
     }
     let try_op_ret = unsafe { __try_read_user(vaddr) };
@@ -148,7 +148,7 @@ pub fn will_write_fail(vaddr: usize) -> bool {
         let curr_stvec = stvec::read().address();
         debug_assert!(curr_stvec == __user_rw_trap_vector as usize);
     });
-    extern "C" {
+    unsafe extern "C" {
         fn __try_write_user(vaddr: usize) -> TryOpRet;
     }
     let try_op_ret = unsafe { __try_write_user(vaddr) };

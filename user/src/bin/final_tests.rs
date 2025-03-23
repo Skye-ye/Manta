@@ -41,7 +41,7 @@ fn run_cmd(cmd: &str) {
     }
 }
 
-#[no_mangle]
+#[unsafe(no_mangle)]
 fn main() -> i32 {
     run_cmd("busybox touch sort.src");
     run_cmd("busybox ln -s /lib/dlopen_dso.so dlopen_dso.so");

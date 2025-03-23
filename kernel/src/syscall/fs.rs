@@ -11,11 +11,11 @@ use driver::BLOCK_DEVICE;
 use strum::FromRepr;
 use systype::{SysError, SyscallResult};
 use time::timespec::TimeSpec;
-use vfs::{fd_table::FdFlags, pipefs::new_pipe, simplefs::dentry, sys_root_dentry, FS_MANAGER};
+use vfs::{FS_MANAGER, fd_table::FdFlags, pipefs::new_pipe, simplefs::dentry, sys_root_dentry};
 use vfs_core::{
-    is_absolute_path, split_parent_and_name, AtFd, Dentry, Inode, InodeMode, InodeType, MountFlags,
-    OpenFlags, Path, RenameFlags, SeekFrom, Stat, StatFs, AT_REMOVEDIR, AT_SYMLINK_FOLLOW,
-    AT_SYMLINK_NOFOLLOW,
+    AT_REMOVEDIR, AT_SYMLINK_FOLLOW, AT_SYMLINK_NOFOLLOW, AtFd, Dentry, Inode, InodeMode,
+    InodeType, MountFlags, OpenFlags, Path, RenameFlags, SeekFrom, Stat, StatFs, is_absolute_path,
+    split_parent_and_name,
 };
 
 use super::Syscall;
@@ -435,8 +435,8 @@ impl Syscall<'_> {
         let fstype = fstype.read_cstr(&task)?;
         let flags = MountFlags::from_bits(flags).ok_or(SysError::EINVAL)?;
         log::debug!(
-        "[sys_mount] source:{source:?}, target:{target:?}, fstype:{fstype:?}, flags:{flags:?}, data:{data:?}",
-    );
+            "[sys_mount] source:{source:?}, target:{target:?}, fstype:{fstype:?}, flags:{flags:?}, data:{data:?}",
+        );
 
         // adding this code is because the fs_type in test code is vfat, which should be
         // turned into fat32
@@ -874,7 +874,9 @@ impl Syscall<'_> {
         let flags = RenameFlags::from_bits(flags).ok_or(SysError::EINVAL)?;
         let oldpath = oldpath.read_cstr(&task)?;
         let newpath = newpath.read_cstr(&task)?;
-        log::info!("[sys_renameat2] olddirfd:{olddirfd:?}, oldpath:{oldpath}, newdirfd:{newdirfd:?}, newpath:{newpath}, flags:{flags:?}");
+        log::info!(
+            "[sys_renameat2] olddirfd:{olddirfd:?}, oldpath:{oldpath}, newdirfd:{newdirfd:?}, newpath:{newpath}, flags:{flags:?}"
+        );
 
         let old_dentry = task.at_helper(olddirfd, &oldpath, OpenFlags::O_NOFOLLOW)?;
         let new_dentry = task.at_helper(newdirfd, &newpath, OpenFlags::O_NOFOLLOW)?;

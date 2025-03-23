@@ -3,7 +3,7 @@ use alloc::{format, sync::Arc};
 use config::process::INIT_PROC_PID;
 use timer::timelimited_task::{ksleep_ms, ksleep_s};
 
-use crate::task::{self, Task, TASK_MANAGER};
+use crate::task::{self, TASK_MANAGER, Task};
 
 /// Code block that only runs in debug mode.
 #[macro_export]

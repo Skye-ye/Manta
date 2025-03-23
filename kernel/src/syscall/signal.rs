@@ -15,8 +15,8 @@ use super::Syscall;
 use crate::{
     mm::{UserReadPtr, UserWritePtr},
     task::{
-        signal::{SigAction, SIG_DFL, SIG_IGN},
         PROCESS_GROUP_MANAGER, TASK_MANAGER,
+        signal::{SIG_DFL, SIG_IGN, SigAction},
     },
 };
 

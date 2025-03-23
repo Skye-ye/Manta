@@ -11,7 +11,7 @@ pub use context::TrapContext;
 
 global_asm!(include_str!("trap.asm"));
 
-extern "C" {
+unsafe extern "C" {
     fn __trap_from_user();
     fn __trap_from_kernel();
 }
@@ -21,9 +21,9 @@ pub fn init() {
 }
 
 pub unsafe fn set_kernel_trap() {
-    set_trap_handler(__trap_from_kernel as usize);
+    unsafe { set_trap_handler(__trap_from_kernel as usize) };
 }
 
 unsafe fn set_user_trap() {
-    set_trap_handler(__trap_from_user as usize);
+    unsafe { set_trap_handler(__trap_from_user as usize) };
 }

@@ -1,11 +1,11 @@
-use config::mm::{is_aligned_to_page, PAGE_MASK};
+use config::mm::{PAGE_MASK, is_aligned_to_page};
 use memory::VirtAddr;
 use systype::{SysError, SyscallResult};
 
 use super::Syscall;
 use crate::{
-    ipc::shm::{SharedMemory, SHARED_MEMORY_KEY_ALLOCATOR, SHARED_MEMORY_MANAGER},
-    mm::{memory_space::vm_area::MapPerm, UserWritePtr},
+    ipc::shm::{SHARED_MEMORY_KEY_ALLOCATOR, SHARED_MEMORY_MANAGER, SharedMemory},
+    mm::{UserWritePtr, memory_space::vm_area::MapPerm},
 };
 
 bitflags! {

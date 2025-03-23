@@ -8,7 +8,7 @@ fn func() {
     sigreturn();
 }
 
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub fn main() -> i32 {
     let pid = fork();
     if pid == 0 {

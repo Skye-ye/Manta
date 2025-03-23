@@ -13,12 +13,12 @@ use config::process::USER_STACK_SIZE;
 pub use manager::{PROCESS_GROUP_MANAGER, TASK_MANAGER};
 pub use schedule::{spawn_kernel_task, spawn_user_task};
 pub use task::Task;
-pub use tid::{PGid, Pid, Tid, TID_ALLOCATOR};
+pub use tid::{PGid, Pid, TID_ALLOCATOR, Tid};
 use vfs::sys_root_dentry;
 use vfs_core::{OpenFlags, Path};
 
 use crate::{
-    mm::memory_space::{init_stack, MemorySpace},
+    mm::memory_space::{MemorySpace, init_stack},
     processor::env::within_sum,
     trap::TrapContext,
 };

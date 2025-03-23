@@ -9,20 +9,28 @@ pub fn is_interrupt_enabled() -> bool {
 
 pub unsafe fn enable_interrupt() {
     #[cfg(feature = "irq")]
-    sstatus::set_sie();
+    unsafe {
+        sstatus::set_sie();
+    }
 }
 
 pub unsafe fn disable_interrupt() {
     #[cfg(feature = "irq")]
-    sstatus::clear_sie();
+    unsafe {
+        sstatus::clear_sie();
+    }
 }
 
 pub unsafe fn enable_timer_interrupt() {
-    sie::set_stimer();
+    unsafe {
+        sie::set_stimer();
+    }
 }
 
 pub unsafe fn enable_external_interrupt() {
-    sie::set_sext();
+    unsafe {
+        sie::set_sext();
+    }
 }
 
 pub fn get_trap_handler() -> usize {
@@ -30,11 +38,15 @@ pub fn get_trap_handler() -> usize {
 }
 
 pub unsafe fn set_trap_handler(handler_addr: usize) {
-    stvec::write(handler_addr, TrapMode::Direct);
+    unsafe {
+        stvec::write(handler_addr, TrapMode::Direct);
+    }
 }
 
 pub unsafe fn set_trap_handler_vector(handler_addr: usize) {
-    stvec::write(handler_addr, TrapMode::Vectored);
+    unsafe {
+        stvec::write(handler_addr, TrapMode::Vectored);
+    }
 }
 
 /// Disable interrupt and resume to the interrupt state before when it gets

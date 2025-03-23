@@ -17,7 +17,7 @@ extern crate alloc;
 use alloc::{ffi::CString, vec::Vec};
 
 use bitflags::Flags;
-use buddy_system_allocator::LockedHeap;
+use buddy_system_allocator::{Heap, LockedHeap};
 pub use error::SyscallErr;
 use syscall::*;
 pub use types::*;
@@ -37,12 +37,12 @@ pub fn handle_alloc_error(layout: core::alloc::Layout) -> ! {
     panic!("Heap allocation error, layout = {:?}", layout);
 }
 
-#[no_mangle]
-#[link_section = ".text.entry"]
+#[unsafe(no_mangle)]
+#[unsafe(link_section = ".text.entry")]
 pub extern "C" fn _start(argc: usize, argv: usize) -> ! {
     unsafe {
         HEAP.lock()
-            .init(HEAP_SPACE.as_ptr() as usize, USER_HEAP_SIZE);
+            .init(&raw mut HEAP_SPACE as usize, USER_HEAP_SIZE);
 
         // FIXME: heap alloc will meet trouble when triple fork
         // const HEAP_START: usize = 0x0000_0002_0000_0000;
@@ -69,7 +69,7 @@ pub extern "C" fn _start(argc: usize, argv: usize) -> ! {
 }
 
 #[linkage = "weak"]
-#[no_mangle]
+#[unsafe(no_mangle)]
 fn main(_: usize, _: &[&str]) -> i32 {
     panic!("Cannot find main!");
 }

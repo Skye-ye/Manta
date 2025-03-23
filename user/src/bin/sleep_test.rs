@@ -19,7 +19,7 @@ fn sleepy() {
     exit(0);
 }
 
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub fn main() -> i32 {
     println!("begin sleep test");
     let mut old_time_val = TimeVal::from_usec(0);

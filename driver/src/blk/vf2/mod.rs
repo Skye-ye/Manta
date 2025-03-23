@@ -1,7 +1,7 @@
 use alloc::{string::ToString, sync::Arc};
 
 use arch::time::get_time;
-use config::board::{clock_freq, BLOCK_SIZE};
+use config::board::{BLOCK_SIZE, clock_freq};
 use device_core::{BlockDevice, DevId, Device, DeviceMajor, DeviceMeta, DeviceType};
 use memory::PhysAddr;
 use sync::mutex::SpinNoIrqLock;

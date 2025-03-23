@@ -8,7 +8,7 @@ use async_utils::block_on;
 use crate_interface::call_interface;
 use systype::{SysError, SysResult};
 
-use crate::{dentry, Dentry, InodeMode, InodeType, OpenFlags};
+use crate::{Dentry, InodeMode, InodeType, OpenFlags, dentry};
 
 #[derive(Clone)]
 pub struct Path {

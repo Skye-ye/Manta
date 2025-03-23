@@ -17,9 +17,8 @@ use crate::{
 };
 
 /// Print msg with color
-#[allow(unused)]
 pub fn print_in_color(args: fmt::Arguments, color_code: u8) {
-    driver::_print(with_color!(color_code, "{}", args));
+    driver::_print(format_args!("\u{1B}[{}m{}\u{1B}[m", color_code as u8, args))
 }
 
 struct LogIfImpl;
@@ -56,13 +55,21 @@ impl LogIf for LogIfImpl {
         } else {
             "-".to_string()
         };
-        driver::_print(with_color!(
-            ColorCode::White,
-            "{}{}{} {} \r\n",
-            with_color!(level_color, "[{:>5}]", level),
-            with_color!(ColorCode::BrightBlack, "[{:>35}:{:<4}]", target, line),
-            with_color!(ColorCode::BrightBlue, "[H{},P{},T{}]", hid, pid, tid),
-            with_color!(args_color, "{}", args),
+
+        // Directly create a single format_args call with all parts embedded
+        driver::_print(format_args!(
+            "\u{1B}[{}m[{:>5}]\u{1B}[m\u{1B}[{}m[{:>35}:{:<4}]\u{1B}[m\u{1B}[{}m[H{},P{},T{}]\u{1B}[m \u{1B}[{}m{}\u{1B}[m\r\n",
+            level_color as u8,
+            level,
+            ColorCode::BrightBlack as u8,
+            target,
+            line,
+            ColorCode::BrightBlue as u8,
+            hid,
+            pid,
+            tid,
+            args_color as u8,
+            args
         ));
     }
 }

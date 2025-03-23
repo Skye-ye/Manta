@@ -8,7 +8,7 @@ use core::{
     task::{Context, Poll, Waker},
 };
 
-use super::{spin_mutex::SpinMutex, MutexSupport};
+use super::{MutexSupport, spin_mutex::SpinMutex};
 // use intrusive_collections::{LinkedList, LinkedListLink, intrusive_adapter};
 
 // intrusive_adapter!(

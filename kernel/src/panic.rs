@@ -6,7 +6,7 @@ use core::{
 
 use arch::interrupts::disable_interrupt;
 use backtrace::backtrace;
-use logging::LOG_INITIALIZED;
+use logging::{disable_logging, is_log_initialized};
 use sbi_print::sbi_println;
 #[allow(deprecated)]
 use sbi_rt::legacy::shutdown;
@@ -21,7 +21,7 @@ fn panic(info: &PanicInfo) -> ! {
 
     sbi_println!("early panic now!!!");
     if PANIC_CNT.fetch_add(1, Ordering::Relaxed) > 0 {
-        unsafe { LOG_INITIALIZED.store(false, Ordering::Relaxed) }
+        disable_logging();
         if let Some(location) = info.location() {
             sbi_println!(
                 "Hart {} panic at {}:{}, msg: {}",
@@ -45,7 +45,7 @@ fn panic(info: &PanicInfo) -> ! {
     // NOTE: message below is mostly printed in log, if these messages can not be
     // printed, it means some of the message will cause panic again, check
     // `LogIf::print_log`.
-    let logging_initialized = unsafe { logging::LOG_INITIALIZED.load(Ordering::SeqCst) };
+    let logging_initialized = is_log_initialized();
     if let Some(location) = info.location() {
         if logging_initialized {
             log::error!(

@@ -31,28 +31,28 @@ use systype::{SysError, SysResult};
 use time::stat::TaskTimeStat;
 use vfs::{fd_table::FdTable, sys_root_dentry};
 use vfs_core::{
-    is_absolute_path, split_path, AtFd, Dentry, File, InodeMode, InodeType, OpenFlags, Path,
+    AtFd, Dentry, File, InodeMode, InodeType, OpenFlags, Path, is_absolute_path, split_path,
 };
 
 use super::{
+    PGid, PROCESS_GROUP_MANAGER,
     resource::CpuMask,
     signal::ITimer,
     tid::{Pid, Tid, TidHandle},
-    PGid, PROCESS_GROUP_MANAGER,
 };
 use crate::{
     generate_accessors, generate_atomic_accessors, generate_state_methods, generate_with_methods,
     ipc::{
-        futex::{futex_manager, FutexHashKey, RobustListHead},
+        futex::{FutexHashKey, RobustListHead, futex_manager},
         shm::SHARED_MEMORY_MANAGER,
     },
-    mm::{memory_space::init_stack, MemorySpace, UserWritePtr},
+    mm::{MemorySpace, UserWritePtr, memory_space::init_stack},
     processor::env::within_sum,
     syscall::CloneFlags,
     task::{
-        aux::{AuxHeader, AT_BASE},
+        aux::{AT_BASE, AuxHeader},
         manager::TASK_MANAGER,
-        tid::{alloc_tid, TidAddress},
+        tid::{TidAddress, alloc_tid},
     },
     trap::TrapContext,
 };
@@ -340,7 +340,7 @@ impl Task {
     }
 
     pub unsafe fn switch_page_table(&self) {
-        self.memory_space.lock().switch_page_table()
+        unsafe { self.memory_space.lock().switch_page_table() }
     }
 
     pub fn raw_mm_pointer(&self) -> usize {

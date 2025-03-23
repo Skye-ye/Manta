@@ -7,7 +7,7 @@ use core::{
 
 use arch::time::get_time_duration;
 
-use crate::{Timer, TIMER_MANAGER};
+use crate::{TIMER_MANAGER, Timer};
 
 pub enum TimeLimitedTaskOutput<T> {
     TimeOut,

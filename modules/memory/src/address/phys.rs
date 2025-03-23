@@ -5,13 +5,13 @@ use core::{
     ops::Range,
 };
 
-use config::mm::{PAGE_MASK, PAGE_SIZE, PAGE_SIZE_BITS, PTES_PER_PAGE, PTE_SIZE};
+use config::mm::{PAGE_MASK, PAGE_SIZE, PAGE_SIZE_BITS, PTE_SIZE, PTES_PER_PAGE};
 use crate_interface::call_interface;
 
 use super::{impl_arithmetic_with_usize, impl_fmt, impl_step};
 use crate::{
+    __KernelMappingIf_mod, PageTableEntry, VirtAddr,
     address::{PA_WIDTH_SV39, PPN_WIDTH_SV39},
-    PageTableEntry, VirtAddr, __KernelMappingIf_mod,
 };
 
 /// Physical address

@@ -2,7 +2,7 @@
 name = "kernel"
 version = "0.1.0"
 authors = ["ChenRuiwei <1982833213@qq.com>"]
-edition = "2021"
+edition = "2024"
 
 [dependencies]
 arch = { path = "../arch/" }

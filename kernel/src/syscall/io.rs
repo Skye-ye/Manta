@@ -249,7 +249,9 @@ impl Syscall<'_> {
             Some(sigmask.read(task)?)
         };
 
-        log::info!("[sys_pselect6] nfds:{nfds}, readfds:{readfds}, writefds:{writefds}, exceptfds:{exceptfds}, timeout:{timeout:?}, sigmask:{new_mask:?}");
+        log::info!(
+            "[sys_pselect6] nfds:{nfds}, readfds:{readfds}, writefds:{writefds}, exceptfds:{exceptfds}, timeout:{timeout:?}, sigmask:{new_mask:?}"
+        );
 
         let mut readfds = if readfds.is_null() {
             None

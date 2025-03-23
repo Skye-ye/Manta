@@ -12,13 +12,13 @@ use byte_slice_cast::*;
 use config::board::BLOCK_SIZE;
 use device_core::{BlockDevice, DevId, Device, DeviceMajor, DeviceMeta, DeviceType};
 use log::{debug, info, warn};
-use memory::{alloc_frame_tracker, alloc_frame_trackers, FrameTracker, PhysAddr, VirtAddr};
+use memory::{FrameTracker, PhysAddr, VirtAddr, alloc_frame_tracker, alloc_frame_trackers};
 
 use super::{
     dma::Descriptor,
     registers::{
-        CtypeCardWidth, BLKSIZ, BMOD, BYTCNT, CDETECT, CID, CLKDIV, CLKENA, CMD, CMDARG, CTRL,
-        CTYPE, DBADDRL, DBADDRU, IDSTS, PWREN, RESP, RINSTS, STATUS,
+        BLKSIZ, BMOD, BYTCNT, CDETECT, CID, CLKDIV, CLKENA, CMD, CMDARG, CTRL, CTYPE,
+        CtypeCardWidth, DBADDRL, DBADDRU, IDSTS, PWREN, RESP, RINSTS, STATUS,
     },
 };
 use crate::wait_for;

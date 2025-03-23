@@ -8,7 +8,7 @@ use vfs_core::{
     SuperBlock, SuperBlockMeta,
 };
 
-use crate::{disk::Disk, Ext4Dentry, Ext4DirInode, Ext4FileInode, LwExt4Dir, LwExt4File};
+use crate::{Ext4Dentry, Ext4DirInode, Ext4FileInode, LwExt4Dir, LwExt4File, disk::Disk};
 
 pub struct Ext4FsType {
     meta: FileSystemTypeMeta,

@@ -13,7 +13,7 @@ use systype::{SysError, SysResult, SyscallResult};
 use super::Syscall;
 use crate::{
     mm::{UserReadPtr, UserWritePtr},
-    task::{spawn_user_task, PGid, Pid, PROCESS_GROUP_MANAGER, TASK_MANAGER},
+    task::{PGid, PROCESS_GROUP_MANAGER, Pid, TASK_MANAGER, spawn_user_task},
 };
 
 bitflags! {

@@ -14,7 +14,7 @@ fn func(signal: usize, info: SigInfo, context: UContext) {
     sigreturn();
 }
 
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub fn main() -> i32 {
     let mut new = SigAction::default();
     let mut old = SigAction::default();

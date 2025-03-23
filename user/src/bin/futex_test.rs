@@ -8,7 +8,7 @@ use core::sync::atomic::{AtomicI32, Ordering};
 use user_lib::*;
 
 static FUTEX_ADDR: AtomicI32 = AtomicI32::new(0);
-#[no_mangle]
+#[unsafe(no_mangle)]
 fn main() {
     let futex_ptr = &FUTEX_ADDR as *const AtomicI32 as usize;
 

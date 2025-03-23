@@ -2,12 +2,12 @@ use alloc::sync::{Arc, Weak};
 use core::mem::MaybeUninit;
 
 use device_core::DevId;
-use downcast_rs::{impl_downcast, DowncastSync};
+use downcast_rs::{DowncastSync, impl_downcast};
 use page::PageCache;
 use systype::{SysResult, SyscallResult};
 use time::timespec::TimeSpec;
 
-use crate::{alloc_ino, Mutex, Stat, SuperBlock};
+use crate::{Mutex, Stat, SuperBlock, alloc_ino};
 
 pub struct InodeMeta {
     /// Inode number.

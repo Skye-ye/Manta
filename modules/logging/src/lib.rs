@@ -6,7 +6,7 @@ use core::sync::atomic::{AtomicBool, Ordering};
 use crate_interface::call_interface;
 use log::{Level, LevelFilter, Log, Metadata, Record};
 
-pub static mut LOG_INITIALIZED: AtomicBool = AtomicBool::new(false);
+static LOG_INITIALIZED: AtomicBool = AtomicBool::new(false);
 
 pub fn init() {
     static LOGGER: SimpleLogger = SimpleLogger;
@@ -19,7 +19,7 @@ pub fn init() {
         Some("trace") => LevelFilter::Trace,
         _ => LevelFilter::Off,
     });
-    unsafe { LOG_INITIALIZED.store(true, Ordering::SeqCst) };
+    LOG_INITIALIZED.store(true, Ordering::SeqCst);
 }
 
 /// Add escape sequence to print with color in linux console
@@ -31,10 +31,10 @@ pub fn init() {
 // }
 
 #[macro_export]
-macro_rules! with_color {
-    ($color_code:expr, $($arg:tt)*) => {{
-        format_args!("\u{1B}[{}m{}\u{1B}[m", $color_code as u8, format_args!($($arg)*))
-    }};
+macro_rules! print_colored {
+    ($color_code:expr, $($arg:tt)*) => {
+        driver::_print(format_args!("\u{1B}[{}m{}\u{1B}[m", $color_code as u8, format_args!($($arg)*)))
+    };
 }
 
 #[crate_interface::def_interface]
@@ -86,4 +86,12 @@ pub enum ColorCode {
     BrightMagenta = 95,
     BrightCyan = 96,
     BrightWhite = 97,
+}
+
+pub fn is_log_initialized() -> bool {
+    LOG_INITIALIZED.load(Ordering::SeqCst)
+}
+
+pub fn disable_logging() {
+    LOG_INITIALIZED.store(false, Ordering::Relaxed);
 }

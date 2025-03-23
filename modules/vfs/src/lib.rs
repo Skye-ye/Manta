@@ -23,7 +23,7 @@ use sync::mutex::SpinNoIrqLock;
 use vfs_core::{Dentry, DentryState, FileSystemType, InodeMode, MountFlags, OpenFlags, Path};
 
 use crate::{
-    devfs::{init_devfs, DevFsType},
+    devfs::{DevFsType, init_devfs},
     procfs::ProcFsType,
     tmpfs::TmpFsType,
 };

@@ -4,12 +4,12 @@ use core::num::NonZeroUsize;
 use config::{
     board::BLOCK_SIZE,
     mm::{
-        block_page_id, is_aligned_to_block, BUFFER_NEED_CACHE_CNT, MAX_BUFFERS_PER_PAGE,
-        MAX_BUFFER_HEADS, MAX_BUFFER_PAGES, PAGE_SIZE,
+        BUFFER_NEED_CACHE_CNT, MAX_BUFFER_HEADS, MAX_BUFFER_PAGES, MAX_BUFFERS_PER_PAGE, PAGE_SIZE,
+        block_page_id, is_aligned_to_block,
     },
 };
 use device_core::BlockDevice;
-use intrusive_collections::{intrusive_adapter, LinkedListAtomicLink};
+use intrusive_collections::{LinkedListAtomicLink, intrusive_adapter};
 use lru::LruCache;
 use macro_utils::with_methods;
 use sync::mutex::SpinNoIrqLock;

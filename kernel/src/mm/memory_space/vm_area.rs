@@ -3,8 +3,8 @@ use core::ops::{Range, RangeBounds};
 
 use arch::memory::sfence_vma_vaddr;
 use async_utils::block_on;
-use config::mm::{round_down_to_page, PAGE_SIZE};
-use memory::{pte::PTEFlags, VirtAddr, VirtPageNum};
+use config::mm::{PAGE_SIZE, round_down_to_page};
+use memory::{VirtAddr, VirtPageNum, pte::PTEFlags};
 use page::Page;
 use systype::{SysError, SysResult};
 use vfs_core::File;

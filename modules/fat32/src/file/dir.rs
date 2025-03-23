@@ -5,9 +5,10 @@ use systype::{SysError, SysResult, SyscallResult};
 use vfs_core::{DirEntry, File, FileMeta, Inode, SeekFrom};
 
 use crate::{
+    FatDir, FatDirIter, Shared,
     dentry::FatDentry,
-    inode::{dir::FatDirInode, FatFileInode},
-    new_shared, FatDir, FatDirIter, Shared,
+    inode::{FatFileInode, dir::FatDirInode},
+    new_shared,
 };
 
 pub struct FatDirFile {
