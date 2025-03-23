@@ -7,6 +7,7 @@ edition = "2024"
 
 [dependencies]
 config = { path = "../../config/" }
+arch = { path = "../../arch/" }
 sync = { path = "../sync/" }
 sbi-print = { path = "../../crates/sbi-print/" }
 
@@ -15,7 +16,7 @@ linked_list_allocator = "0.10"
 bitflags = "2.5"
 log = "0.4"
 bitmap-allocator = { git = "https://github.com/rcore-os/bitmap-allocator", version = "0.1.0" }
-riscv = "0.11"
+riscv = "0.13"
 crate_interface = "0.1"
 
 [features]

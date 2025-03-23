@@ -4,15 +4,13 @@ use alloc::sync::Arc;
 
 use arch::{
     interrupts::{disable_interrupt, enable_interrupt},
-    time::{get_time_duration, set_next_timer_irq},
+    time::set_next_timer_irq,
 };
 use async_utils::yield_now;
 use memory::VirtAddr;
-use riscv::register::{
-    scause::{self, Exception, Interrupt, Trap},
-    sepc,
-    sstatus::FS,
-    stval,
+use riscv::{
+    interrupt::{Exception, Trap, supervisor},
+    register::{scause, sepc, sstatus::FS, stval},
 };
 use signal::{Sig, SigDetails, SigInfo};
 use systype::SysError;
@@ -41,8 +39,8 @@ pub async fn trap_handler(task: &Arc<Task>) -> bool {
         yield_now().await;
     }
 
-    match cause {
-        Trap::Exception(e) => {
+    match cause.try_into() {
+        Ok(Trap::Exception(e)) => {
             match e {
                 Exception::UserEnvCall => {
                     let syscall_no = cx.syscall_no();
@@ -110,9 +108,9 @@ pub async fn trap_handler(task: &Arc<Task>) -> bool {
                 }
             }
         }
-        Trap::Interrupt(i) => {
+        Ok(Trap::Interrupt(i)) => {
             match i {
-                Interrupt::SupervisorTimer => {
+                supervisor::Interrupt::SupervisorTimer => {
                     // NOTE: User may trap into kernel frequently. As a consequence, this timer are
                     // likely not triggered in user mode but rather be triggered in supervisor mode,
                     // which will cause user program running on the cpu for a quite long time.
@@ -123,7 +121,7 @@ pub async fn trap_handler(task: &Arc<Task>) -> bool {
                         yield_now().await;
                     }
                 }
-                Interrupt::SupervisorExternal => {
+                supervisor::Interrupt::SupervisorExternal => {
                     log::info!("[kernel] receive externel interrupt");
                     driver::get_device_manager_mut().handle_irq();
                 }
@@ -133,6 +131,12 @@ pub async fn trap_handler(task: &Arc<Task>) -> bool {
                     );
                 }
             }
+        }
+        Err(_) => {
+            panic!(
+                "[trap_handler] Error when converting trap to target-specific trap cause {:?}",
+                cause
+            );
         }
     }
     false

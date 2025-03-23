@@ -2,6 +2,7 @@ pub mod entry;
 pub mod interrupts;
 pub mod memory;
 pub mod register;
+pub mod satp;
 pub mod sstatus;
 pub mod time;
 

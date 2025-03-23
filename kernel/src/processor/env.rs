@@ -1,7 +1,9 @@
-use core::sync::atomic::{AtomicBool, Ordering};
-
 use arch::memory::sfence_vma_all;
-use riscv::register::{satp, sepc};
+use riscv::register::{
+    satp::{self, Satp},
+    sepc,
+    sstatus::{self, Sstatus},
+};
 
 use super::hart::local_hart;
 
@@ -35,18 +37,18 @@ pub struct EnvContext {
     sum_cnt: usize,
 
     // For preempt only
-    sstatus: usize,
+    sstatus: Sstatus,
     sepc: usize,
-    satp: usize,
+    satp: Satp,
 }
 
 impl EnvContext {
     pub const fn new() -> Self {
         Self {
             sum_cnt: 0,
-            sstatus: 0,
+            sstatus: Sstatus::from_bits(0),
             sepc: 0,
-            satp: 0,
+            satp: Satp::from_bits(0),
         }
     }
 
@@ -79,15 +81,17 @@ impl EnvContext {
     }
 
     pub fn preempt_record(&mut self) {
-        self.sstatus = arch::sstatus::read().bits();
+        self.sstatus = sstatus::read();
         self.sepc = sepc::read();
-        self.satp = satp::read().bits();
+        self.satp = satp::read();
     }
 
     pub unsafe fn preempt_resume(&self) {
-        arch::sstatus::write(self.sstatus);
-        sepc::write(self.sepc);
-        satp::write(self.satp);
-        unsafe { sfence_vma_all() };
+        unsafe {
+            sstatus::write(self.sstatus);
+            sepc::write(self.sepc);
+            satp::write(self.satp);
+            sfence_vma_all();
+        }
     }
 }

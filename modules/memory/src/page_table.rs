@@ -3,8 +3,8 @@
 use alloc::{vec, vec::Vec};
 use core::{iter::zip, ops::Range};
 
+use arch::satp;
 use config::mm::{PAGE_SIZE, VIRT_RAM_OFFSET};
-use riscv::register::satp;
 
 use crate::{
     PageTableEntry, PhysAddr,
@@ -15,7 +15,7 @@ use crate::{
 
 /// Write `page_table_token` into satp and sfence.vma
 pub unsafe fn switch_page_table(page_table_token: usize) {
-    satp::write(page_table_token);
+    satp::write_bits(page_table_token);
     unsafe {
         core::arch::riscv64::sfence_vma_all();
     }

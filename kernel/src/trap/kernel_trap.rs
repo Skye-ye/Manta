@@ -1,13 +1,13 @@
 //! Trap from kernel.
 
-use arch::{
-    interrupts::set_trap_handler_vector,
-    time::{get_time_duration, set_next_timer_irq, set_timer_irq},
-};
+use arch::{interrupts::set_trap_handler_vector, time::set_next_timer_irq};
 use memory::VirtAddr;
-use riscv::register::{
-    scause::{self, Exception, Interrupt, Scause, Trap},
-    sepc, sstatus, stval, stvec,
+use riscv::{
+    interrupt::{Exception, Trap, supervisor},
+    register::{
+        scause::{self, Scause},
+        sepc, sstatus, stval, stvec,
+    },
 };
 use signal::{Sig, SigDetails, SigInfo};
 use timer::TIMER_MANAGER;
@@ -38,14 +38,15 @@ pub fn kernel_trap_handler() {
     let stval = stval::read();
     let scause = scause::read();
     let sepc = sepc::read();
-    let cause = scause.cause();
-    match scause.cause() {
-        Trap::Interrupt(i) => match i {
-            Interrupt::SupervisorExternal => {
+    let trap = scause.cause();
+
+    match trap.try_into() {
+        Ok(Trap::Interrupt(i)) => match i {
+            supervisor::Interrupt::SupervisorExternal => {
                 log::info!("[kernel] receive externel interrupt");
                 driver::get_device_manager_mut().handle_irq();
             }
-            Interrupt::SupervisorTimer => {
+            supervisor::Interrupt::SupervisorTimer => {
                 // log::error!("[kernel_trap] receive timer interrupt");
                 TIMER_MANAGER.check();
                 unsafe { set_next_timer_irq() };
@@ -70,12 +71,13 @@ pub fn kernel_trap_handler() {
             }
             _ => panic_on_unknown_trap(),
         },
-        Trap::Exception(e) => match e {
+        Ok(Trap::Exception(e)) => match e {
             Exception::StorePageFault
             | Exception::InstructionPageFault
             | Exception::LoadPageFault => {
                 log::info!(
-                    "[trap_handler] encounter page fault, addr {stval:#x}, instruction {sepc:#x} scause {cause:?}",
+                    "[trap_handler] encounter page fault, addr {stval:#x}, instruction {sepc:#x} cause {:?}",
+                    e,
                 );
                 let access_type = match e {
                     Exception::InstructionPageFault => PageFaultAccessType::RX,
@@ -83,13 +85,13 @@ pub fn kernel_trap_handler() {
                     Exception::StorePageFault => PageFaultAccessType::RW,
                     _ => unreachable!(),
                 };
-
                 let result = current_task_ref().with_mut_memory_space(|m| {
                     m.handle_page_fault(VirtAddr::from(stval), access_type)
                 });
                 if let Err(_e) = result {
                     log::warn!(
-                        "[trap_handler] encounter page fault, addr {stval:#x}, instruction {sepc:#x} scause {cause:?}",
+                        "[trap_handler] encounter page fault, addr {stval:#x}, instruction {sepc:#x} cause {:?}",
+                        e,
                     );
                     log::warn!("{:x?}", current_task_ref().trap_context_mut());
                     log::warn!("bad memory access, send SIGSEGV to task");
@@ -105,6 +107,7 @@ pub fn kernel_trap_handler() {
             }
             _ => panic_on_unknown_trap(),
         },
+        Err(_) => panic_on_unknown_trap(),
     }
 }
 
@@ -133,10 +136,15 @@ pub fn will_read_fail(vaddr: usize) -> bool {
         _ => {
             when_debug!({
                 let scause: Scause = try_op_ret.scause();
-                match scause.cause() {
-                    scause::Trap::Interrupt(i) => unreachable!("{:?}", i),
-                    scause::Trap::Exception(e) => assert_eq!(e, Exception::LoadPageFault),
-                };
+                let raw_trap = scause.cause();
+                if let Ok(trap) =
+                    raw_trap.try_into::<supervisor::Interrupt, supervisor::Exception>()
+                {
+                    match trap {
+                        Trap::Interrupt(_) => panic!("Unexpected interrupt during read check"),
+                        Trap::Exception(e) => assert_eq!(e, supervisor::Exception::LoadPageFault),
+                    }
+                }
             });
             true
         }
@@ -157,10 +165,15 @@ pub fn will_write_fail(vaddr: usize) -> bool {
         _ => {
             when_debug!({
                 let scause: Scause = try_op_ret.scause();
-                match scause.cause() {
-                    scause::Trap::Interrupt(i) => unreachable!("{:?}", i),
-                    scause::Trap::Exception(e) => assert_eq!(e, Exception::StorePageFault),
-                };
+                let raw_trap = scause.cause();
+                if let Ok(trap) =
+                    raw_trap.try_into::<supervisor::Interrupt, supervisor::Exception>()
+                {
+                    match trap {
+                        Trap::Interrupt(_) => panic!("Unexpected interrupt during write check"),
+                        Trap::Exception(e) => assert_eq!(e, supervisor::Exception::StorePageFault),
+                    }
+                }
             });
             true
         }

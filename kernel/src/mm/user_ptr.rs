@@ -15,7 +15,7 @@ use core::{
 
 use memory::VirtAddr;
 use net::{IpAddress, IpEndpoint, IpListenEndpoint};
-use riscv::register::scause;
+use riscv::interrupt::supervisor;
 use systype::{SysError, SysResult};
 
 use super::memory_space::vm_area::MapPerm;
@@ -566,11 +566,11 @@ impl PageFaultAccessType {
     pub const RW: Self = Self::RO.union(Self::WRITE);
     pub const RX: Self = Self::RO.union(Self::EXECUTE);
 
-    pub fn from_exception(e: scause::Exception) -> Self {
+    pub fn from_exception(e: supervisor::Exception) -> Self {
         match e {
-            scause::Exception::InstructionPageFault => Self::RX,
-            scause::Exception::LoadPageFault => Self::RO,
-            scause::Exception::StorePageFault => Self::RW,
+            supervisor::Exception::InstructionPageFault => Self::RX,
+            supervisor::Exception::LoadPageFault => Self::RO,
+            supervisor::Exception::StorePageFault => Self::RW,
             _ => panic!("unexcepted exception type for PageFaultAccessType"),
         }
     }

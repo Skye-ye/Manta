@@ -1,6 +1,5 @@
 extern crate alloc;
 use alloc::collections::VecDeque;
-use core::{panic, task::Waker};
 
 use bitflags::*;
 

@@ -38,15 +38,17 @@ pub fn get_trap_handler() -> usize {
 }
 
 pub unsafe fn set_trap_handler(handler_addr: usize) {
-    unsafe {
-        stvec::write(handler_addr, TrapMode::Direct);
-    }
+    let mut vec = stvec::read();
+    vec.set_address(handler_addr);
+    vec.set_trap_mode(TrapMode::Direct);
+    unsafe { stvec::write(vec) }
 }
 
 pub unsafe fn set_trap_handler_vector(handler_addr: usize) {
-    unsafe {
-        stvec::write(handler_addr, TrapMode::Vectored);
-    }
+    let mut vec = stvec::read();
+    vec.set_address(handler_addr);
+    vec.set_trap_mode(TrapMode::Vectored);
+    unsafe { stvec::write(vec) }
 }
 
 /// Disable interrupt and resume to the interrupt state before when it gets

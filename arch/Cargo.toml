@@ -8,7 +8,7 @@ edition = "2024"
 [dependencies]
 config = { path = "../config" }
 
-riscv = "0.11"
+riscv = "0.13"
 spin = "0.9"
 bitflags = "2.5"
 log = "0.4"

@@ -23,9 +23,9 @@ static mut BOOT_PAGE_TABLE: BootPageTable = {
 unsafe extern "C" fn _start(hart_id: usize, dtb_addr: usize) -> ! {
     unsafe {
         core::arch::naked_asm!(
-            // 1. set boot stack
-            // sp = boot_stack + (hartid + 1) * 64KB
-            "
+        // 1. set boot stack
+        // sp = boot_stack + (hartid + 1) * 64KB
+        "
             addi    t0, a0, 1
             slli    t0, t0, 16              // t0 = (hart_id + 1) * 64KB
             la      sp, {boot_stack}

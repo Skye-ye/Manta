@@ -2,8 +2,7 @@
 
 use core::arch::asm;
 
-use arch::sstatus::{self, Sstatus};
-use riscv::register::sstatus::{FS, SPP};
+use riscv::register::sstatus::{self, FS, SPP, Sstatus};
 
 #[derive(Clone, Copy, Debug)]
 #[repr(C)]

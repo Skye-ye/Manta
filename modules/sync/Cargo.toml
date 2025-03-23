@@ -10,4 +10,4 @@ async-utils = { path = "../../crates/async-utils/" }
 
 log = "0.4"
 bitflags = "2.5"
-riscv = "0.11"
+riscv = "0.13"
