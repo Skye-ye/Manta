@@ -29,7 +29,7 @@ backtrace = { path = "../crates/backtrace/" }
 cfg-if = "1.0"
 crate_interface = "0.1"
 buddy_system_allocator = "0.9"
-bitflags = "2.5"
+bitflags = "2.9"
 bit_field = "0.10"
 xmas-elf = "0.9"
 log = "0.4"
