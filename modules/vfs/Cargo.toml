@@ -19,7 +19,7 @@ async-utils = { path = "../../crates/async-utils/" }
 ring-buffer = { path = "../../crates/ring-buffer/" }
 memory = { path = "../memory/" }
 
-bitflags = "2.5"
+bitflags = "2.9"
 async-trait = "0.1"
 strum = { version = "0.26", default-features = false, features = ["derive"] }
 spin = "0.9"

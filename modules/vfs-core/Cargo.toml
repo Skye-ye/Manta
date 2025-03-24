@@ -17,7 +17,7 @@ time = { path = "../time" }
 async-utils = { path = "../../crates/async-utils/" }
 
 crate_interface = "0.1"
-bitflags = "2.5"
+bitflags = "2.9"
 log = "0.4"
 async-trait = "0.1"
 spin = "0.9"
