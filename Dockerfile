@@ -12,7 +12,8 @@ RUN apt-get update && \
     git \
     python3 \
     wget \
-    xz-utils
+    xz-utils \
+    sudo
 
 # 1. Set up QEMU RISC-V
 # - https://learningos.github.io/rust-based-os-comp2022/0setup-devel-env.html#qemu
@@ -84,7 +85,19 @@ RUN rustup target add riscv64gc-unknown-none-elf && \
     rustup component add rustfmt && \
     rustup component add clippy && \
     rustup component add llvm-tools && \
-    cargo install cargo-binutils
+    cargo install cargo-binutils && \
+    cargo install rustfilt
+
+# 4.0. Install development tools
+RUN apt-get update && \
+    apt-get install -y \
+    vim \
+    gdb-multiarch \
+    device-tree-compiler \
+    u-boot-tools
+
+# 4.1. Setup gdb
+RUN ln -s /usr/bin/gdb-multiarch /usr/bin/riscv64-unknown-elf-gdb
 
 # Ready to go
 WORKDIR ${HOME}
