@@ -72,7 +72,7 @@ pub(crate) fn probe_mmio_device(
     use transport::mmio::VirtIOHeader;
 
     let header = NonNull::new(reg_base as *mut VirtIOHeader).unwrap();
-    if let Ok(transport) = unsafe { MmioTransport::new(header) } {
+    if let Ok(transport) = unsafe { MmioTransport::new(header, reg_size) } {
         if type_match.is_none() || as_dev_type(transport.device_type()) == type_match {
             log::info!(
                 "Detected virtio MMIO device with vendor id: {:#X}, device type: {:?}, version: {:?}",
@@ -91,7 +91,7 @@ pub(crate) fn probe_mmio_device(
 }
 
 impl DeviceManager {
-    pub fn probe_virtio_device(&mut self, root: &Fdt) {
+    pub fn probe_virtio_device(&mut self, root: &Fdt, mmio_size: usize) {
         let init_net: bool = false;
         let nodes = root.find_all_nodes("/soc/virtio_mmio");
         let mut reg;
@@ -111,7 +111,7 @@ impl DeviceManager {
 
             // First map mmio memory since we need to read header.
             kernel_page_table_mut().ioremap(base_paddr, size, PTEFlags::R | PTEFlags::W);
-            match unsafe { MmioTransport::new(header) } {
+            match unsafe { MmioTransport::new(header, mmio_size) } {
                 Ok(transport) => match transport.device_type() {
                     VirtIoDevType::Block => {
                         if let Some(blk) = VirtIoBlkDev::try_new(base_paddr, size, None, transport)

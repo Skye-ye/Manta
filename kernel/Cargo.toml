@@ -36,7 +36,7 @@ log = "0.4"
 hashbrown = "0.14"
 spin = { version = "0.9", features = ["lazy"] }
 riscv = "0.13"
-virtio-drivers = { version = "0.7" }
+virtio-drivers = { version = "0.9" }
 paste = "1.0"
 strum = { version = "0.26", default-features = false, features = ["derive"] }
 numeric-enum-macro = "0.2.0"
