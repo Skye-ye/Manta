@@ -2,13 +2,36 @@
     "version": "2.0.0",
     "tasks": [
         {
+            "label": "build kernel",
+            "type": "shell",
+            "command": "make",
+            "args": [
+                "build",
+                "MODE=debug"
+            ],
+            "isBackground": false,
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared",
+                "clear": true,
+            },
+            "problemMatcher": "$gcc"
+        },
+        {
             "label": "launch qemu gdb server",
             "type": "shell",
             "command": "make",
-            "args": ["debug"],
+            "args": [
+                "debug",
+                "MODE=debug"
+            ],
             "isBackground": true,
             "group": {
-                "kind": "build",
+                "kind": "test",
                 "isDefault": true
             },
             "problemMatcher": [
@@ -31,9 +54,10 @@
             "presentation": {
                 "reveal": "always",
                 "focus": true,
-                "panel": "new",
-                "clear": true
-            }
-        }
+                "panel": "dedicated",
+                "clear": true,
+                "echo": true
+            },
+        },
     ]
 }
