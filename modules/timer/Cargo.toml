@@ -11,4 +11,4 @@ arch = { path = "../../arch" }
 time = { path = "../time" }
 
 log = "0.4"
-spin = { version = "0.9", features = ["lazy"] }
+spin = { version = "0.10", features = ["lazy"] }

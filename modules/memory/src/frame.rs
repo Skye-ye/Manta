@@ -103,7 +103,11 @@ pub fn alloc_frame_tracker() -> FrameTracker {
 
 /// Allocate contiguous frames
 pub fn alloc_frame_trackers(size: usize) -> Vec<FrameTracker> {
-    if let Some(first_frame) = FRAME_ALLOCATOR.allocator.lock().alloc_contiguous(size, 0) {
+    if let Some(first_frame) = FRAME_ALLOCATOR
+        .allocator
+        .lock()
+        .alloc_contiguous(None, size, 0)
+    {
         (first_frame..first_frame + size)
             .map(|u| FrameTracker::new(FRAME_ALLOCATOR.range_ppn().start + u))
             .collect()
@@ -112,7 +116,7 @@ pub fn alloc_frame_trackers(size: usize) -> Vec<FrameTracker> {
         let first_frame = FRAME_ALLOCATOR
             .allocator
             .lock()
-            .alloc_contiguous(size, 0)
+            .alloc_contiguous(None, size, 0)
             .unwrap();
         (first_frame..first_frame + size)
             .map(|u| FrameTracker::new(FRAME_ALLOCATOR.range_ppn().start + u))
@@ -122,7 +126,11 @@ pub fn alloc_frame_trackers(size: usize) -> Vec<FrameTracker> {
 
 /// Allocate contiguous frames
 pub fn alloc_frames(size: usize) -> PhysAddr {
-    if let Some(first_frame) = FRAME_ALLOCATOR.allocator.lock().alloc_contiguous(size, 0) {
+    if let Some(first_frame) = FRAME_ALLOCATOR
+        .allocator
+        .lock()
+        .alloc_contiguous(None, size, 0)
+    {
         let ppn = FRAME_ALLOCATOR.range_ppn().start + first_frame;
         ppn.to_paddr()
     } else {
@@ -131,7 +139,7 @@ pub fn alloc_frames(size: usize) -> PhysAddr {
             + FRAME_ALLOCATOR
                 .allocator
                 .lock()
-                .alloc_contiguous(size, 0)
+                .alloc_contiguous(None, size, 0)
                 .unwrap();
         ppn.to_paddr()
     }

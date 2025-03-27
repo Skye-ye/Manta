@@ -11,11 +11,11 @@ arch = { path = "../../arch/" }
 sync = { path = "../sync/" }
 sbi-print = { path = "../../crates/sbi-print/" }
 
-buddy_system_allocator = "0.9"
+buddy_system_allocator = "0.11"
 linked_list_allocator = "0.10"
 bitflags = "2.9"
 log = "0.4"
-bitmap-allocator = { git = "https://github.com/rcore-os/bitmap-allocator", version = "0.1.0" }
+bitmap-allocator = { git = "https://github.com/rcore-os/bitmap-allocator" }
 riscv = "0.13"
 crate_interface = "0.1"
 

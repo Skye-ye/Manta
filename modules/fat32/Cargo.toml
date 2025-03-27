@@ -18,5 +18,5 @@ fatfs = { git = "https://github.com/ChenRuiwei/rust-fatfs", branch = "smp", defa
     "lfn",
     "log_level_info",
 ] }
-downcast-rs = { version = "1.2", default-features = false }
+downcast-rs = { version = "2.0", default-features = false }
 async-trait = "0.1"
