@@ -28,20 +28,20 @@ backtrace = { path = "../crates/backtrace/" }
 
 cfg-if = "1.0"
 crate_interface = "0.1"
-buddy_system_allocator = "0.9"
+buddy_system_allocator = "0.11"
 bitflags = "2.9"
 bit_field = "0.10"
-xmas-elf = "0.9"
+xmas-elf = "0.10"
 log = "0.4"
-hashbrown = "0.14"
-spin = { version = "0.9", features = ["lazy"] }
+hashbrown = "0.15"
+spin = { version = "0.10", features = ["lazy"] }
 riscv = "0.13"
 virtio-drivers = { version = "0.9" }
 paste = "1.0"
-strum = { version = "0.26", default-features = false, features = ["derive"] }
+strum = { version = "0.27", default-features = false, features = ["derive"] }
 numeric-enum-macro = "0.2.0"
 async-trait = "0.1"
-downcast-rs = { version = "1.2", default-features = false }
+downcast-rs = { version = "2.0", default-features = false }
 sbi-rt = { version = "0.0.3", features = ["legacy"] }
 
 

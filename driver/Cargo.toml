@@ -23,16 +23,16 @@ backtrace = { path = "../crates/backtrace/" }
 bitflags = "2.9"
 rustversion = "1.0"
 log = "0.4"
-spin = { version = "0.9", features = ["lazy"] }
+spin = { version = "0.10", features = ["lazy"] }
 virtio-drivers = { version = "0.9" }
 # virtio-drivers = { path = "../crates/virtio-drivers/" }
 async-trait = "0.1"
 fdt = "0.1"
-plic = "0.0.2"
+plic = "0.0.3"
 crate_interface = "0.1"
 paste = "1.0"
-bitfield-struct = "0.8"
-byte-slice-cast = { version = "1.2.2", default-features = false }
+bitfield-struct = "0.10"
+byte-slice-cast = { version = "1.2.3", default-features = false }
 
 # visionfive2-sd = { path = "../crates/visionfive2-sd/" }
 visionfive2-sd = { git = "https://github.com/os-module/visionfive2-sd.git" }

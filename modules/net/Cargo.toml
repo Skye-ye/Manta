@@ -16,7 +16,7 @@ device-core = { path = "../device-core/" }
 timer = { path = "../timer/" }
 async-utils = { path = "../../crates/async-utils/" }
 
-spin = "0.9"
+spin = "0.10"
 log = "0.4"
 crate_interface = "0.1"
 
