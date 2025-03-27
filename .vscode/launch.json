@@ -28,10 +28,14 @@
                     "description": "Continue execution on all exceptions",
                     "text": "handle all pass",
                     "ignoreFailures": true
+                },
+                {
+                    "description": "Set target architecture",
+                    "text": "set architecture riscv:rv64",
+                    "ignoreFailures": false
                 }
             ],
             "miDebuggerServerAddress": "localhost:1234",
-            // "preLaunchTask": "build kernel"  // 确保有一个名为 'build kernel' 的任务来构建你的内核
         }
     ]
 }
