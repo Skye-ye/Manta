@@ -74,6 +74,10 @@ pub struct UrandomDentry {
 
 pub static RNG: StaticCell<SimpleRng> = StaticCell::new();
 
+pub fn init_rng() {
+    RNG.init(SimpleRng::new());
+}
+
 impl UrandomDentry {
     pub fn new(
         name: &str,
