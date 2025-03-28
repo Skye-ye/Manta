@@ -22,6 +22,8 @@ pub mod urandom;
 mod zero;
 
 pub fn init_devfs(root_dentry: Arc<dyn Dentry>) -> SysResult<()> {
+    urandom::init_rng();
+
     let sb = root_dentry.super_block();
 
     let zero_dentry = ZeroDentry::new("zero", sb.clone(), Some(root_dentry.clone()));
