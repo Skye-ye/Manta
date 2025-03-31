@@ -10,6 +10,7 @@ use core::{
     task::Waker,
 };
 
+use arch::sync::mutex::SpinNoIrqLock;
 use async_trait::async_trait;
 use async_utils::{block_on, get_waker, suspend_now};
 use config::{board::UART_BUF_LEN, mm::VIRT_RAM_OFFSET};
@@ -19,7 +20,6 @@ use macro_utils::with_methods;
 use memory::pte::PTEFlags;
 use ring_buffer::RingBuffer;
 use spin::Once;
-use sync::mutex::SpinNoIrqLock;
 
 use super::CharDevice;
 use crate::{

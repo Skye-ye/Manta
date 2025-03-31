@@ -8,7 +8,7 @@ edition = "2024"
 [dependencies]
 arch = { path = "../arch/" }
 config = { path = "../config/" }
-sync = { path = "../modules/sync/" }
+# sync = { path = "../modules/sync/" }
 memory = { path = "../modules/memory/" }
 systype = { path = "../modules/systype/" }
 page = { path = "../modules/page/" }

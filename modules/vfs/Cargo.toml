@@ -6,11 +6,12 @@ edition = "2024"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+arch = { path = "../../arch/" }
 vfs-core = { path = "../vfs-core/" }
 fat32 = { path = "../fat32/" }
 page = { path = "../page/" }
 ext4 = { path = "../ext4/" }
-sync = { path = "../sync/" }
+# sync = { path = "../sync/" }
 driver = { path = "../../driver/" }
 device-core = { path = "../device-core/" }
 config = { path = "../../config/" }

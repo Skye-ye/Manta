@@ -1,6 +1,7 @@
 use alloc::sync::{Arc, Weak};
 use core::num::NonZeroUsize;
 
+use arch::sync::mutex::SpinNoIrqLock;
 use config::{
     board::BLOCK_SIZE,
     mm::{
@@ -12,7 +13,6 @@ use device_core::BlockDevice;
 use intrusive_collections::{LinkedListAtomicLink, intrusive_adapter};
 use lru::LruCache;
 use macro_utils::with_methods;
-use sync::mutex::SpinNoIrqLock;
 
 use crate::Page;
 

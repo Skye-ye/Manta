@@ -8,9 +8,9 @@ use core::{
     ops::Range,
 };
 
+use arch::sync::mutex::SpinNoIrqLock;
 use bitmap_allocator::BitAlloc;
 use crate_interface::call_interface;
-use sync::mutex::SpinNoIrqLock;
 
 use crate::{PhysAddr, PhysPageNum};
 

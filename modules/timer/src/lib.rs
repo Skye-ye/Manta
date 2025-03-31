@@ -4,9 +4,8 @@ use core::{cmp::Reverse, task::Waker, time::Duration};
 extern crate alloc;
 use alloc::{boxed::Box, collections::BinaryHeap};
 
-use arch::time::get_time_duration;
+use arch::{sync::mutex::SpinNoIrqLock, time::get_time_duration};
 use spin::Lazy;
-use sync::mutex::SpinNoIrqLock;
 
 pub mod timelimited_task;
 

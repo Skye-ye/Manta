@@ -8,7 +8,7 @@ edition = "2024"
 [dependencies]
 config = { path = "../../config/" }
 arch = { path = "../../arch/" }
-sync = { path = "../sync/" }
+# sync = { path = "../sync/" }
 sbi-print = { path = "../../crates/sbi-print/" }
 
 buddy_system_allocator = "0.11"

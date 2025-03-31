@@ -7,9 +7,12 @@ edition = "2024"
 
 [dependencies]
 config = { path = "../config" }
+async-utils = { path = "../crates/async-utils/" }
+
 
 riscv = "0.13"
 sbi-rt = "0.0.3"
+log = "0.4"
 
 [features]
 default = ["irq"]

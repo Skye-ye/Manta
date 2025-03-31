@@ -5,12 +5,12 @@ use core::{
     ptr::NonNull,
 };
 
+use arch::sync::mutex::SpinNoIrqLock;
 use buddy_system_allocator::Heap as BuddyHeap;
 use config::mm::KERNEL_HEAP_SIZE;
 #[cfg(all(feature = "linked", not(feature = "buddy")))]
 use linked_list_allocator::Heap as LinkedHeap;
 use sbi_print::sbi_println;
-use sync::mutex::SpinNoIrqLock;
 
 #[cfg(all(feature = "buddy", not(feature = "linked")))]
 type GlobalHeap = LockedBuddyHeap;

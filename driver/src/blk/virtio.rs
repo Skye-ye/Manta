@@ -1,12 +1,12 @@
 use alloc::{string::ToString, sync::Arc};
 use core::ptr::NonNull;
 
+use arch::sync::mutex::SpinNoIrqLock;
 use config::board::BLOCK_SIZE;
 use device_core::{BlockDevice, DevId, Device, DeviceMajor, DeviceMeta, DeviceType};
 use log::error;
 use memory::{PhysAddr, PhysPageNum, VirtAddr, alloc_frames, dealloc_frame};
 use page::BufferCache;
-use sync::mutex::SpinNoIrqLock;
 use virtio_drivers::{BufferDirection, device::blk::VirtIOBlk, transport::mmio::MmioTransport};
 
 use crate::virtio::VirtioHalImpl;

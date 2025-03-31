@@ -1,8 +1,8 @@
 use alloc::sync::Arc;
 
+use arch::sync::mutex::SpinNoIrqLock;
 use config::mm::is_aligned_to_page;
 use hashbrown::HashMap;
-use sync::mutex::SpinNoIrqLock;
 
 use crate::Page;
 

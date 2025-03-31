@@ -14,12 +14,12 @@ extern crate alloc;
 
 use alloc::{collections::BTreeMap, string::String, sync::Arc};
 
+use arch::sync::mutex::SpinNoIrqLock;
 use driver::BLOCK_DEVICE;
 use memory::FrameReleaseIf;
 use procfs::init_procfs;
 use sockfs::SockFsType;
 use spin::Once;
-use sync::mutex::SpinNoIrqLock;
 use vfs_core::{Dentry, DentryState, FileSystemType, InodeMode, MountFlags, OpenFlags, Path};
 
 use crate::{

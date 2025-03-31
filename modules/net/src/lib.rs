@@ -7,7 +7,10 @@ extern crate alloc;
 use alloc::{boxed::Box, vec, vec::Vec};
 use core::{cell::RefCell, future::Future, ops::DerefMut, panic, time::Duration};
 
-use arch::time::{get_time_duration, get_time_us};
+use arch::{
+    sync::mutex::SpinNoIrqLock,
+    time::{get_time_duration, get_time_us},
+};
 use crate_interface::call_interface;
 use device_core::{NetBufPtrOps, NetDevice, error::DevError};
 use listen_table::*;
@@ -21,7 +24,6 @@ use smoltcp::{
     wire::{EthernetAddress, HardwareAddress, IpCidr},
 };
 use spin::{Lazy, Once};
-use sync::mutex::SpinNoIrqLock;
 use timer::{TIMER_MANAGER, Timer, TimerEvent};
 pub mod addr;
 pub mod bench;
