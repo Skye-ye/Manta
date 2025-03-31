@@ -1,9 +1,8 @@
 use alloc::{string::ToString, sync::Arc};
 
-use arch::{sync::mutex::SpinNoIrqLock, time::get_time};
+use arch::{memory::PhysAddr, sync::mutex::SpinNoIrqLock, time::get_time};
 use config::board::{BLOCK_SIZE, clock_freq};
 use device_core::{BlockDevice, DevId, Device, DeviceMajor, DeviceMeta, DeviceType};
-use memory::PhysAddr;
 use visionfive2_sd::{SDIo, SleepOps, Vf2SdDriver};
 
 pub fn sleep_ms(ms: usize) {

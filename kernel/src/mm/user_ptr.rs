@@ -13,7 +13,7 @@ use core::{
     ops::{self, ControlFlow},
 };
 
-use memory::VirtAddr;
+use arch::memory::VirtAddr;
 use net::{IpAddress, IpEndpoint, IpListenEndpoint};
 use riscv::interrupt::supervisor;
 use systype::{SysError, SysResult};

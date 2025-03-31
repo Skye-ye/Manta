@@ -4,9 +4,8 @@ pub mod memory;
 pub mod register;
 pub mod satp;
 pub mod sstatus;
-pub mod time;
-// pub mod trap;
 pub mod sync;
+pub mod time;
 #[inline(never)]
 pub fn spin(cycle: usize) {
     for _ in 0..cycle {

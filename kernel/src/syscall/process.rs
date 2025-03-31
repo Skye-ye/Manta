@@ -5,8 +5,8 @@ use alloc::{
     vec::Vec,
 };
 
+use arch::memory::VirtAddr;
 use async_utils::{suspend_now, yield_now};
-use memory::VirtAddr;
 use signal::sigset::SigSet;
 use systype::{SysError, SysResult, SyscallResult};
 

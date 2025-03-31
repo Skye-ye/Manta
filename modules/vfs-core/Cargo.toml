@@ -9,7 +9,7 @@ edition = "2024"
 arch = { path = "../../arch/" }
 systype = { path = "../systype/" }
 # sync = { path = "../sync/" }
-memory = { path = "../memory/" }
+# memory = { path = "../memory/" }
 config = { path = "../../config/" }
 device-core = { path = "../device-core/" }
 page = { path = "../page/" }

@@ -4,9 +4,9 @@ mod virtio;
 
 use alloc::sync::Arc;
 
+use arch::memory::{PhysAddr, pte::PTEFlags};
 use device_core::DeviceType;
 use fdt::Fdt;
-use memory::{PhysAddr, pte::PTEFlags};
 pub use virtio::*;
 use visionfive2_sd::Vf2SdDriver;
 

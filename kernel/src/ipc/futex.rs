@@ -1,9 +1,11 @@
 use alloc::vec::Vec;
 use core::{cmp::min, hash::Hash, ops::DerefMut, task::Waker};
 
-use arch::sync::mutex::SpinNoIrqLock;
+use arch::{
+    memory::{PhysAddr, VirtAddr},
+    sync::mutex::SpinNoIrqLock,
+};
 use hashbrown::HashMap;
-use memory::{PhysAddr, VirtAddr};
 use spin::Lazy;
 use systype::{SysError, SyscallResult};
 type Tid = usize;

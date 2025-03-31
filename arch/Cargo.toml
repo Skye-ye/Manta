@@ -8,13 +8,22 @@ edition = "2024"
 [dependencies]
 config = { path = "../config" }
 async-utils = { path = "../crates/async-utils/" }
+sbi-print = { path = "../crates/sbi-print/" }
+
 
 
 riscv = "0.13"
 sbi-rt = "0.0.3"
 log = "0.4"
+buddy_system_allocator = "0.11"
+linked_list_allocator = "0.10"
+bitflags = "2.9"
+bitmap-allocator = { git = "https://github.com/rcore-os/bitmap-allocator" }
+crate_interface = "0.1"
 
 [features]
-default = ["irq"]
+default = ["irq","buddy"]
 # Kernel interrupt
 irq = []
+buddy = []
+linked = []

@@ -2,11 +2,11 @@
 
 use alloc::{fmt, string::ToString, sync::Arc};
 
+use arch::memory::{KernelMappingIf, PageTable, PhysAddr, VirtAddr};
 use config::mm::VIRT_RAM_OFFSET;
 use driver::KernelPageTableIf;
 use log::Level;
 use logging::{ColorCode, LogIf};
-use memory::{KernelMappingIf, PageTable, PhysAddr, VirtAddr};
 use net::HasSignalIf;
 use vfs::{procfs::KernelProcIf, sys_root_dentry};
 use vfs_core::{Dentry, SysRootDentryIf};
