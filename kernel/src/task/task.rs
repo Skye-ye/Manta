@@ -13,7 +13,7 @@ use core::{
     task::Waker,
 };
 
-use arch::memory::sfence_vma_all;
+use arch::{memory::sfence_vma_all, sync::mutex::SpinNoIrqLock};
 use async_utils::block_on;
 use config::{
     mm::DL_INTERP_OFFSET,
@@ -26,7 +26,6 @@ use signal::{
     signal_stack::SignalStack,
     sigset::{Sig, SigSet},
 };
-use sync::mutex::SpinNoIrqLock;
 use systype::{SysError, SysResult};
 use time::stat::TaskTimeStat;
 use vfs::{fd_table::FdTable, sys_root_dentry};

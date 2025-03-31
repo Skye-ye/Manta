@@ -9,7 +9,7 @@ edition = "2024"
 config = { path = "../../config/" }
 device-core = { path = "../device-core/" }
 vfs-core = { path = "../vfs-core/" }
-sync = { path = "../sync/" }
+# sync = { path = "../sync/" }
 arch = { path = "../../arch/" }
 systype = { path = "../systype/" }
 

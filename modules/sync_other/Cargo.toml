@@ -1,5 +1,5 @@
 [package]
-name = "sync"
+name = "sync_other"
 version = "0.1.0"
 edition = "2024"
 

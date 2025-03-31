@@ -25,6 +25,7 @@ name = "arch"
 version = "0.1.0"
 dependencies = [
  "config",
+ "log",
  "loongArch64",
  "riscv",
  "sbi-rt",
@@ -265,7 +266,6 @@ dependencies = [
  "rustversion",
  "sbi-print",
  "spin 0.10.0",
- "sync",
  "systype",
  "virtio-drivers",
  "visionfive2-sd",
@@ -322,8 +322,8 @@ checksum = "877a4ace8713b0bcf2a4e7eec82529c029f1d0619886d18145fea96c3ffe5c0f"
 name = "executor"
 version = "0.1.0"
 dependencies = [
+ "arch",
  "async-task",
- "sync",
 ]
 
 [[package]]
@@ -337,7 +337,6 @@ dependencies = [
  "downcast-rs",
  "log",
  "lwext4_rust",
- "sync",
  "systype",
  "vfs-core",
 ]
@@ -352,7 +351,6 @@ dependencies = [
  "downcast-rs",
  "fatfs",
  "log",
- "sync",
  "systype",
  "vfs-core",
 ]
@@ -469,7 +467,6 @@ dependencies = [
  "signal",
  "spin 0.10.0",
  "strum",
- "sync",
  "systype",
  "time",
  "timer",
@@ -590,7 +587,6 @@ dependencies = [
  "log",
  "riscv",
  "sbi-print",
- "sync",
 ]
 
 [[package]]
@@ -604,7 +600,6 @@ dependencies = [
  "log",
  "smoltcp",
  "spin 0.10.0",
- "sync",
  "systype",
  "timer",
 ]
@@ -625,6 +620,7 @@ checksum = "d75b0bedcc4fe52caa0e03d9f1151a323e4aa5e2d78ba3580400cd3c9e2bc4bc"
 name = "page"
 version = "0.1.0"
 dependencies = [
+ "arch",
  "config",
  "device-core",
  "enum-as-inner",
@@ -636,7 +632,6 @@ dependencies = [
  "memory",
  "paste",
  "spin 0.10.0",
- "sync",
  "systype",
 ]
 
@@ -893,7 +888,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "sync"
+name = "sync_other"
 version = "0.1.0"
 dependencies = [
  "async-utils",
@@ -944,7 +939,6 @@ dependencies = [
  "arch",
  "log",
  "spin 0.10.0",
- "sync",
  "time",
 ]
 
@@ -974,6 +968,7 @@ checksum = "0b928f33d975fc6ad9f86c8f283853ad26bdd5b10b7f1542aa2fa15e2289105a"
 name = "vfs"
 version = "0.1.0"
 dependencies = [
+ "arch",
  "async-trait",
  "async-utils",
  "bitflags 2.9.0",
@@ -989,7 +984,6 @@ dependencies = [
  "ring-buffer",
  "spin 0.10.0",
  "strum",
- "sync",
  "systype",
  "vfs-core",
 ]
@@ -999,6 +993,7 @@ name = "vfs-core"
 version = "0.1.0"
 dependencies = [
  "ahash",
+ "arch",
  "async-trait",
  "async-utils",
  "bitflags 2.9.0",
@@ -1014,7 +1009,6 @@ dependencies = [
  "memory",
  "page",
  "spin 0.10.0",
- "sync",
  "systype",
  "time",
 ]

@@ -8,8 +8,8 @@ extern crate alloc;
 use alloc::collections::VecDeque;
 use core::future::Future;
 
+use arch::sync::mutex::SpinNoIrqLock;
 use async_task::{Runnable, ScheduleInfo, Task, WithInfo};
-use sync::mutex::SpinNoIrqLock;
 
 static TASK_QUEUE: TaskQueue = TaskQueue::new();
 

@@ -5,11 +5,11 @@ use core::{
     task::{Context, Poll, Waker},
 };
 
+use arch::sync::mutex::SpinNoIrqLock;
 use async_trait::async_trait;
 use async_utils::get_waker;
 use config::fs::PIPE_BUF_LEN;
 use ring_buffer::RingBuffer;
-use sync::mutex::SpinNoIrqLock;
 use systype::{SysError, SysResult};
 use vfs_core::{File, FileMeta, Inode, InodeMeta, InodeMode, PollEvents, Stat, arc_zero};
 

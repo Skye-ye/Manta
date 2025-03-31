@@ -4,9 +4,9 @@
 
 use alloc::sync::Arc;
 
+use arch::sync::mutex::SpinNoIrqLock;
 use device_core::BlockDevice;
 use fatfs::{DefaultTimeProvider, Dir, DirIter, Error, File, FileSystem, LossyOemCpConverter};
-use sync::mutex::SpinNoIrqLock;
 use systype::SysError;
 
 #[macro_use]

@@ -11,6 +11,7 @@ mod user_ptr;
 
 use core::cmp;
 
+use arch::sync::cell::static_cell::StaticCell;
 use config::{
     board::MEMORY_END,
     mm::{K_SEG_DTB_BEG, MAX_DTB_SIZE, VIRT_RAM_OFFSET},
@@ -18,7 +19,6 @@ use config::{
 pub use memory::page_table::PageTable;
 use memory::{VirtAddr, frame, heap, pte::PTEFlags};
 pub use memory_space::MemorySpace;
-use sync::cell::static_cell::StaticCell;
 pub use user_ptr::{
     FutexAddr, PageFaultAccessType, UserMut, UserRdWrPtr, UserReadPtr, UserSlice, UserWritePtr,
 };
