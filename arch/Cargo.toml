@@ -5,17 +5,25 @@ edition = "2024"
 
 [dependencies]
 config = { path = "../config" }
+sbi-print = { path = "../crates/sbi-print/" }
+
 
 # Architecture-specific dependencies
 riscv = { version = "0.13", optional = true }
 sbi-rt = { version = "0.0.3", optional = true }
 loongArch64 = { version = "0.2", optional = true }
 log = "0.4"
+buddy_system_allocator = "0.11"
+linked_list_allocator = "0.10"
+bitflags = "2.9"
+bitmap-allocator = { git = "https://github.com/rcore-os/bitmap-allocator" }
+crate_interface = "0.1"
 
 [features]
-default = ["irq", "riscv64"]
+default = ["irq", "riscv64","buddy"]
 # Kernel interrupt
 irq = []
 # CPU Architecture
 riscv64 = ["dep:riscv", "dep:sbi-rt"]
-loongarch64 = ["dep:loongArch64"]
+loongarch64 = ["dep:loongArch64"]buddy = []
+linked = []

@@ -13,13 +13,15 @@ use core::{
     task::Waker,
 };
 
-use arch::{memory::sfence_vma_all, sync::mutex::SpinNoIrqLock};
+use arch::{
+    memory::{VirtAddr, sfence_vma_all},
+    sync::mutex::SpinNoIrqLock,
+};
 use async_utils::block_on;
 use config::{
     mm::DL_INTERP_OFFSET,
     process::{INIT_PROC_PID, USER_STACK_SIZE},
 };
-use memory::VirtAddr;
 use signal::{
     action::{SigHandlers, SigPending},
     siginfo::{SigDetails, SigInfo},

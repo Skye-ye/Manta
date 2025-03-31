@@ -24,10 +24,14 @@ checksum = "683d7910e743518b0e34f1186f92494becacb047c7b6bf616c96772180fef923"
 name = "arch"
 version = "0.1.0"
 dependencies = [
+ "bitflags 2.9.0",
+ "bitmap-allocator",
+ "buddy_system_allocator",
  "config",
  "log",
  "loongArch64",
  "riscv",
+ "sbi-print",
  "sbi-rt",
 ]
 
@@ -257,7 +261,6 @@ dependencies = [
  "fdt",
  "log",
  "macro-utils",
- "memory",
  "net",
  "page",
  "paste",
@@ -454,7 +457,6 @@ dependencies = [
  "hashbrown",
  "log",
  "logging",
- "memory",
  "net",
  "numeric-enum-macro",
  "page",
@@ -629,7 +631,6 @@ dependencies = [
  "log",
  "lru 0.13.0",
  "macro-utils",
- "memory",
  "paste",
  "spin 0.10.0",
  "systype",
@@ -979,7 +980,6 @@ dependencies = [
  "ext4",
  "fat32",
  "log",
- "memory",
  "page",
  "ring-buffer",
  "spin 0.10.0",
@@ -1006,7 +1006,6 @@ dependencies = [
  "intrusive-collections",
  "log",
  "lru 0.12.5",
- "memory",
  "page",
  "spin 0.10.0",
  "systype",

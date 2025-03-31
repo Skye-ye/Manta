@@ -7,7 +7,7 @@ use arch::{
     time::set_next_timer_irq,
 };
 use async_utils::yield_now;
-use memory::VirtAddr;
+use arch::memory::VirtAddr;
 use riscv::{
     interrupt::{Exception, Trap, supervisor},
     register::{scause, sepc, sstatus::FS, stval},

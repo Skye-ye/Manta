@@ -6,8 +6,8 @@ use core::{
     task::{Context, Poll},
 };
 
+use arch::memory::VirtAddr;
 use async_utils::{Select2Futures, SelectOutput};
-use memory::VirtAddr;
 use signal::SigSet;
 use systype::{SysError, SyscallResult};
 use time::timespec::TimeSpec;

@@ -1,5 +1,5 @@
+use arch::memory::VirtAddr;
 use config::mm::{PAGE_MASK, is_aligned_to_page};
-use memory::VirtAddr;
 use systype::{SysError, SyscallResult};
 
 use super::Syscall;

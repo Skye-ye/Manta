@@ -14,9 +14,8 @@ extern crate alloc;
 
 use alloc::{collections::BTreeMap, string::String, sync::Arc};
 
-use arch::sync::mutex::SpinNoIrqLock;
+use arch::{memory::FrameReleaseIf, sync::mutex::SpinNoIrqLock};
 use driver::BLOCK_DEVICE;
-use memory::FrameReleaseIf;
 use procfs::init_procfs;
 use sockfs::SockFsType;
 use spin::Once;

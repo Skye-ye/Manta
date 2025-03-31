@@ -4,10 +4,10 @@ use alloc::sync::Arc;
 
 use arch::{
     interrupts::{disable_interrupt, enable_interrupt},
+    memory::VirtAddr,
     time::set_next_timer_irq,
 };
 use async_utils::yield_now;
-use memory::VirtAddr;
 use riscv::{
     interrupt::{Exception, Trap, supervisor},
     register::{scause, sepc, sstatus::FS, stval},

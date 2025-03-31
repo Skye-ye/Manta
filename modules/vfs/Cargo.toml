@@ -18,7 +18,7 @@ config = { path = "../../config/" }
 systype = { path = "../systype/" }
 async-utils = { path = "../../crates/async-utils/" }
 ring-buffer = { path = "../../crates/ring-buffer/" }
-memory = { path = "../memory/" }
+# memory = { path = "../memory/" }
 
 bitflags = "2.9"
 async-trait = "0.1"

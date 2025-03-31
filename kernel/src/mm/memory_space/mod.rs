@@ -10,7 +10,7 @@ use core::{
     ops::{Range, RangeBounds},
 };
 
-use arch::memory::sfence_vma_vaddr;
+use arch::memory::{PageTable, PhysAddr, VirtAddr, VirtPageNum, pte::PTEFlags, sfence_vma_vaddr};
 use async_utils::block_on;
 use config::{
     mm::{
@@ -20,7 +20,6 @@ use config::{
     },
     process::USER_STACK_PRE_ALLOC_SIZE,
 };
-use memory::{PageTable, PhysAddr, VirtAddr, VirtPageNum, pte::PTEFlags};
 use page::Page;
 use range_map::RangeMap;
 use systype::{SysError, SysResult};

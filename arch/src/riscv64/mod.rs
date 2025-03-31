@@ -4,6 +4,7 @@ pub mod memory;
 pub mod register;
 pub mod satp;
 pub mod sstatus;
+pub mod sync;
 pub mod time;
 
 pub use entry::*;

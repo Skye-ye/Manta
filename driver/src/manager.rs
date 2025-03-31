@@ -5,14 +5,16 @@
 use alloc::{collections::BTreeMap, sync::Arc, vec::Vec};
 use core::char;
 
-use arch::interrupts::{disable_interrupt, enable_external_interrupt};
+use arch::{
+    interrupts::{disable_interrupt, enable_external_interrupt},
+    memory::{PhysAddr, pte::PTEFlags},
+};
 use config::{
     board,
     mm::{K_SEG_DTB_BEG, VIRT_RAM_OFFSET},
 };
 use device_core::{DevId, Device, DeviceMajor, DeviceMeta, DeviceType};
 use log::{info, warn};
-use memory::{PhysAddr, pte::PTEFlags};
 use net::init_network;
 
 use crate::{

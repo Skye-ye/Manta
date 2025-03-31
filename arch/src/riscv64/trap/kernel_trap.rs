@@ -1,7 +1,7 @@
 //! Trap from kernel.
 
 use arch::{interrupts::set_trap_handler_vector, time::set_next_timer_irq};
-use memory::VirtAddr;
+use arch::memory::VirtAddr;
 use riscv::{
     interrupt::{Exception, Trap, supervisor},
     register::{

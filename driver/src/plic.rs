@@ -4,9 +4,9 @@
 //!
 //! Controller setup helper
 
+use arch::memory::pte::PTEFlags;
 use config::mm::VIRT_RAM_OFFSET;
 use fdt::Fdt;
-use memory::pte::PTEFlags;
 
 use crate::{kernel_page_table_mut, manager::DeviceManager};
 

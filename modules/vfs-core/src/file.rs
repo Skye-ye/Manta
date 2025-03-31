@@ -5,6 +5,7 @@ use core::{
     usize,
 };
 
+use arch::memory::address;
 use async_trait::async_trait;
 use config::{
     board::BLOCK_SIZE,
@@ -14,7 +15,6 @@ use config::{
     },
 };
 use downcast_rs::{DowncastSync, impl_downcast};
-use memory::address;
 use page::Page;
 use spin::Mutex;
 use systype::{SysError, SysResult, SyscallResult};

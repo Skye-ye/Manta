@@ -1,6 +1,6 @@
+use arch::memory::VirtAddr;
 use async_utils::suspend_now;
 use bitflags::Flags;
-use memory::VirtAddr;
 use systype::{SysError, SyscallResult};
 use time::timespec::TimeSpec;
 

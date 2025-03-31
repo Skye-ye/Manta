@@ -1,7 +1,10 @@
 use alloc::sync::{Arc, Weak};
 use core::{cmp, fmt, ops::Range};
 
-use arch::sync::mutex::SpinNoIrqLock;
+use arch::{
+    memory::{FrameTracker, PhysPageNum, alloc_frame_tracker},
+    sync::mutex::SpinNoIrqLock,
+};
 use config::{
     board::BLOCK_SIZE,
     mm::{PAGE_SIZE, block_page_offset},
@@ -9,7 +12,6 @@ use config::{
 use device_core::BlockDevice;
 use enum_as_inner::EnumAsInner;
 use intrusive_collections::LinkedList;
-use memory::{FrameTracker, PhysPageNum, alloc_frame_tracker};
 
 use crate::{
     BufferState,
