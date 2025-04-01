@@ -7,11 +7,14 @@ edition = "2024"
 
 [dependencies]
 config = { path = "../config" }
-
 riscv = "0.13"
+loongArch64 = { version = "0.2", optional = true }
 sbi-rt = "0.0.3"
 
 [features]
-default = ["irq"]
+default = ["irq", "riscv64"]
 # Kernel interrupt
 irq = []
+# CPU Architecture
+riscv64 = []
+loongarch = ["dep:loongArch64"]

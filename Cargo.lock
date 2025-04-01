@@ -25,6 +25,7 @@ name = "arch"
 version = "0.1.0"
 dependencies = [
  "config",
+ "loongArch64",
  "riscv",
  "sbi-rt",
 ]
@@ -119,7 +120,7 @@ checksum = "5c8214115b7bf84099f1309324e63141d4c5d7cc26862f97a0a857dbefe165bd"
 [[package]]
 name = "bitmap-allocator"
 version = "0.2.0"
-source = "git+https://github.com/rcore-os/bitmap-allocator#f5f7fc7a22bf83703ff64f528a58a9414da9a8e4"
+source = "git+https://githubfast.com/rcore-os/bitmap-allocator#f5f7fc7a22bf83703ff64f528a58a9414da9a8e4"
 dependencies = [
  "bit_field",
 ]
@@ -359,7 +360,7 @@ dependencies = [
 [[package]]
 name = "fatfs"
 version = "0.4.0"
-source = "git+https://github.com/ChenRuiwei/rust-fatfs?branch=smp#1f4c8d9194d13e78252936741fd8d835f48c850b"
+source = "git+https://githubfast.com/ChenRuiwei/rust-fatfs?branch=smp#1f4c8d9194d13e78252936741fd8d835f48c850b"
 dependencies = [
  "bitflags 2.9.0",
  "log",
@@ -509,6 +510,16 @@ version = "0.1.0"
 dependencies = [
  "crate_interface",
  "log",
+]
+
+[[package]]
+name = "loongArch64"
+version = "0.2.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "dd48200d465466664e4e899b204b77b5447d60b1ababdad3a2c49ae85417b552"
+dependencies = [
+ "bit_field",
+ "bitflags 1.3.2",
 ]
 
 [[package]]
@@ -804,7 +815,7 @@ dependencies = [
 [[package]]
 name = "smoltcp"
 version = "0.10.0"
-source = "git+https://github.com/Stone749990226/smoltcp.git#bce504b61f1682b26be690a31c89fe0e4a8fd17c"
+source = "git+https://githubfast.com/Stone749990226/smoltcp.git#bce504b61f1682b26be690a31c89fe0e4a8fd17c"
 dependencies = [
  "bitflags 1.3.2",
  "byteorder",
@@ -1025,7 +1036,7 @@ dependencies = [
 [[package]]
 name = "visionfive2-sd"
 version = "0.1.0"
-source = "git+https://github.com/os-module/visionfive2-sd.git#8ccd9e01bc14f6f3310e10f7be0aa538adadb313"
+source = "git+https://githubfast.com/os-module/visionfive2-sd.git#8ccd9e01bc14f6f3310e10f7be0aa538adadb313"
 dependencies = [
  "bitfield-struct 0.8.0",
  "log",
