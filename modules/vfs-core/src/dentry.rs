@@ -5,10 +5,8 @@ use alloc::{
 };
 use core::{default, fmt::Error, mem::MaybeUninit, str::FromStr};
 
-use arch::{
-    sync::mutex::spin_mutex::SpinMutex,
-    systype::{SysError, SysResult, SyscallResult},
-};
+use arch::systype::{SysError, SysResult, SyscallResult};
+use sync::mutex::spin_mutex::SpinMutex;
 
 use crate::{File, InodeMode, InodeState, InodeType, Mutex, RenameFlags, SuperBlock, inode::Inode};
 

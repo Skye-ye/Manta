@@ -5,14 +5,12 @@ use core::{
     task::{Context, Poll, Waker},
 };
 
-use arch::{
-    sync::mutex::SpinNoIrqLock,
-    systype::{SysError, SysResult},
-};
+use arch::systype::{SysError, SysResult};
 use async_trait::async_trait;
 use async_utils::get_waker;
 use config::fs::PIPE_BUF_LEN;
 use ring_buffer::RingBuffer;
+use sync::mutex::SpinNoIrqLock;
 use vfs_core::{File, FileMeta, Inode, InodeMeta, InodeMode, PollEvents, Stat, arc_zero};
 
 type Mutex<T> = SpinNoIrqLock<T>;

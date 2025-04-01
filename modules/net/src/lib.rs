@@ -8,7 +8,6 @@ use alloc::{boxed::Box, vec, vec::Vec};
 use core::{cell::RefCell, future::Future, ops::DerefMut, panic, time::Duration};
 
 use arch::{
-    sync::mutex::SpinNoIrqLock,
     time::{get_time_duration, get_time_us},
     timer::{TIMER_MANAGER, Timer, TimerEvent},
 };
@@ -25,6 +24,7 @@ use smoltcp::{
     wire::{EthernetAddress, HardwareAddress, IpCidr},
 };
 use spin::{Lazy, Once};
+use sync::mutex::SpinNoIrqLock;
 pub mod addr;
 pub mod bench;
 pub mod listen_table;

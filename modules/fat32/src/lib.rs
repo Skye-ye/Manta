@@ -4,9 +4,10 @@
 
 use alloc::sync::Arc;
 
-use arch::{sync::mutex::SpinNoIrqLock, systype, systype::SysError};
+use arch::{systype, systype::SysError};
 use device_core::BlockDevice;
 use fatfs::{DefaultTimeProvider, Dir, DirIter, Error, File, FileSystem, LossyOemCpConverter};
+use sync::mutex::SpinNoIrqLock;
 
 #[macro_use]
 extern crate alloc;

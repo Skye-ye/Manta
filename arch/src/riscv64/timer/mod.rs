@@ -3,9 +3,9 @@ extern crate alloc;
 use alloc::{boxed::Box, collections::BinaryHeap};
 
 use spin::Lazy;
+use sync::mutex::SpinNoIrqLock;
 
-use crate::{sync::mutex::SpinNoIrqLock, time::get_time_duration};
-
+use crate::time::get_time_duration;
 pub mod timelimited_task;
 
 /// A trait that defines the event to be triggered when a timer expires.

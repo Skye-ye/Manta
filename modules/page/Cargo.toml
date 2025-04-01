@@ -9,7 +9,7 @@ edition = "2024"
 arch = { path = "../../arch/" , features = ["kernel"]}
 config = { path = "../../config/" }
 # systype = { path = "../systype/" }
-# sync = { path = "../sync/" }
+sync = { path = "../sync/" }
 # memory = { path = "../memory/" }
 device-core = { path = "../device-core/" }
 macro-utils = { path = "../../crates/macro-utils/" }

@@ -1,14 +1,12 @@
 use alloc::{boxed::Box, sync::Arc};
 
-use arch::{
-    sync::mutex::{SleepLock, SpinNoIrqLock},
-    systype::{SysError, SysResult, SyscallResult},
-};
+use arch::systype::{SysError, SysResult, SyscallResult};
 use async_trait::async_trait;
 use device_core::{CharDevice, DeviceMajor};
 use driver::{get_device_manager, serial::Serial};
 use spin::Once;
 use strum::FromRepr;
+use sync::mutex::{SleepLock, SpinNoIrqLock};
 use vfs_core::{
     Dentry, DentryMeta, DirEntry, File, FileMeta, Inode, InodeMeta, InodeMode, PollEvents, Stat,
     SuperBlock,

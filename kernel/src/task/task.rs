@@ -15,7 +15,6 @@ use core::{
 
 use arch::{
     memory::{VirtAddr, sfence_vma_all},
-    sync::mutex::SpinNoIrqLock,
     systype::{SysError, SysResult},
     time::stat::TaskTimeStat,
 };
@@ -30,6 +29,7 @@ use signal::{
     signal_stack::SignalStack,
     sigset::{Sig, SigSet},
 };
+use sync::mutex::SpinNoIrqLock;
 use vfs::{fd_table::FdTable, sys_root_dentry};
 use vfs_core::{
     AtFd, Dentry, File, InodeMode, InodeType, OpenFlags, Path, is_absolute_path, split_path,

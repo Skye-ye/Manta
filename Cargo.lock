@@ -36,6 +36,7 @@ dependencies = [
  "signal",
  "spin 0.10.0",
  "strum",
+ "sync",
 ]
 
 [[package]]
@@ -272,6 +273,7 @@ dependencies = [
  "rustversion",
  "sbi-print",
  "spin 0.10.0",
+ "sync",
  "virtio-drivers",
  "visionfive2-sd",
 ]
@@ -329,6 +331,7 @@ version = "0.1.0"
 dependencies = [
  "arch",
  "async-task",
+ "sync",
 ]
 
 [[package]]
@@ -342,6 +345,7 @@ dependencies = [
  "downcast-rs",
  "log",
  "lwext4_rust",
+ "sync",
  "vfs-core",
 ]
 
@@ -355,6 +359,7 @@ dependencies = [
  "downcast-rs",
  "fatfs",
  "log",
+ "sync",
  "vfs-core",
 ]
 
@@ -469,6 +474,7 @@ dependencies = [
  "signal",
  "spin 0.10.0",
  "strum",
+ "sync",
  "vfs",
  "vfs-core",
  "virtio-drivers",
@@ -599,6 +605,7 @@ dependencies = [
  "log",
  "smoltcp",
  "spin 0.10.0",
+ "sync",
 ]
 
 [[package]]
@@ -628,6 +635,7 @@ dependencies = [
  "macro-utils",
  "paste",
  "spin 0.10.0",
+ "sync",
 ]
 
 [[package]]
@@ -883,7 +891,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "sync_other"
+name = "sync"
 version = "0.1.0"
 dependencies = [
  "async-utils",
@@ -934,6 +942,7 @@ dependencies = [
  "arch",
  "log",
  "spin 0.10.0",
+ "sync",
 ]
 
 [[package]]
@@ -977,6 +986,7 @@ dependencies = [
  "ring-buffer",
  "spin 0.10.0",
  "strum",
+ "sync",
  "vfs-core",
 ]
 
@@ -1000,6 +1010,7 @@ dependencies = [
  "lru 0.12.5",
  "page",
  "spin 0.10.0",
+ "sync",
 ]
 
 [[package]]

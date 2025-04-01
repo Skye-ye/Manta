@@ -10,7 +10,7 @@ default = ["smoltcp"]
 
 [dependencies]
 # systype = { path = "../systype/" }
-# sync = { path = "../sync/" }
+sync = { path = "../sync/" }
 arch = { path = "../../arch/" }
 device-core = { path = "../device-core/" }
 async-utils = { path = "../../crates/async-utils/" }

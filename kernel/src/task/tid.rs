@@ -1,6 +1,6 @@
-use arch::sync::mutex::SpinNoIrqLock;
 use config::process::INIT_PROC_PID;
 use recycle_allocator::RecycleAllocator;
+use sync::mutex::SpinNoIrqLock;
 
 pub static TID_ALLOCATOR: SpinNoIrqLock<RecycleAllocator> =
     SpinNoIrqLock::new(RecycleAllocator::new(INIT_PROC_PID));

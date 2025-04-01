@@ -2,12 +2,10 @@
 
 use alloc::{boxed::Box, sync::Arc};
 
-use arch::{
-    sync::cell::static_cell::StaticCell,
-    systype::{SysError, SysResult, SyscallResult},
-};
+use arch::systype::{SysError, SysResult, SyscallResult};
 use async_trait::async_trait;
 use config::board::BLOCK_SIZE;
+use sync::cell::static_cell::StaticCell;
 use vfs_core::{
     Dentry, DentryMeta, DirEntry, File, FileMeta, Inode, InodeMeta, InodeMode, Stat, SuperBlock,
 };

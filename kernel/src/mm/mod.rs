@@ -12,15 +12,13 @@ mod user_ptr;
 use core::cmp;
 
 pub use arch::memory::page_table::PageTable;
-use arch::{
-    memory::{VirtAddr, frame, heap, pte::PTEFlags},
-    sync::cell::static_cell::StaticCell,
-};
+use arch::memory::{VirtAddr, frame, heap, pte::PTEFlags};
 use config::{
     board::MEMORY_END,
     mm::{K_SEG_DTB_BEG, MAX_DTB_SIZE, VIRT_RAM_OFFSET},
 };
 pub use memory_space::MemorySpace;
+use sync::cell::static_cell::StaticCell;
 pub use user_ptr::{
     FutexAddr, PageFaultAccessType, UserMut, UserRdWrPtr, UserReadPtr, UserSlice, UserWritePtr,
 };

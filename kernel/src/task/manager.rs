@@ -4,10 +4,11 @@ use alloc::{
     vec::Vec,
 };
 
-use arch::{sync::mutex::SpinNoIrqLock, systype::SysResult};
+use arch::systype::SysResult;
 use config::process::INIT_PROC_PID;
 use hashbrown::HashMap;
 use spin::Lazy;
+use sync::mutex::SpinNoIrqLock;
 
 use super::{PGid, Tid, task::Task};
 

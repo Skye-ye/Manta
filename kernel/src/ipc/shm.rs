@@ -1,11 +1,12 @@
 use alloc::{sync::Weak, vec::Vec};
 
-use arch::{sync::mutex::SpinNoIrqLock, time::get_time_sec};
+use arch::time::get_time_sec;
 use config::mm::PAGE_SIZE;
 use hashbrown::HashMap;
 use page::Page;
 use recycle_allocator::RecycleAllocator;
 use spin::Lazy;
+use sync::mutex::SpinNoIrqLock;
 
 use super::IpcPerm;
 

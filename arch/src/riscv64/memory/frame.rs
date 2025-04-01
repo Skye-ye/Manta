@@ -10,9 +10,9 @@ use core::{
 
 use bitmap_allocator::BitAlloc;
 use crate_interface::call_interface;
+use sync::mutex::SpinNoIrqLock;
 
 use super::{PhysAddr, PhysPageNum};
-use crate::sync::mutex::SpinNoIrqLock;
 
 /// Manage a frame which has the same lifecycle as the tracker.
 pub struct FrameTracker {

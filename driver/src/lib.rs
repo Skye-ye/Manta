@@ -12,13 +12,7 @@ use alloc::sync::Arc;
 use core::fmt::{self, Write};
 
 use ::net::init_network;
-use arch::{
-    memory::PageTable,
-    sync::{
-        cell::static_cell::StaticCell,
-        mutex::{SpinLock, SpinNoIrqLock},
-    },
-};
+use arch::memory::PageTable;
 use async_utils::block_on;
 use config::{board::clock_freq, mm::K_SEG_DTB_BEG};
 use crate_interface::call_interface;
@@ -26,6 +20,10 @@ use device_core::{BlockDevice, CharDevice, DeviceMajor, DeviceType};
 use manager::DeviceManager;
 use sbi_print::SbiStdout;
 use spin::Once;
+use sync::{
+    cell::static_cell::StaticCell,
+    mutex::{SpinLock, SpinNoIrqLock},
+};
 use virtio_drivers::transport;
 
 use crate::{
