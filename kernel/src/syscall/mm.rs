@@ -1,6 +1,8 @@
-use arch::memory::VirtAddr;
+use arch::{
+    memory::VirtAddr,
+    systype::{SysError, SyscallResult},
+};
 use config::mm::{PAGE_MASK, is_aligned_to_page};
-use systype::{SysError, SyscallResult};
 
 use super::Syscall;
 use crate::{

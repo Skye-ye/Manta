@@ -1,6 +1,7 @@
 use alloc::{boxed::Box, sync::Arc};
 
 use addr::SockAddr;
+use arch::systype::{SysError, SysResult, SyscallResult};
 use async_trait::async_trait;
 use log::warn;
 use net::{
@@ -11,7 +12,6 @@ use net::{
     udp::UdpSocket,
 };
 use spin::Mutex;
-use systype::{SysError, SysResult, SyscallResult};
 use unix::UnixSocket;
 use vfs_core::*;
 

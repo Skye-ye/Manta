@@ -13,10 +13,12 @@ use core::{
     ops::{self, ControlFlow},
 };
 
-use arch::memory::VirtAddr;
+use arch::{
+    memory::VirtAddr,
+    systype::{SysError, SysResult},
+};
 use net::{IpAddress, IpEndpoint, IpListenEndpoint};
 use riscv::interrupt::supervisor;
-use systype::{SysError, SysResult};
 
 use super::memory_space::vm_area::MapPerm;
 use crate::{

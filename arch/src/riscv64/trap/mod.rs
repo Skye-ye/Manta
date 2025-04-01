@@ -1,12 +1,11 @@
-
 pub mod context;
 pub mod kernel_trap;
 pub mod user_trap;
 use core::arch::global_asm;
 
-use crate::interrupts::set_trap_handler;
 pub use context::TrapContext;
 
+use crate::interrupts::set_trap_handler;
 
 global_asm!(include_str!("trap.asm"));
 

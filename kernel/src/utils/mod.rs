@@ -1,7 +1,7 @@
 use alloc::{format, sync::Arc};
 
+use arch::timer::timelimited_task::{ksleep_ms, ksleep_s};
 use config::process::INIT_PROC_PID;
-use timer::timelimited_task::{ksleep_ms, ksleep_s};
 
 use crate::task::{self, TASK_MANAGER, Task};
 

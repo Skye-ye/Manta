@@ -4,9 +4,9 @@ use alloc::{
     vec::Vec,
 };
 
+use arch::systype::{SysError, SysResult};
 use async_utils::block_on;
 use crate_interface::call_interface;
-use systype::{SysError, SysResult};
 
 use crate::{Dentry, InodeMode, InodeType, OpenFlags, dentry};
 

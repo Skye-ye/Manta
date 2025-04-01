@@ -1,7 +1,7 @@
 use alloc::sync::Arc;
 
+use arch::systype::SysResult;
 use device_core::BlockDevice;
-use systype::SysResult;
 use vfs_core::*;
 
 use crate::simplefs::{dentry::SimpleDentry, inode::SimpleDirInode};

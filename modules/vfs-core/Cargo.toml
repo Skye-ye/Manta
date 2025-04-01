@@ -7,14 +7,14 @@ edition = "2024"
 
 [dependencies]
 arch = { path = "../../arch/" }
-systype = { path = "../systype/" }
+# systype = { path = "../systype/" }
 # sync = { path = "../sync/" }
 # memory = { path = "../memory/" }
 config = { path = "../../config/" }
 device-core = { path = "../device-core/" }
 page = { path = "../page/" }
 driver = { path = "../../driver/" }
-time = { path = "../time" }
+# time = { path = "../time" }
 async-utils = { path = "../../crates/async-utils/" }
 
 crate_interface = "0.1"

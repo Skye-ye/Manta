@@ -8,7 +8,7 @@ edition = "2024"
 [dependencies]
 # sync = { path = "../sync/" }
 arch = { path = "../../arch" }
-time = { path = "../time" }
+# time = { path = "../time" }
 
 log = "0.4"
 spin = { version = "0.10", features = ["lazy"] }

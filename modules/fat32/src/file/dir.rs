@@ -1,7 +1,10 @@
 use alloc::{boxed::Box, sync::Arc};
 
+use arch::{
+    systype,
+    systype::{SysError, SysResult, SyscallResult},
+};
 use async_trait::async_trait;
-use systype::{SysError, SysResult, SyscallResult};
 use vfs_core::{DirEntry, File, FileMeta, Inode, SeekFrom};
 
 use crate::{

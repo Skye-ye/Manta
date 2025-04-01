@@ -1,11 +1,11 @@
 use alloc::{ffi::CString, sync::Arc, vec, vec::Vec};
 use core::fmt::Error;
 
+use arch::systype::{SysError, SysResult};
 use lwext4_rust::{
     InodeTypes, bindings::EEXIST, lwext4_check_inode_exist, lwext4_link, lwext4_mvdir,
     lwext4_mvfile, lwext4_readlink, lwext4_rmdir, lwext4_rmfile, lwext4_symlink,
 };
-use systype::{SysError, SysResult};
 use vfs_core::{
     Dentry, DentryMeta, DentryState, File, FileSystemType, FileSystemTypeMeta, Inode, InodeMode,
     InodeType, MountFlags, OpenFlags, Path, RenameFlags, StatFs, SuperBlock, SuperBlockMeta,

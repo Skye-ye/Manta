@@ -2,22 +2,25 @@
 
 use alloc::sync::Arc;
 
-use crate::{
-    interrupts::{disable_interrupt, enable_interrupt},
-    time::set_next_timer_irq,
-};
 use async_utils::yield_now;
-use crate::memory::VirtAddr;
 use riscv::{
     interrupt::{Exception, Trap, supervisor},
     register::{scause, sepc, sstatus::FS, stval},
 };
 use signal::{Sig, SigDetails, SigInfo};
-use systype::SysError;
-use timer::TIMER_MANAGER;
+use arch::systype::SysError;
+use arch::timer::TIMER_MANAGER;
 
 use super::{TrapContext, set_kernel_trap};
-use crate::{mm::PageFaultAccessType, syscall::Syscall, task::Task, trap::set_user_trap};
+use crate::{
+    interrupts::{disable_interrupt, enable_interrupt},
+    memory::VirtAddr,
+    mm::PageFaultAccessType,
+    syscall::Syscall,
+    task::Task,
+    time::set_next_timer_irq,
+    trap::set_user_trap,
+};
 
 /// handle an interrupt, exception, or system call from user space
 /// return if it is syscall and has been interrupted

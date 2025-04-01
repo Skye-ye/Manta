@@ -4,10 +4,10 @@ mod self_;
 
 use alloc::sync::Arc;
 
+use arch::systype::SysResult;
 use async_utils::block_on;
 use device_core::BlockDevice;
 pub use self_::KernelProcIf;
-use systype::SysResult;
 use vfs_core::{
     Dentry, FileSystemType, FileSystemTypeMeta, InodeMode, MountFlags, SuperBlock, SuperBlockMeta,
 };

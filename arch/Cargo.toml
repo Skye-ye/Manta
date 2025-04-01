@@ -19,6 +19,9 @@ linked_list_allocator = "0.10"
 bitflags = "2.9"
 bitmap-allocator = { git = "https://github.com/rcore-os/bitmap-allocator" }
 crate_interface = "0.1"
+strum = { version = "0.27", default-features = false, features = ["derive"] }
+spin = { version = "0.10", features = ["lazy"] }
+
 
 [features]
 default = ["irq", "riscv64","buddy"]
@@ -26,6 +29,7 @@ default = ["irq", "riscv64","buddy"]
 irq = []
 # CPU Architecture
 riscv64 = ["dep:riscv", "dep:sbi-rt"]
-loongarch64 = ["dep:loongArch64"]buddy = []
+loongarch64 = ["dep:loongArch64"]
+buddy = []
 linked = []
 kernel = []

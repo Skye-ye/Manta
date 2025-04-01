@@ -6,12 +6,14 @@ use core::{
     task::{Context, Poll},
 };
 
-use arch::memory::VirtAddr;
+use arch::{
+    memory::VirtAddr,
+    systype::{SysError, SyscallResult},
+    time::timespec::TimeSpec,
+    timer::timelimited_task::{TimeLimitedTaskFuture, TimeLimitedTaskOutput},
+};
 use async_utils::{Select2Futures, SelectOutput};
 use signal::SigSet;
-use systype::{SysError, SyscallResult};
-use time::timespec::TimeSpec;
-use timer::timelimited_task::{TimeLimitedTaskFuture, TimeLimitedTaskOutput};
 use vfs::fd_table::Fd;
 use vfs_core::{File, PollEvents};
 

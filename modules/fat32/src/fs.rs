@@ -1,5 +1,6 @@
 use alloc::sync::Arc;
 
+use arch::systype;
 use device_core::BlockDevice;
 use vfs_core::{Dentry, FileSystemType, FileSystemTypeMeta, StatFs, SuperBlock, SuperBlockMeta};
 

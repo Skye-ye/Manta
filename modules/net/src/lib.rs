@@ -10,6 +10,7 @@ use core::{cell::RefCell, future::Future, ops::DerefMut, panic, time::Duration};
 use arch::{
     sync::mutex::SpinNoIrqLock,
     time::{get_time_duration, get_time_us},
+    timer::{TIMER_MANAGER, Timer, TimerEvent},
 };
 use crate_interface::call_interface;
 use device_core::{NetBufPtrOps, NetDevice, error::DevError};
@@ -24,7 +25,6 @@ use smoltcp::{
     wire::{EthernetAddress, HardwareAddress, IpCidr},
 };
 use spin::{Lazy, Once};
-use timer::{TIMER_MANAGER, Timer, TimerEvent};
 pub mod addr;
 pub mod bench;
 pub mod listen_table;

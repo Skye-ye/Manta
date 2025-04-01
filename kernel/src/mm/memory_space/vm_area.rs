@@ -1,11 +1,13 @@
 use alloc::{collections::BTreeMap, sync::Arc, vec::Vec};
 use core::ops::{Range, RangeBounds};
 
-use arch::memory::{VirtAddr, VirtPageNum, pte::PTEFlags, sfence_vma_vaddr};
+use arch::{
+    memory::{VirtAddr, VirtPageNum, pte::PTEFlags, sfence_vma_vaddr},
+    systype::{SysError, SysResult},
+};
 use async_utils::block_on;
 use config::mm::{PAGE_SIZE, round_down_to_page};
 use page::Page;
-use systype::{SysError, SysResult};
 use vfs_core::File;
 
 use crate::{

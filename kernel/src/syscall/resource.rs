@@ -1,6 +1,6 @@
+use arch::systype::{RLimit, Rusage, SysError, SyscallResult};
 use config::{board::MAX_HARTS, process::USER_STACK_SIZE};
 use strum::FromRepr;
-use systype::{RLimit, Rusage, SysError, SyscallResult};
 
 use super::Syscall;
 use crate::{

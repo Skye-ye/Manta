@@ -4,8 +4,8 @@ use alloc::{
     sync::Arc,
 };
 
+use arch::systype::{SysError, SysResult};
 use device_core::BlockDevice;
-use systype::{SysError, SysResult};
 
 use crate::{Dentry, MountFlags, Mutex, SuperBlock};
 

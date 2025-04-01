@@ -1,12 +1,10 @@
-#![no_std]
-#![no_main]
-
 extern crate alloc;
 use alloc::boxed::Box;
 use core::{future::Future, pin::Pin};
 
 use strum::FromRepr;
-use time::timeval::TimeVal;
+
+use crate::time::timeval::TimeVal;
 
 pub type SyscallResult = Result<usize, SysError>;
 pub type SysResult<T> = Result<T, SysError>;

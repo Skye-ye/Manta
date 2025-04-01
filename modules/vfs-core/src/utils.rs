@@ -1,8 +1,8 @@
 use alloc::string::String;
 use core::fmt::Display;
 
+use arch::time::timespec::TimeSpec;
 use bitflags::Flags;
-use time::timespec::TimeSpec;
 
 use crate::InodeType;
 

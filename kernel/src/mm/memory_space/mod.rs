@@ -10,7 +10,10 @@ use core::{
     ops::{Range, RangeBounds},
 };
 
-use arch::memory::{PageTable, PhysAddr, VirtAddr, VirtPageNum, pte::PTEFlags, sfence_vma_vaddr};
+use arch::{
+    memory::{PageTable, PhysAddr, VirtAddr, VirtPageNum, pte::PTEFlags, sfence_vma_vaddr},
+    systype::{SysError, SysResult},
+};
 use async_utils::block_on;
 use config::{
     mm::{
@@ -22,7 +25,6 @@ use config::{
 };
 use page::Page;
 use range_map::RangeMap;
-use systype::{SysError, SysResult};
 use vfs_core::{Dentry, File};
 use xmas_elf::ElfFile;
 

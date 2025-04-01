@@ -1,6 +1,6 @@
 use core::intrinsics::size_of;
 
-use systype::{SysError, SyscallResult};
+use arch::systype::{SysError, SyscallResult};
 
 use super::Syscall;
 use crate::{

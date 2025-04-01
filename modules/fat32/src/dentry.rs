@@ -1,6 +1,9 @@
 use alloc::sync::Arc;
 
-use systype::{SysError, SysResult};
+use arch::{
+    systype,
+    systype::{SysError, SysResult},
+};
 use vfs_core::{Dentry, DentryMeta, Inode, InodeType, SuperBlock};
 
 use crate::{

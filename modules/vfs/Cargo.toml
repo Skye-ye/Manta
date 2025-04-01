@@ -15,7 +15,7 @@ ext4 = { path = "../ext4/" }
 driver = { path = "../../driver/" }
 device-core = { path = "../device-core/" }
 config = { path = "../../config/" }
-systype = { path = "../systype/" }
+# systype = { path = "../systype/" }
 async-utils = { path = "../../crates/async-utils/" }
 ring-buffer = { path = "../../crates/ring-buffer/" }
 # memory = { path = "../memory/" }

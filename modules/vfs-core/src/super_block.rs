@@ -4,9 +4,9 @@ use alloc::{
 };
 use core::mem::MaybeUninit;
 
+use arch::systype::SysResult;
 use device_core::BlockDevice;
 use spin::Once;
-use systype::SysResult;
 
 use crate::{Dentry, FileSystemType, Inode, Mutex, StatFs};
 

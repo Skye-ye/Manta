@@ -34,6 +34,8 @@ dependencies = [
  "sbi-print",
  "sbi-rt",
  "signal",
+ "spin 0.10.0",
+ "strum",
 ]
 
 [[package]]
@@ -270,7 +272,6 @@ dependencies = [
  "rustversion",
  "sbi-print",
  "spin 0.10.0",
- "systype",
  "virtio-drivers",
  "visionfive2-sd",
 ]
@@ -341,7 +342,6 @@ dependencies = [
  "downcast-rs",
  "log",
  "lwext4_rust",
- "systype",
  "vfs-core",
 ]
 
@@ -355,7 +355,6 @@ dependencies = [
  "downcast-rs",
  "fatfs",
  "log",
- "systype",
  "vfs-core",
 ]
 
@@ -470,9 +469,6 @@ dependencies = [
  "signal",
  "spin 0.10.0",
  "strum",
- "systype",
- "time",
- "timer",
  "vfs",
  "vfs-core",
  "virtio-drivers",
@@ -603,8 +599,6 @@ dependencies = [
  "log",
  "smoltcp",
  "spin 0.10.0",
- "systype",
- "timer",
 ]
 
 [[package]]
@@ -634,7 +628,6 @@ dependencies = [
  "macro-utils",
  "paste",
  "spin 0.10.0",
- "systype",
 ]
 
 [[package]]
@@ -902,8 +895,8 @@ dependencies = [
 name = "systype"
 version = "0.1.0"
 dependencies = [
+ "arch",
  "strum",
- "time",
 ]
 
 [[package]]
@@ -941,7 +934,6 @@ dependencies = [
  "arch",
  "log",
  "spin 0.10.0",
- "time",
 ]
 
 [[package]]
@@ -954,10 +946,10 @@ checksum = "5a5f39404a5da50712a4c1eecf25e90dd62b613502b7e925fd4e4d19b5c96512"
 name = "user_lib"
 version = "0.1.0"
 dependencies = [
+ "arch",
  "bitflags 2.9.0",
  "buddy_system_allocator",
  "signal",
- "time",
 ]
 
 [[package]]
@@ -985,7 +977,6 @@ dependencies = [
  "ring-buffer",
  "spin 0.10.0",
  "strum",
- "systype",
  "vfs-core",
 ]
 
@@ -1009,8 +1000,6 @@ dependencies = [
  "lru 0.12.5",
  "page",
  "spin 0.10.0",
- "systype",
- "time",
 ]
 
 [[package]]

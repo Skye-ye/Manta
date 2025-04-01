@@ -5,7 +5,10 @@ use core::{
     usize,
 };
 
-use arch::memory::address;
+use arch::{
+    memory::address,
+    systype::{SysError, SysResult, SyscallResult},
+};
 use async_trait::async_trait;
 use config::{
     board::BLOCK_SIZE,
@@ -17,7 +20,6 @@ use config::{
 use downcast_rs::{DowncastSync, impl_downcast};
 use page::Page;
 use spin::Mutex;
-use systype::{SysError, SysResult, SyscallResult};
 
 use crate::{
     Dentry, DirEntry, Inode, InodeState, InodeType, OpenFlags, PollEvents, SeekFrom, SuperBlock,

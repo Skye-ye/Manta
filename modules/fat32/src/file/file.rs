@@ -1,8 +1,11 @@
 use alloc::{boxed::Box, sync::Arc};
 
+use arch::{
+    systype,
+    systype::{SysError, SyscallResult},
+};
 use async_trait::async_trait;
 use fatfs::{Read, Seek, Write};
-use systype::{SysError, SyscallResult};
 use vfs_core::{File, FileMeta, InodeType};
 
 use crate::{FatFile, Shared, as_sys_err, dentry::FatDentry, inode::file::FatFileInode};

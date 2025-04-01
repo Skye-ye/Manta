@@ -1,11 +1,13 @@
 use alloc::sync::{Arc, Weak};
 use core::mem::MaybeUninit;
 
+use arch::{
+    systype::{SysResult, SyscallResult},
+    time::timespec::TimeSpec,
+};
 use device_core::DevId;
 use downcast_rs::{DowncastSync, impl_downcast};
 use page::PageCache;
-use systype::{SysResult, SyscallResult};
-use time::timespec::TimeSpec;
 
 use crate::{Mutex, Stat, SuperBlock, alloc_ino};
 

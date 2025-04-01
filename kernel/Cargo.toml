@@ -12,12 +12,12 @@ signal = { path = "../modules/signal/" }
 driver = { path = "../driver/" }
 logging = { path = "../modules/logging/" }
 executor = { path = "../modules/executor/" }
-systype = { path = "../modules/systype/" }
+# systype = { path = "../modules/systype/" }
 # memory = { path = "../modules/memory" }
 vfs = { path = "../modules/vfs/" }
 vfs-core = { path = "../modules/vfs-core/" }
-time = { path = "../modules/time/" }
-timer = { path = "../modules/timer/" }
+# time = { path = "../modules/time/" }
+# timer = { path = "../modules/timer/" }
 page = { path = "../modules/page/" }
 net = { path = "../modules/net/" }
 recycle-allocator = { path = "../crates/recycle-allocator/" }

@@ -4,6 +4,7 @@ use core::{
     sync::atomic::{AtomicBool, Ordering},
 };
 
+use arch::systype::{SysError, SysResult};
 use async_utils::{get_waker, suspend_now, yield_now};
 use log::{debug, error, info, warn};
 use smoltcp::{
@@ -12,7 +13,6 @@ use smoltcp::{
     wire::{IpAddress, IpEndpoint, IpListenEndpoint},
 };
 use spin::RwLock;
-use systype::{SysError, SysResult};
 
 use super::{
     SOCKET_SET, SocketSetWrapper,

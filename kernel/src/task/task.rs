@@ -16,6 +16,8 @@ use core::{
 use arch::{
     memory::{VirtAddr, sfence_vma_all},
     sync::mutex::SpinNoIrqLock,
+    systype::{SysError, SysResult},
+    time::stat::TaskTimeStat,
 };
 use async_utils::block_on;
 use config::{
@@ -28,8 +30,6 @@ use signal::{
     signal_stack::SignalStack,
     sigset::{Sig, SigSet},
 };
-use systype::{SysError, SysResult};
-use time::stat::TaskTimeStat;
 use vfs::{fd_table::FdTable, sys_root_dentry};
 use vfs_core::{
     AtFd, Dentry, File, InodeMode, InodeType, OpenFlags, Path, is_absolute_path, split_path,

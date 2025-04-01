@@ -1,9 +1,12 @@
 use alloc::{boxed::Box, sync::Arc};
 
+use arch::{
+    systype,
+    systype::{SysError, SysResult, SyscallResult},
+};
 use async_trait::async_trait;
 use config::mm::{PAGE_SIZE, align_offset_to_page};
 use page::Page;
-use systype::{SysError, SysResult, SyscallResult};
 use vfs_core::{Dentry, DirEntry, File, FileMeta, Inode};
 
 pub struct SimpleDirFile {

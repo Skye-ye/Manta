@@ -5,7 +5,9 @@ use alloc::sync::Arc;
 use arch::{
     interrupts::{disable_interrupt, enable_interrupt},
     memory::VirtAddr,
+    systype::SysError,
     time::set_next_timer_irq,
+    timer::TIMER_MANAGER,
 };
 use async_utils::yield_now;
 use riscv::{
@@ -13,8 +15,6 @@ use riscv::{
     register::{scause, sepc, sstatus::FS, stval},
 };
 use signal::{Sig, SigDetails, SigInfo};
-use systype::SysError;
-use timer::TIMER_MANAGER;
 
 use super::{TrapContext, set_kernel_trap};
 use crate::{mm::PageFaultAccessType, syscall::Syscall, task::Task, trap::set_user_trap};

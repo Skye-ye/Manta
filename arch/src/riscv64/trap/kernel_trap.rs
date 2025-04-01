@@ -1,7 +1,6 @@
 //! Trap from kernel.
 
-use arch::{interrupts::set_trap_handler_vector, time::set_next_timer_irq};
-use arch::memory::VirtAddr;
+use arch::{interrupts::set_trap_handler_vector, memory::VirtAddr, time::set_next_timer_irq};
 use riscv::{
     interrupt::{Exception, Trap, supervisor},
     register::{
@@ -10,7 +9,7 @@ use riscv::{
     },
 };
 use signal::{Sig, SigDetails, SigInfo};
-use timer::TIMER_MANAGER;
+use arch::timer::TIMER_MANAGER;
 
 use crate::{
     mm::PageFaultAccessType,

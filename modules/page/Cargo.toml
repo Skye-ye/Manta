@@ -8,7 +8,7 @@ edition = "2024"
 [dependencies]
 arch = { path = "../../arch/" , features = ["kernel"]}
 config = { path = "../../config/" }
-systype = { path = "../systype/" }
+# systype = { path = "../systype/" }
 # sync = { path = "../sync/" }
 # memory = { path = "../memory/" }
 device-core = { path = "../device-core/" }
