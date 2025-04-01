@@ -1,5 +1,6 @@
 pub mod entry;
 pub mod interrupts;
+#[cfg(feature = "kernel")]
 pub mod memory;
 pub mod register;
 pub mod satp;

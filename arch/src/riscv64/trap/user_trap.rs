@@ -2,12 +2,12 @@
 
 use alloc::sync::Arc;
 
-use arch::{
+use crate::{
     interrupts::{disable_interrupt, enable_interrupt},
     time::set_next_timer_irq,
 };
 use async_utils::yield_now;
-use arch::memory::VirtAddr;
+use crate::memory::VirtAddr;
 use riscv::{
     interrupt::{Exception, Trap, supervisor},
     register::{scause, sepc, sstatus::FS, stval},

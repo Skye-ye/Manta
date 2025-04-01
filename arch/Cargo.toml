@@ -6,6 +6,7 @@ edition = "2024"
 [dependencies]
 config = { path = "../config" }
 sbi-print = { path = "../crates/sbi-print/" }
+signal = { path = "../modules/signal/" }
 
 
 # Architecture-specific dependencies
@@ -27,3 +28,4 @@ irq = []
 riscv64 = ["dep:riscv", "dep:sbi-rt"]
 loongarch64 = ["dep:loongArch64"]buddy = []
 linked = []
+kernel = []

@@ -6,7 +6,7 @@ edition = "2024"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-arch = { path = "../../arch/" }
+arch = { path = "../../arch/" , features = ["kernel"]}
 config = { path = "../../config/" }
 systype = { path = "../systype/" }
 # sync = { path = "../sync/" }

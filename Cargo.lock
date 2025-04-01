@@ -33,6 +33,7 @@ dependencies = [
  "riscv",
  "sbi-print",
  "sbi-rt",
+ "signal",
 ]
 
 [[package]]
