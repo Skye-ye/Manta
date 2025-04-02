@@ -2,14 +2,13 @@
 
 use alloc::sync::Arc;
 
+use arch::{systype::SysError, timer::TIMER_MANAGER};
 use async_utils::yield_now;
 use riscv::{
     interrupt::{Exception, Trap, supervisor},
     register::{scause, sepc, sstatus::FS, stval},
 };
 use signal::{Sig, SigDetails, SigInfo};
-use arch::systype::SysError;
-use arch::timer::TIMER_MANAGER;
 
 use super::{TrapContext, set_kernel_trap};
 use crate::{
@@ -17,15 +16,16 @@ use crate::{
     memory::VirtAddr,
     mm::PageFaultAccessType,
     syscall::Syscall,
-    task::Task,
     time::set_next_timer_irq,
     trap::set_user_trap,
 };
 
+use crate::task::TrapTaskInterface;
+
 /// handle an interrupt, exception, or system call from user space
 /// return if it is syscall and has been interrupted
 #[unsafe(no_mangle)]
-pub async fn trap_handler(task: &Arc<Task>) -> bool {
+pub async fn trap_handler(task: &Arc<dyn TrapTaskInterface>) -> bool {
     unsafe { set_kernel_trap() };
 
     let cx = task.trap_context_mut();

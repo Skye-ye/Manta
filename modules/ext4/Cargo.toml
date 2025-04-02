@@ -11,7 +11,6 @@ device-core = { path = "../device-core/" }
 vfs-core = { path = "../vfs-core/" }
 sync = { path = "../sync/" }
 arch = { path = "../../arch/" }
-# systype = { path = "../systype/" }
 
 log = "0.4"
 downcast-rs = { version = "2.0", default-features = false }

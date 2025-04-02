@@ -9,7 +9,6 @@ smoltcp = []
 default = ["smoltcp"]
 
 [dependencies]
-# systype = { path = "../systype/" }
 sync = { path = "../sync/" }
 arch = { path = "../../arch/" }
 device-core = { path = "../device-core/" }

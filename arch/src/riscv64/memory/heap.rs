@@ -18,6 +18,7 @@ type GlobalHeap = LockedBuddyHeap;
 type GlobalHeap = LockedLinkedHeap;
 
 /// heap allocator instance
+#[cfg(feature = "kernel")]
 #[global_allocator]
 static HEAP_ALLOCATOR: GlobalHeap = GlobalHeap::empty();
 
@@ -32,6 +33,7 @@ fn get_heap_space_addr() -> usize {
 }
 
 /// Panic when heap allocation error occurs.
+#[cfg(feature = "kernel")]
 #[alloc_error_handler]
 pub fn handle_alloc_error(layout: core::alloc::Layout) -> ! {
     log::error!("heap alloc error");
@@ -114,6 +116,7 @@ unsafe impl GlobalAlloc for LockedLinkedHeap {
 }
 
 /// Initiate heap allocator.
+#[cfg(feature = "kernel")]
 pub fn init_heap_allocator() {
     // Access as pointer without creating references
     let heap_addr = core::ptr::addr_of_mut!(HEAP_SPACE) as usize;

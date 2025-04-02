@@ -579,22 +579,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "memory"
-version = "0.1.0"
-dependencies = [
- "arch",
- "bitflags 2.9.0",
- "bitmap-allocator",
- "buddy_system_allocator",
- "config",
- "crate_interface",
- "linked_list_allocator",
- "log",
- "riscv",
- "sbi-print",
-]
-
-[[package]]
 name = "net"
 version = "0.1.0"
 dependencies = [
@@ -900,14 +884,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "systype"
-version = "0.1.0"
-dependencies = [
- "arch",
- "strum",
-]
-
-[[package]]
 name = "thiserror"
 version = "2.0.12"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -925,24 +901,6 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn",
-]
-
-[[package]]
-name = "time"
-version = "0.1.0"
-dependencies = [
- "arch",
- "config",
-]
-
-[[package]]
-name = "timer"
-version = "0.1.0"
-dependencies = [
- "arch",
- "log",
- "spin 0.10.0",
- "sync",
 ]
 
 [[package]]

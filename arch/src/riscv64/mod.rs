@@ -1,6 +1,6 @@
 pub mod entry;
 pub mod interrupts;
-#[cfg(feature = "kernel")]
+// #[cfg(feature = "kernel")]
 pub mod memory;
 pub mod register;
 pub mod satp;
@@ -17,7 +17,10 @@ pub use sstatus::*;
 pub use time::*;
 
 pub mod timer;
+
 // pub mod trap;
+// pub mod processor;
+// pub mod task;
 
 #[inline(never)]
 pub fn spin(cycle: usize) {
