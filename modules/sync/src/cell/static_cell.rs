@@ -1,6 +1,9 @@
 use core::{
     cell::UnsafeCell,
+    fmt,
     mem::MaybeUninit,
+    ops::{Deref, DerefMut},
+    ptr,
     sync::atomic::{AtomicBool, Ordering},
 };
 
@@ -14,7 +17,8 @@ pub struct StaticCell<T> {
     value: UnsafeCell<MaybeUninit<T>>,
 }
 
-unsafe impl<T: Send> Sync for StaticCell<T> {}
+unsafe impl<T: Send> Send for StaticCell<T> {}
+unsafe impl<T: Send + Sync> Sync for StaticCell<T> {}
 
 impl<T> StaticCell<T> {
     /// Creates a new uninitialized static cell.
@@ -32,7 +36,7 @@ impl<T> StaticCell<T> {
     /// Panics if the cell is already initialized.
     pub fn init(&self, value: T) {
         // Ensure the cell hasn't been initialized already
-        if self.initialized.swap(true, Ordering::SeqCst) {
+        if self.initialized.swap(true, Ordering::AcqRel) {
             panic!("StaticCell already initialized");
         }
 
@@ -47,8 +51,9 @@ impl<T> StaticCell<T> {
     /// # Panics
     ///
     /// Panics if the cell has not been initialized.
+    #[inline]
     pub fn get(&self) -> &T {
-        if !self.initialized.load(Ordering::SeqCst) {
+        if !self.initialized.load(Ordering::Acquire) {
             panic!("StaticCell not initialized");
         }
 
@@ -61,12 +66,53 @@ impl<T> StaticCell<T> {
     /// # Panics
     ///
     /// Panics if the cell has not been initialized.
+    #[inline]
     pub fn get_mut(&self) -> &mut T {
-        if !self.initialized.load(Ordering::SeqCst) {
+        if !self.initialized.load(Ordering::Acquire) {
             panic!("StaticCell not initialized");
         }
 
         // SAFETY: We've verified the cell is initialized
         unsafe { &mut *(*self.value.get()).as_mut_ptr() }
+    }
+}
+
+impl<T: fmt::Debug> fmt::Debug for StaticCell<T> {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        if self.initialized.load(Ordering::Acquire) {
+            write!(
+                f,
+                "StaticCell {{ initialized: true, value: {:?} }}",
+                self.get()
+            )
+        } else {
+            write!(f, "StaticCell {{ initialized: false }}")
+        }
+    }
+}
+
+impl<T> Deref for StaticCell<T> {
+    type Target = T;
+
+    #[inline]
+    fn deref(&self) -> &Self::Target {
+        self.get()
+    }
+}
+
+impl<T> DerefMut for StaticCell<T> {
+    #[inline]
+    fn deref_mut(&mut self) -> &mut T {
+        self.get_mut()
+    }
+}
+
+impl<T> Drop for StaticCell<T> {
+    fn drop(&mut self) {
+        if self.initialized.load(Ordering::Relaxed) {
+            unsafe {
+                ptr::drop_in_place(self.value.get());
+            }
+        }
     }
 }
