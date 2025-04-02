@@ -35,7 +35,7 @@ bitfield-struct = "0.10"
 byte-slice-cast = { version = "1.2.3", default-features = false }
 
 # visionfive2-sd = { path = "../crates/visionfive2-sd/" }
-visionfive2-sd = { git = "https://github.com/os-module/visionfive2-sd.git" }
+visionfive2-sd = { git = "https://githubfast.com/os-module/visionfive2-sd.git" }
 
 [features]
 loopback = [] # 配置使用本地回环设备简化 or Virtio-net设备

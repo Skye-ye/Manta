@@ -13,7 +13,7 @@ arch = { path = "../../arch/" }
 systype = { path = "../systype/" }
 
 log = "0.4"
-fatfs = { git = "https://github.com/ChenRuiwei/rust-fatfs", branch = "smp", default-features = false, features = [
+fatfs = { git = "https://githubfast.com/ChenRuiwei/rust-fatfs", branch = "smp", default-features = false, features = [
     "alloc",
     "lfn",
     "log_level_info",

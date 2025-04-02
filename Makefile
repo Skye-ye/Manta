@@ -1,5 +1,5 @@
 # Building variables
-DOCKER_NAME = phoenix
+DOCKER_NAME = manta
 BOARD := qemu
 
 NET ?=n # 是否启用VirtioNet设备，如果不开启则使用本地Loopback设备

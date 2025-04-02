@@ -65,13 +65,10 @@ impl Syscall<'_> {
                     );
                     return Err(SysError::EAGAIN);
                 }
-                futex_manager().add_waiter(
-                    &key,
-                    FutexWaiter {
-                        tid: task.tid(),
-                        waker: task.waker().clone().unwrap(),
-                    },
-                );
+                futex_manager().add_waiter(&key, FutexWaiter {
+                    tid: task.tid(),
+                    waker: task.waker().clone().unwrap(),
+                });
                 task.set_interruptable();
                 let wake_up_signal = !*task.sig_mask_ref();
                 task.set_wake_up_signal(wake_up_signal);

@@ -3,10 +3,13 @@
 #![feature(naked_functions)]
 #![feature(riscv_ext_intrinsics)]
 
-extern crate alloc;
-
-#[cfg(target_arch = "riscv64")]
+#[cfg(feature = "riscv64")]
 mod riscv64;
 
-#[cfg(target_arch = "riscv64")]
+#[cfg(feature = "loongarch")]
+mod loongarch64;
+
+#[cfg(feature = "loongarch")]
+pub use loongarch64::*;
+#[cfg(feature = "riscv64")]
 pub use riscv64::*;
