@@ -8,6 +8,9 @@
 #![feature(const_trait_impl)]
 #![feature(step_trait)]
 #![feature(const_ops)]
+#![feature(decl_macro)]
+
+extern crate alloc;
 
 #[cfg(target_arch = "riscv64")]
 pub mod riscv64;
