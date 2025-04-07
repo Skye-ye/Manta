@@ -36,8 +36,9 @@ RUN apt-get update && \
     libguestfs-tools qemu-utils linux-image-generic libncurses5-dev \
     autotools-dev automake texinfo musl musl-tools musl-dev cmake libclang-19-dev \
     fusefat libvirglrenderer-dev libsdl2-dev libgtk-3-dev device-tree-compiler \
-    autoconf curl libmpc-dev libmpfr-dev libgmp-dev gawk bison tini\
-    flex gperf libtool patchutils bc zlib1g-dev libexpat-dev dosfstools
+    autoconf curl libmpc-dev libmpfr-dev libgmp-dev gawk bison tini \
+    flex gperf libtool patchutils bc zlib1g-dev libexpat-dev dosfstools \
+    libpython2.7 libncurses5
 
 ENV LIBGUESTFS_BACKEND=direct
 
@@ -154,5 +155,5 @@ RUN qemu-system-riscv64 --version && \
 
 # Ready to go
 WORKDIR ${HOME}
-RUN echo 'alias clear="TERMINFO=/usr/share/terminfo TERM=xterm /usr/bin/clear"' >> ${HOME}/.bashrc
+RUN bash -c 'echo "alias clear=\"TERMINFO=/usr/share/terminfo TERM=xterm /usr/bin/clear\"" >> $HOME/.bashrc'
 ENTRYPOINT ["tini", "--"]
