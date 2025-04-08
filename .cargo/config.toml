@@ -1,24 +1,25 @@
 [build]
 target = "riscv64gc-unknown-none-elf"
+# target = "loongarch64-unknown-none"
 
 [source.crates-io]
 replace-with = "vendored-sources"
 
-[source."git+https://github.com/ChenRuiwei/rust-fatfs?branch=smp"]
-git = "https://github.com/ChenRuiwei/rust-fatfs"
+[source."git+https://githubfast.com/ChenRuiwei/rust-fatfs?branch=smp"]
+git = "https://githubfast.com/ChenRuiwei/rust-fatfs"
 branch = "smp"
 replace-with = "vendored-sources"
 
-[source."git+https://github.com/Stone749990226/smoltcp.git"]
-git = "https://github.com/Stone749990226/smoltcp.git"
+[source."git+https://githubfast.com/Stone749990226/smoltcp.git"]
+git = "https://githubfast.com/Stone749990226/smoltcp.git"
 replace-with = "vendored-sources"
 
-[source."git+https://github.com/os-module/visionfive2-sd.git"]
-git = "https://github.com/os-module/visionfive2-sd.git"
+[source."git+https://githubfast.com/os-module/visionfive2-sd.git"]
+git = "https://githubfast.com/os-module/visionfive2-sd.git"
 replace-with = "vendored-sources"
 
-[source."git+https://github.com/rcore-os/bitmap-allocator"]
-git = "https://github.com/rcore-os/bitmap-allocator"
+[source."git+https://githubfast.com/rcore-os/bitmap-allocator"]
+git = "https://githubfast.com/rcore-os/bitmap-allocator"
 replace-with = "vendored-sources"
 
 [source.vendored-sources]

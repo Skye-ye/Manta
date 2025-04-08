@@ -1,5 +1,6 @@
 # Building variables
 FEATURES :=
+
 ifneq ($(STRACE), )
 	FEATURES += strace
 endif
@@ -27,6 +28,11 @@ ifneq ($(FEATURES), )
 	CARGO_BUILD_ARGS += --features "$(FEATURES)"
 endif
 
+# Add the arch crate feature based on TARGET_FEATURE
+ifneq ($(TARGET_FEATURE), )
+	ARCH_FEATURE := --features="$(TARGET_FEATURE)" -p arch
+endif
+
 # Phony targets
 PHONY :=
 
@@ -35,6 +41,9 @@ all: build
 
 PHONY += build
 build:
+	# First build arch with correct feature
+	cargo build $(CARGO_BUILD_ARGS) $(ARCH_FEATURE)
+	# Then build kernel
 	cargo build $(CARGO_BUILD_ARGS)
 
 .PHONY: $(PHONY)

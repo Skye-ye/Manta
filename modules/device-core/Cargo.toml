@@ -9,7 +9,7 @@ edition = "2024"
 async-trait = "0.1"
 downcast-rs = { version = "2.0", default-features = false, features = ["sync"] }
 [dependencies.smoltcp]
-git = "https://github.com/Stone749990226/smoltcp.git"
+git = "https://githubfast.com/Stone749990226/smoltcp.git"
 default-features = false
 features = [
     "alloc",

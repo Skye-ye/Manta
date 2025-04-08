@@ -27,14 +27,10 @@ const TESTCASES: &[&str] = &[
 
 fn run_cmd(cmd: &str) {
     if fork() == 0 {
-        execve(
-            "busybox",
-            &["busybox", "sh", "-c", cmd],
-            &[
-                "PATH=/:/bin",
-                "LD_LIBRARY_PATH=/:/lib:/lib/glibc/:/lib/musl",
-            ],
-        );
+        execve("busybox", &["busybox", "sh", "-c", cmd], &[
+            "PATH=/:/bin",
+            "LD_LIBRARY_PATH=/:/lib:/lib/glibc/:/lib/musl",
+        ]);
     } else {
         let mut result: i32 = 0;
         waitpid((-1isize) as usize, &mut result);

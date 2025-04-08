@@ -1,23 +1,46 @@
 # Building variables
-DOCKER_NAME = phoenix
+DOCKER_NAME = manta
 BOARD := qemu
+ARCH ?= riscv64
 
-NET ?=n # 是否启用VirtioNet设备，如果不开启则使用本地Loopback设备
+NET ?= n # Enable VirtioNet device, use local Loopback device if disabled
+CPUS := 2
+MEM := 128M
+DISK_2 ?= n
 
+# Set target architecture based on ARCH
+ifeq ($(ARCH),riscv64)
 export TARGET = riscv64gc-unknown-none-elf
-export MODE = debug
+OBJDUMP = rust-objdump --arch-name=riscv64
+OBJCOPY = rust-objcopy --binary-architecture=riscv64
+ARCH_GDB ?= riscv64-unknown-elf-gdb
+QEMU = qemu-system-riscv64
+BLK_DEVICE = virtio-blk-device
+NET_DEVICE = virtio-net-device
+MACHINE = virt
+BIOS = default
+else ifeq ($(ARCH),loongarch64)
+export TARGET = loongarch64-unknown-none
+OBJDUMP = rust-objdump --arch-name=loongarch64
+OBJCOPY = rust-objcopy --binary-architecture=loongarch64
+ARCH_GDB ?= loongarch64-unknown-elf-gdb
+QEMU = qemu-system-loongarch64
+BLK_DEVICE = virtio-blk-pci
+NET_DEVICE = virtio-net-pci
+MACHINE = virt
+BIOS = none
+else
+$(error Unsupported architecture: $(ARCH). Supported: riscv64, loongarch64)
+endif
+
+export MODE = release
 export LOG = error
 
 export Phoenix_IP=$(IP)
 export Phoenix_GW=$(GW)
 
 # Tools
-OBJDUMP = rust-objdump --arch-name=riscv64
-OBJCOPY = rust-objcopy --binary-architecture=riscv64
-QEMU = qemu-system-riscv64
-RISCV_GDB ?= riscv64-unknown-elf-gdb
 PAGER ?= less
-
 
 # Target files
 TARGET_DIR := ./target/$(TARGET)/$(MODE)
@@ -47,21 +70,36 @@ export SMP :=
 export PREEMPT :=
 export DEBUG :=
 export FINAL2 :=
+export TARGET_FEATURE := $(ARCH)
 
 # Args
 DISASM_ARGS = -d
 
-BOOTLOADER := default
-CPUS := 2
 QEMU_ARGS :=
-QEMU_ARGS += -m 128M
-QEMU_ARGS += -machine virt
+QEMU_ARGS += -m $(MEM)
 QEMU_ARGS += -nographic
 QEMU_ARGS += -smp $(CPUS)
 QEMU_ARGS += -kernel $(KERNEL_BIN)
-QEMU_ARGS += -bios $(BOOTLOADER)
 QEMU_ARGS += -drive file=$(FS_IMG),if=none,format=raw,id=x0
-QEMU_ARGS += -device virtio-blk-device,drive=x0,bus=virtio-mmio-bus.0
+QEMU_ARGS += -device $(BLK_DEVICE),drive=x0,bus=virtio-mmio-bus.0
+QEMU_ARGS += -rtc base=utc
+QEMU_ARGS += -no-reboot
+
+ifeq ($(ARCH),riscv64)
+QEMU_ARGS += -machine $(MACHINE)
+QEMU_ARGS += -bios $(BIOS)
+endif
+
+# Add second disk
+ifeq ($(DISK_2),y)
+DISK_IMG := $(FS_IMG_DIR)/disk.img
+ifeq ($(ARCH),loongarch64)
+DISK_IMG := $(FS_IMG_DIR)/disk-la.img
+endif
+
+QEMU_ARGS += -drive file=$(DISK_IMG),if=none,format=raw,id=x1
+QEMU_ARGS += -device $(BLK_DEVICE),drive=x1,bus=virtio-mmio-bus.1
+endif
 
 # Net
 IP ?= 10.0.2.15
@@ -69,13 +107,17 @@ GW ?= 10.0.2.2
 
 ifeq ($(NET),y)
 $(info "enabled qemu net device")
-# 指定该网络设备使用 net0 这个网络后端，使用用户模式网络。
-# 设置端口转发，将主机的 TCP 端口 5555 和 UDP 端口 5555 分别转发到虚拟机的 TCP端口 5555 和 UDP 端口 5555。
-QEMU_ARGS += -device virtio-net-device,netdev=net0 \
-             -netdev user,id=net0,hostfwd=tcp::5555-:5555,hostfwd=udp::5555-:5555
-QEMU_ARGS += -d guest_errors\
-			 -d unimp
-
+ifeq ($(ARCH),riscv64)
+# Configuration for RISC-V
+QEMU_ARGS += -device $(NET_DEVICE),netdev=net
+QEMU_ARGS += -netdev user,id=net
+else ifeq ($(ARCH),loongarch64)
+# Configuration for LoongArch
+QEMU_ARGS += -device $(NET_DEVICE),netdev=net0
+QEMU_ARGS += -netdev user,id=net0,hostfwd=tcp::5555-:5555,hostfwd=udp::5555-:5555
+endif
+QEMU_ARGS += -d guest_errors
+QEMU_ARGS += -d unimp
 endif
 
 DOCKER_RUN_ARGS := run
@@ -122,7 +164,7 @@ build: fmt user fs-img kernel
 
 PHONY += kernel
 kernel:
-	@echo "building kernel..."
+	@echo "building kernel for $(ARCH)..."
 	@echo Platform: $(BOARD)
 	@cd kernel && make build
 	@$(OBJCOPY) $(KERNEL_ELF) --strip-all -O binary $(KERNEL_BIN)
@@ -130,7 +172,7 @@ kernel:
 
 PHONY += user
 user:
-	@echo "building user..."
+	@echo "building user for $(ARCH)..."
 	@cd user && make build
 	@$(foreach elf, $(USER_ELFS), $(OBJCOPY) $(elf) --strip-all -O binary $(patsubst $(TARGET_DIR)/%, $(TARGET_DIR)/%.bin, $(elf));)
 	@cp ./testcase/22/busybox $(TARGET_DIR)/busybox
@@ -169,13 +211,13 @@ endif
 
 PHONY += qemu
 qemu:
-	@echo "start to run kernel in qemu..."
+	@echo "start to run kernel in qemu for $(ARCH)..."
 	$(QEMU) $(QEMU_ARGS)
 
 PHONY += dumpdtb
 dumpdtb:
-	$(QEMU) $(QEMU_ARGS) -machine dumpdtb=riscv64-virt.dtb
-	dtc -I dtb -O dts -o riscv64-virt.dts riscv64-virt.dtb
+	$(QEMU) $(QEMU_ARGS) -machine dumpdtb=$(ARCH)-virt.dtb
+	dtc -I dtb -O dts -o $(ARCH)-virt.dts $(ARCH)-virt.dtb
 
 PHONY += run
 run: qemu
@@ -187,6 +229,9 @@ PHONY += clean
 clean:
 	@cargo clean
 	@rm -rf $(FS_IMG)
+ifeq ($(DISK_2),y)
+	@rm -rf $(DISK_IMG)
+endif
 
 PHONY += clean-cargo
 clean-cargo:
@@ -210,12 +255,16 @@ debug:
 
 PHONY += gdb
 gdb:
-	$(RISCV_GDB) -ex 'file $(KERNEL_ELF)' -ex 'set arch riscv:rv64' -ex 'target remote localhost:1234'
+ifeq ($(ARCH),riscv64)
+	$(ARCH_GDB) -ex 'file $(KERNEL_ELF)' -ex 'set arch riscv:rv64' -ex 'target remote localhost:1234'
+else ifeq ($(ARCH),loongarch64)
+	$(ARCH_GDB) -ex 'file $(KERNEL_ELF)' -ex 'set arch loongarch:loongarch64' -ex 'target remote localhost:1234'
+endif
 
 PHONY += zImage
 zImage: kernel
 	gzip -f $(KERNEL_BIN)
-	mkimage -A riscv -O linux -C gzip -T kernel -a 0x80200000 -e 0x80200000 -n Phoenix -d $(KERNEL_BIN).gz zImage
+	mkimage -A riscv -O linux -C gzip -T kernel -a 0x80200000 -e 0x80200000 -n Manta -d $(KERNEL_BIN).gz zImage
 	sudo cp zImage /srv/tftp/
 
 .PHONY: $(PHONY)
