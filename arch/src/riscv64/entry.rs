@@ -6,7 +6,7 @@ use config::{
 #[unsafe(link_section = ".bss.stack")]
 static mut BOOT_STACK: [u8; KERNEL_STACK_SIZE * MAX_HARTS] = [0u8; KERNEL_STACK_SIZE * MAX_HARTS];
 
-#[repr(C, align(4096))]
+#[repr(C, align(4096))] // config the memeory layout in C style, ensure the alignment is 4096
 struct BootPageTable([u64; PTES_PER_PAGE]);
 
 static mut BOOT_PAGE_TABLE: BootPageTable = {
@@ -21,6 +21,7 @@ static mut BOOT_PAGE_TABLE: BootPageTable = {
 #[unsafe(no_mangle)]
 #[unsafe(link_section = ".text.entry")]
 unsafe extern "C" fn _start(hart_id: usize, dtb_addr: usize) -> ! {
+    // extern "C" means the function is C style
     unsafe {
         core::arch::naked_asm!(
         // 1. set boot stack
@@ -50,6 +51,7 @@ unsafe extern "C" fn _start(hart_id: usize, dtb_addr: usize) -> ! {
             or      a2, a2, t2
             jalr    a2                      // call rust_main
         ",
+        // inline assembly binding
         boot_stack = sym BOOT_STACK,
         page_table = sym BOOT_PAGE_TABLE,
         virt_ram_offset = const VIRT_RAM_OFFSET,

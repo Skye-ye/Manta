@@ -1,4 +1,5 @@
 use crate::{
+    // crate point to the root dir of the package
     mm::{RAM_SIZE, VIRT_START},
     utils::register_mut_const,
 };

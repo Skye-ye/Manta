@@ -19,10 +19,11 @@ pub async fn get_waker() -> Waker {
     TakeWakerFuture.await
 }
 
+//allow the async task to get its own waker
 struct TakeWakerFuture;
 
 impl Future for TakeWakerFuture {
-    type Output = Waker;
+    type Output = Waker;  //define the return type when future is finished
     #[inline(always)]
     fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
         Poll::Ready(cx.waker().clone())
@@ -30,7 +31,7 @@ impl Future for TakeWakerFuture {
 }
 
 /// A wrapper for a data structure that be sent between threads
-pub struct SendWrapper<T>(pub T);
+pub struct SendWrapper<T>(pub T);  // anonymous member
 
 impl<T> SendWrapper<T> {
     pub fn new(data: T) -> Self {
@@ -41,6 +42,7 @@ impl<T> SendWrapper<T> {
 unsafe impl<T> Send for SendWrapper<T> {}
 unsafe impl<T> Sync for SendWrapper<T> {}
 
+// implement some basic traits for SendWrapper
 impl<T: Deref> Deref for SendWrapper<T> {
     type Target = T::Target;
     #[inline(always)]
@@ -64,6 +66,8 @@ impl Wake for BlockWaker {
         log::trace!("block waker wakes");
     }
 }
+// Here implement a blocking async function (actually synchronous function)
+//maybe we can improve something here
 
 /// Run a future to completion on the current thread.
 /// Note that since this function is used in kernel mode,
@@ -131,6 +135,7 @@ where
     }
 }
 
+// struct that holds a vector of futures and reurns the first one that is ready
 pub struct AnyFuture<'a, T> {
     futures: Vec<Async<'a, T>>,
     has_returned: bool,

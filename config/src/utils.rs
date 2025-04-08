@@ -1,3 +1,4 @@
+/// This macro is used to generate visit and set methods for a static mutable variable.
 macro_rules! register_mut_const {
     ($(#[$meta:meta])*$name:ident, $type:ty, $value:expr) => {
         $(#[$meta])*
