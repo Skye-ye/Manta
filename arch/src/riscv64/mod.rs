@@ -3,6 +3,7 @@ pub mod interrupts;
 // #[cfg(feature = "kernel")]
 pub mod consts;
 pub mod debug_console;
+pub mod kcontext;
 pub mod memory;
 pub mod register;
 pub mod satp;

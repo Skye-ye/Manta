@@ -7,6 +7,7 @@ use core::{
 };
 
 use arch::{
+    kcontext::KContext,
     time::get_time_duration,
     timer::{TIMER_MANAGER, Timer},
 };
@@ -14,7 +15,7 @@ use async_utils::{get_waker, suspend_now};
 
 use super::Task;
 use crate::{
-    processor::{env::EnvContext, hart},
+    processor::hart,
     task::{signal::*, task::TaskState::*},
     trap,
 };
@@ -23,7 +24,7 @@ use crate::{
 /// task future (doing some env context changes e.g. pagetable switching)
 pub struct UserTaskFuture<F: Future + Send + 'static> {
     task: Arc<Task>,
-    env: EnvContext,
+    env: KContext,
     future: F,
 }
 
@@ -32,7 +33,7 @@ impl<F: Future + Send + 'static> UserTaskFuture<F> {
     pub fn new(task: Arc<Task>, future: F) -> Self {
         Self {
             task,
-            env: EnvContext::new(),
+            env: KContext::new(),
             future,
         }
     }
@@ -52,14 +53,14 @@ impl<F: Future + Send + 'static> Future for UserTaskFuture<F> {
 }
 
 pub struct KernelTaskFuture<F: Future<Output = ()> + Send + 'static> {
-    env: EnvContext,
+    env: KContext,
     future: F,
 }
 
 impl<F: Future<Output = ()> + Send + 'static> KernelTaskFuture<F> {
     pub fn new(future: F) -> Self {
         Self {
-            env: EnvContext::new(),
+            env: KContext::new(),
             future,
         }
     }

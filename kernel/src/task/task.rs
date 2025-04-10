@@ -14,7 +14,7 @@ use core::{
 };
 
 use arch::{
-    memory::{VirtAddr, sfence_vma_all},
+    memory::{TLB, VirtAddr},
     systype::{SysError, SysResult},
     time::stat::TaskTimeStat,
 };
@@ -402,7 +402,7 @@ impl Task {
             memory_space =
                 new_shared(self.with_mut_memory_space(|m| MemorySpace::from_user_lazily(m)));
             // TODO: avoid flushing global entries like kernel mappings
-            unsafe { sfence_vma_all() };
+            unsafe { TLB::sfence_vma_all() };
         }
 
         let fd_table = if flags.contains(CloneFlags::FILES) {

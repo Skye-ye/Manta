@@ -11,7 +11,7 @@ use core::{
 };
 
 use arch::{
-    memory::{PageTable, PhysAddr, VirtAddr, VirtPageNum, pte::PTEFlags, sfence_vma_vaddr},
+    memory::{PageTable, PhysAddr, TLB, VirtAddr, VirtPageNum, pte::PTEFlags},
     systype::{SysError, SysResult},
 };
 use async_utils::block_on;
@@ -161,7 +161,7 @@ impl MemorySpace {
                             self.page_table_mut()
                                 .map(vpn, new_page.ppn(), map_perm.into());
                             vm_area.pages.insert(vpn, new_page);
-                            unsafe { sfence_vma_vaddr(vpn.to_vaddr().into()) };
+                            unsafe { TLB::sfence_vma_vaddr(vpn.to_vaddr().into()) };
                         } else {
                             let (pte_flags, ppn) = {
                                 let mut new_flags: PTEFlags = map_perm.into();
@@ -171,7 +171,7 @@ impl MemorySpace {
                             };
                             self.page_table_mut().map(vpn, ppn, pte_flags);
                             vm_area.pages.insert(vpn, page);
-                            unsafe { sfence_vma_vaddr(vpn.to_vaddr().into()) };
+                            unsafe { TLB::sfence_vma_vaddr(vpn.to_vaddr().into()) };
                         }
                         pre_alloc_page_cnt += 1;
                     } else {
@@ -579,11 +579,11 @@ impl MemorySpace {
                     };
                     page_table.map(vpn, ppn, pte_flags);
                     vma.pages.insert(vpn, page);
-                    unsafe { sfence_vma_vaddr(vpn.to_vaddr().into()) };
+                    unsafe { TLB::sfence_vma_vaddr(vpn.to_vaddr().into()) };
                 } else {
                     page_table.map(vpn, page.ppn(), perm.into());
                     vma.pages.insert(vpn, page);
-                    unsafe { sfence_vma_vaddr(vpn.to_vaddr().into()) };
+                    unsafe { TLB::sfence_vma_vaddr(vpn.to_vaddr().into()) };
                 }
             } else {
                 break;
