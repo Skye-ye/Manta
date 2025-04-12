@@ -12,7 +12,6 @@
 #![feature(new_zeroed_alloc)]
 #![allow(clippy::mut_from_ref)]
 
-mod boot;
 mod impls;
 mod ipc;
 mod mm;
@@ -29,6 +28,7 @@ use core::{
 };
 
 use ::net::poll_interfaces;
+use arch::boot;
 
 use crate::processor::hart;
 

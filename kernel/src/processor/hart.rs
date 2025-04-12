@@ -1,9 +1,9 @@
 use alloc::sync::Arc;
-use core::{arch::asm, sync::atomic::AtomicBool};
+use core::{arch::asm, str::EncodeUtf16, sync::atomic::AtomicBool};
 
 use arch::{
+    env::EnvContext,
     interrupts::{disable_interrupt, enable_interrupt},
-    kcontext::KContext,
 };
 use config::board::MAX_HARTS;
 use riscv::register::sstatus::{self, FS};
@@ -20,7 +20,7 @@ pub static mut HART_PREEMPTABLE: [AtomicBool; MAX_HARTS] = [HART_PREEMPTABLE_EAC
 pub struct Hart {
     hart_id: usize,
     task: Option<Arc<Task>>,
-    env: KContext,
+    env: EnvContext,
 }
 
 impl Hart {
@@ -28,7 +28,7 @@ impl Hart {
         Hart {
             hart_id: 0,
             task: None,
-            env: KContext::new(),
+            env: EnvContext::new(),
         }
     }
 
@@ -52,15 +52,15 @@ impl Hart {
         self.task.is_some()
     }
 
-    pub fn env(&self) -> &KContext {
+    pub fn env(&self) -> &EnvContext {
         &self.env
     }
 
-    pub fn env_mut(&mut self) -> &mut KContext {
+    pub fn env_mut(&mut self) -> &mut EnvContext {
         &mut self.env
     }
 
-    fn change_env(&self, env: &KContext) {
+    fn change_env(&self, env: &EnvContext) {
         self.env().change_env(env);
     }
 
@@ -71,7 +71,7 @@ impl Hart {
     /// Change thread context.
     ///
     /// Now only change page table temporarily
-    pub fn enter_user_task_switch(&mut self, task: &mut Arc<Task>, env: &mut KContext) {
+    pub fn enter_user_task_switch(&mut self, task: &mut Arc<Task>, env: &mut EnvContext) {
         // self can only be an executor running
         debug_assert!(self.task.is_none());
         unsafe { disable_interrupt() };
@@ -87,7 +87,7 @@ impl Hart {
         log::trace!("[enter_user_task_switch] enter user task");
     }
 
-    pub fn leave_user_task_switch(&mut self, env: &mut KContext) {
+    pub fn leave_user_task_switch(&mut self, env: &mut EnvContext) {
         log::trace!("[leave_user_task_switch] leave user task");
         unsafe { disable_interrupt() };
         unsafe { env.auto_sum() };
@@ -101,7 +101,7 @@ impl Hart {
         unsafe { enable_interrupt() };
     }
 
-    pub fn kernel_task_switch(&mut self, env: &mut KContext) {
+    pub fn kernel_task_switch(&mut self, env: &mut EnvContext) {
         unsafe { disable_interrupt() };
         self.change_env(env);
         core::mem::swap(self.env_mut(), env);
@@ -113,7 +113,7 @@ impl Hart {
         let mut new = Self::new();
         new.hart_id = self.hart_id;
         new.task = None;
-        new.env = KContext::new();
+        new.env = EnvContext::new();
         unsafe { new.env.auto_sum() };
         core::mem::swap(&mut new, self);
         new

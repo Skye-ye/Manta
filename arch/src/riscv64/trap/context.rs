@@ -4,6 +4,8 @@ use core::arch::asm;
 
 use riscv::register::sstatus::{self, FS, SPP, Sstatus};
 
+use crate::debug_console::println;
+
 #[derive(Clone, Copy, Debug)]
 #[repr(C)]
 pub struct TrapContext {
@@ -160,6 +162,8 @@ impl UserFloatContext {
 impl TrapContext {
     /// Init user context
     pub fn new(entry: usize, sp: usize) -> Self {
+        #[cfg(feature = "debug")]
+        println!("trapcontext new");
         let mut sstatus = sstatus::read();
         // set CPU privilege to User after trap return
         sstatus.set_spp(SPP::User);
@@ -195,6 +199,8 @@ impl TrapContext {
         argv: usize,
         envp: usize,
     ) {
+        #[cfg(feature = "debug")]
+        println!("trapcontext inituser");
         self.user_x[2] = user_sp;
         self.user_x[10] = argc;
         self.user_x[11] = argv;
@@ -210,6 +216,9 @@ impl TrapContext {
     }
 
     pub fn syscall_args(&self) -> [usize; 6] {
+        #[cfg(feature = "debug")]
+        println!("trapcontext args");
+
         [
             self.user_x[10],
             self.user_x[11],
@@ -222,34 +231,50 @@ impl TrapContext {
 
     /// Set stack pointer to x_2 reg (sp)
     pub fn set_user_sp(&mut self, sp: usize) {
+        #[cfg(feature = "debug")]
+        println!("trapcontext sp");
         // sp == x2
         self.user_x[2] = sp;
     }
 
     pub fn set_user_a0(&mut self, val: usize) {
+        #[cfg(feature = "debug")]
+        println!("trapcontext a0");
         // a0 == x10
         self.user_x[10] = val;
     }
 
     pub fn set_user_tp(&mut self, val: usize) {
+        #[cfg(feature = "debug")]
+        println!("trapcontext tp");
         // tp == x4
         self.user_x[4] = val;
     }
 
     pub fn save_last_user_a0(&mut self) {
+        #[cfg(feature = "debug")]
+        println!("trapcontext save last a0");
         self.last_a0 = self.user_x[10];
     }
 
     pub fn restore_last_user_a0(&mut self) {
+        #[cfg(feature = "debug")]
+        println!("trapcontext restore last a0");
         self.user_x[10] = self.last_a0;
     }
 
     /// Set entry point
     pub fn set_entry_point(&mut self, entry: usize) {
+        #[cfg(feature = "debug")]
+        println!("trapcontext point");
+
         self.sepc = entry;
     }
 
     pub fn set_user_pc_to_next(&mut self) {
+        #[cfg(feature = "debug")]
+        println!("trapcontext npc");
+
         self.sepc += 4;
     }
 }

@@ -8,6 +8,8 @@ use arch::{
     systype::SysError,
     time::set_next_timer_irq,
     timer::TIMER_MANAGER,
+    trap,
+    trap::TrapType,
 };
 use async_utils::yield_now;
 use riscv::{
@@ -23,123 +25,108 @@ use crate::{mm::PageFaultAccessType, syscall::Syscall, task::Task, trap::set_use
 /// return if it is syscall and has been interrupted
 #[unsafe(no_mangle)]
 pub async fn trap_handler(task: &Arc<Task>) -> bool {
-    unsafe { set_kernel_trap() };
-
+    #[cfg(feature = "debug")]
+    println!("traphandler");
     let cx = task.trap_context_mut();
-    let stval = stval::read();
-    let scause = scause::read();
-    let sepc = sepc::read();
-    let cause = scause.cause();
-    log::trace!("[trap_handler] user task trap into kernel");
-    log::trace!("[trap_handler] sepc:{sepc:#x}, stval:{stval:#x}");
-    unsafe { enable_interrupt() };
+    let trap_type = trap::user_trap::trap_handler();
+    #[cfg(feature = "debug")]
+    println!("type : {}", trap_type);
 
     if task.time_stat_ref().need_schedule() && executor::has_task() {
         log::info!("time slice used up, yield now");
         yield_now().await;
     }
 
-    match cause.try_into() {
-        Ok(Trap::Exception(e)) => {
-            match e {
-                Exception::UserEnvCall => {
-                    let syscall_no = cx.syscall_no();
-                    cx.set_user_pc_to_next();
-                    // get system call return value
-                    let ret = Syscall::new(task)
-                        .syscall(syscall_no, cx.syscall_args())
-                        .await;
-                    cx.save_last_user_a0();
-                    cx.set_user_a0(ret);
-                    if ret == -(SysError::EINTR as isize) as usize {
-                        return true;
-                    }
-                }
-                Exception::StorePageFault
-                | Exception::InstructionPageFault
-                | Exception::LoadPageFault => {
-                    log::info!(
-                        "[trap_handler] encounter page fault, addr {stval:#x}, instruction {sepc:#x} scause {cause:?}",
-                    );
-                    let access_type = match e {
-                        Exception::InstructionPageFault => PageFaultAccessType::RX,
-                        Exception::LoadPageFault => PageFaultAccessType::RO,
-                        Exception::StorePageFault => PageFaultAccessType::RW,
-                        _ => unreachable!(),
-                    };
-                    // There are serveral kinds of page faults:
-                    // 1. mmap area
-                    // 2. sbrk area
-                    // 3. fork cow area
-                    // 4. user stack
-                    // 5. execve elf file
-                    // 6. dynamic link
-                    // 7. illegal page fault
-
-                    let result = task.with_mut_memory_space(|m| {
-                        m.handle_page_fault(VirtAddr::from(stval), access_type)
-                    });
-                    if let Err(_e) = result {
-                        log::warn!(
-                            "[trap_handler] encounter page fault, addr {stval:#x}, instruction {sepc:#x} scause {cause:?}",
-                        );
-                        // backtrace::backtrace();
-                        log::warn!("{:x?}", task.trap_context_mut());
-                        // task.with_memory_space(|m| m.print_all());
-                        log::warn!("bad memory access, send SIGSEGV to task");
-                        task.receive_siginfo(
-                            SigInfo {
-                                sig: Sig::SIGSEGV,
-                                code: SigInfo::KERNEL,
-                                details: SigDetails::None,
-                            },
-                            false,
-                        );
-                    }
-                }
-                Exception::IllegalInstruction => {
-                    log::warn!(
-                        "[trap_handler] detected illegal instruction, stval {stval:#x}, sepc {sepc:#x}",
-                    );
-                    task.set_terminated();
-                }
-                e => {
-                    log::warn!("Unknown user exception: {:?}", e);
-                }
+    match trap_type {
+        TrapType::Breakpoint => {
+            cx.sepc += 4;
+        }
+        TrapType::SysCall => {
+            let syscall_no = cx.syscall_no();
+            #[cfg(feature = "debug")]
+            println!("sys: {}", syscall_no);
+            cx.set_user_pc_to_next();
+            // get system call return value
+            let ret = Syscall::new(task)
+                .syscall(syscall_no, cx.syscall_args())
+                .await;
+            cx.save_last_user_a0();
+            cx.set_user_a0(ret);
+            if ret == -(SysError::EINTR as isize) as usize {
+                return true;
             }
         }
-        Ok(Trap::Interrupt(i)) => {
-            match i {
-                supervisor::Interrupt::SupervisorTimer => {
-                    // NOTE: User may trap into kernel frequently. As a consequence, this timer are
-                    // likely not triggered in user mode but rather be triggered in supervisor mode,
-                    // which will cause user program running on the cpu for a quite long time.
-                    log::trace!("[trap_handler] timer interrupt, sepc {sepc:#x}");
-                    TIMER_MANAGER.check();
-                    unsafe { set_next_timer_irq() };
-                    if executor::has_task() {
-                        yield_now().await;
-                    }
-                }
-                supervisor::Interrupt::SupervisorExternal => {
-                    log::info!("[kernel] receive externel interrupt");
-                    driver::get_device_manager_mut().handle_irq();
-                }
-                _ => {
-                    panic!(
-                        "[trap_handler] Unsupported trap {cause:?}, stval = {stval:#x}!, sepc = {sepc:#x}"
-                    );
-                }
-            }
-        }
-        Err(_) => {
-            panic!(
-                "[trap_handler] Error when converting trap to target-specific trap cause {:?}",
-                cause
+        TrapType::LoadPageFault(stval, sepc)
+        | TrapType::StorePageFault(stval, sepc)
+        | TrapType::InstructionPageFault(stval, sepc) => {
+            log::info!(
+                // "[trap_handler] encounter page fault, addr {stval:#x}, instruction {sepc:#x}
+                // scause {cause:?}",
+                "[trap_handler] encounter page fault, addr {stval:#x}, instruction {sepc:#x} ",
             );
+            let access_type = match trap_type {
+                TrapType::InstructionPageFault(v, sepc) => PageFaultAccessType::RX,
+                TrapType::LoadPageFault(v, sepc) => PageFaultAccessType::RO,
+                TrapType::StorePageFault(v, sepc) => PageFaultAccessType::RW,
+                _ => unreachable!(),
+            };
+            // There are serveral kinds of page faults:
+            // 1. mmap area
+            // 2. sbrk area
+            // 3. fork cow area
+            // 4. user stack
+            // 5. execve elf file
+            // 6. dynamic link
+            // 7. illegal page fault
+            let result = task
+                .with_mut_memory_space(|m| m.handle_page_fault(VirtAddr::from(stval), access_type));
+            if let Err(_e) = result {
+                log::warn!(
+                    "[trap_handler] encounter page fault, addr {stval:#x}, instruction {sepc:#x}",
+                    // "[trap_handler] encounter page fault, addr {stval:#x}, instruction {sepc:#x}
+                    // scause {cause:?}",
+                );
+                // backtrace::backtrace();
+                log::warn!("{:x?}", task.trap_context_mut());
+                // task.with_memory_space(|m| m.print_all());
+                log::warn!("bad memory access, send SIGSEGV to task");
+                task.receive_siginfo(
+                    SigInfo {
+                        sig: Sig::SIGSEGV,
+                        code: SigInfo::KERNEL,
+                        details: SigDetails::None,
+                    },
+                    false,
+                );
+            }
+        }
+        TrapType::IllegalInstruction(stval, sepc) => {
+            log::warn!(
+                "[trap_handler] detected illegal instruction, stval {stval:#x}, sepc {sepc:#x}",
+            );
+            task.set_terminated();
+        }
+        TrapType::Timer(sepc) => {
+            // NOTE: User may trap into kernel frequently. As a consequence, this timer are
+            // likely not triggered in user mode but rather be triggered in supervisor mode,
+            // which will cause user program running on the cpu for a quite long time.
+            log::trace!("[trap_handler] timer interrupt, sepc {sepc:#x}");
+            TIMER_MANAGER.check();
+            unsafe { set_next_timer_irq() };
+            if executor::has_task() {
+                yield_now().await;
+            }
+        }
+        TrapType::SupervisorExternal => {
+            log::info!("[kernel] receive externel interrupt");
+            driver::get_device_manager_mut().handle_irq();
+        }
+
+        e => {
+            log::warn!("Unknown user exception: {:?}", e);
         }
     }
-    false
+    return false;
 }
 
 unsafe extern "C" {
@@ -149,6 +136,8 @@ unsafe extern "C" {
 /// Trap return to user mode.
 #[unsafe(no_mangle)]
 pub fn trap_return(task: &Arc<Task>) {
+    #[cfg(feature = "debug")]
+    println!("trap return");
     log::info!("[kernel] trap return to user...");
     unsafe {
         disable_interrupt();

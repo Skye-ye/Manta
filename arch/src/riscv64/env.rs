@@ -8,7 +8,7 @@ use crate::memory::TLB;
 
 /// Store some permission flags
 #[derive(Debug)]
-pub struct KContext {
+pub struct EnvContext {
     // For preempt and non preempt
     /// Permit supervisor user memory access
     sum_cnt: usize,
@@ -19,7 +19,7 @@ pub struct KContext {
     satp: Satp,
 }
 
-impl KContext {
+impl EnvContext {
     pub const fn new() -> Self {
         Self {
             sum_cnt: 0,
@@ -30,7 +30,7 @@ impl KContext {
     }
 
     pub unsafe fn auto_sum(&self) {
-        log::trace!("[KContext::auto_sum] sum_cnt: {}", self.sum_cnt);
+        log::trace!("[EnvContext::auto_sum] sum_cnt: {}", self.sum_cnt);
         if self.sum_cnt == 0 {
             unsafe { riscv::register::sstatus::clear_sum() };
         } else {

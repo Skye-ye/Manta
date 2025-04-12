@@ -7,7 +7,7 @@ use core::{
 };
 
 use arch::{
-    kcontext::KContext,
+    env::EnvContext,
     time::get_time_duration,
     timer::{TIMER_MANAGER, Timer},
 };
@@ -24,7 +24,7 @@ use crate::{
 /// task future (doing some env context changes e.g. pagetable switching)
 pub struct UserTaskFuture<F: Future + Send + 'static> {
     task: Arc<Task>,
-    env: KContext,
+    env: EnvContext,
     future: F,
 }
 
@@ -33,7 +33,7 @@ impl<F: Future + Send + 'static> UserTaskFuture<F> {
     pub fn new(task: Arc<Task>, future: F) -> Self {
         Self {
             task,
-            env: KContext::new(),
+            env: EnvContext::new(),
             future,
         }
     }
@@ -43,6 +43,8 @@ impl<F: Future + Send + 'static> Future for UserTaskFuture<F> {
     type Output = F::Output;
 
     fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
+        #[cfg(feature = "debug")]
+        println!("poll usertaskfuture");
         let this = unsafe { self.get_unchecked_mut() };
         let hart = hart::local_hart();
         hart.enter_user_task_switch(&mut this.task, &mut this.env);
@@ -53,14 +55,14 @@ impl<F: Future + Send + 'static> Future for UserTaskFuture<F> {
 }
 
 pub struct KernelTaskFuture<F: Future<Output = ()> + Send + 'static> {
-    env: KContext,
+    env: EnvContext,
     future: F,
 }
 
 impl<F: Future<Output = ()> + Send + 'static> KernelTaskFuture<F> {
     pub fn new(future: F) -> Self {
         Self {
-            env: KContext::new(),
+            env: EnvContext::new(),
             future,
         }
     }
@@ -70,6 +72,8 @@ impl<F: Future<Output = ()> + Send + 'static> Future for KernelTaskFuture<F> {
     type Output = F::Output;
 
     fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
+        #[cfg(feature = "debug")]
+        println!("poll kerneltaskfuture");
         let this = unsafe { self.get_unchecked_mut() };
         let hart = hart::local_hart();
         hart.kernel_task_switch(&mut this.env);
@@ -114,6 +118,8 @@ pub async fn task_loop(task: Arc<Task>) {
 
 /// Spawn a new async user task
 pub fn spawn_user_task(user_task: Arc<Task>) {
+    #[cfg(feature = "debug")]
+    println!("spawn use task");
     let future = UserTaskFuture::new(user_task.clone(), task_loop(user_task));
     let (runnable, task) = executor::spawn(future);
     runnable.schedule();
@@ -123,6 +129,8 @@ pub fn spawn_user_task(user_task: Arc<Task>) {
 /// Spawn a new async kernel task (used for doing some kernel init work or timed
 /// tasks)
 pub fn spawn_kernel_task<F: Future<Output = ()> + Send + 'static>(kernel_task: F) {
+    #[cfg(feature = "debug")]
+    println!("spawn kernel task");
     let future = KernelTaskFuture::new(kernel_task);
     let (runnable, task) = executor::spawn(future);
     runnable.schedule();

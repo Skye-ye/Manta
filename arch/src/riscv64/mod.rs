@@ -1,9 +1,9 @@
-pub mod entry;
-pub mod interrupts;
-// #[cfg(feature = "kernel")]
+pub mod boot;
 pub mod consts;
 pub mod debug_console;
-pub mod kcontext;
+pub mod env;
+pub mod instruction;
+pub mod interrupts;
 pub mod memory;
 pub mod register;
 pub mod satp;
@@ -20,7 +20,7 @@ pub use sstatus::*;
 pub use time::*;
 
 pub mod timer;
-// pub mod trap;
+pub mod trap;
 
 #[inline(never)]
 pub fn spin(cycle: usize) {

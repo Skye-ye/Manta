@@ -17,10 +17,10 @@ use core::fmt::Write;
 /// Print macro to print polyhal information with newline
 pub(crate) macro println {
     () => {
-        $crate::components::debug_console::_print(format_args!("\n"))
+        $crate::debug_console::_print(format_args!("\n"))
     },
     ($fmt: expr $(, $($arg: tt)+)?) => {
-        $crate::components::debug_console::_print(format_args!("{}\n", format_args!($fmt $(, $($arg)+)?)))
+        $crate::debug_console::_print(format_args!("{}\n", format_args!($fmt $(, $($arg)+)?)))
     },
 }
 
