@@ -1,8 +1,8 @@
 use alloc::sync::Arc;
 
+use arch::systype::SysResult;
 use config::mm::{PAGE_SIZE, round_up_to_page};
 use page::{Page, PageCache};
-use systype::SysResult;
 use vfs_core::{Inode, InodeMeta, InodeMode, InodeState, Stat, SuperBlock};
 
 pub struct SimpleFileInode {

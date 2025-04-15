@@ -10,20 +10,24 @@ use core::{
     ops::{Range, RangeBounds},
 };
 
-use arch::memory::sfence_vma_vaddr;
+use arch::{
+    config::mm::{
+        DL_INTERP_OFFSET, U_SEG_FILE_BEG, U_SEG_FILE_END, U_SEG_HEAP_BEG, U_SEG_HEAP_END,
+        U_SEG_SHARE_BEG, U_SEG_SHARE_END, U_SEG_STACK_BEG, U_SEG_STACK_END,
+    },
+    memory::{PageTable, PhysAddr, TLB, VirtAddr, VirtPageNum, pte::PTEFlags},
+    systype::{SysError, SysResult},
+};
 use async_utils::block_on;
 use config::{
     mm::{
-        DL_INTERP_OFFSET, MMAP_PRE_ALLOC_PAGES, PAGE_SIZE, U_SEG_FILE_BEG, U_SEG_FILE_END,
-        U_SEG_HEAP_BEG, U_SEG_HEAP_END, U_SEG_SHARE_BEG, U_SEG_SHARE_END, U_SEG_STACK_BEG,
-        U_SEG_STACK_END, USER_ELF_PRE_ALLOC_PAGE_CNT, is_aligned_to_page, round_down_to_page,
+        MMAP_PRE_ALLOC_PAGES, PAGE_SIZE, USER_ELF_PRE_ALLOC_PAGE_CNT, is_aligned_to_page,
+        round_down_to_page,
     },
     process::USER_STACK_PRE_ALLOC_SIZE,
 };
-use memory::{PageTable, PhysAddr, VirtAddr, VirtPageNum, pte::PTEFlags};
 use page::Page;
 use range_map::RangeMap;
-use systype::{SysError, SysResult};
 use vfs_core::{Dentry, File};
 use xmas_elf::ElfFile;
 
@@ -160,7 +164,7 @@ impl MemorySpace {
                             self.page_table_mut()
                                 .map(vpn, new_page.ppn(), map_perm.into());
                             vm_area.pages.insert(vpn, new_page);
-                            unsafe { sfence_vma_vaddr(vpn.to_vaddr().into()) };
+                            unsafe { TLB::sfence_vma_vaddr(vpn.to_vaddr().into()) };
                         } else {
                             let (pte_flags, ppn) = {
                                 let mut new_flags: PTEFlags = map_perm.into();
@@ -170,7 +174,7 @@ impl MemorySpace {
                             };
                             self.page_table_mut().map(vpn, ppn, pte_flags);
                             vm_area.pages.insert(vpn, page);
-                            unsafe { sfence_vma_vaddr(vpn.to_vaddr().into()) };
+                            unsafe { TLB::sfence_vma_vaddr(vpn.to_vaddr().into()) };
                         }
                         pre_alloc_page_cnt += 1;
                     } else {
@@ -578,11 +582,11 @@ impl MemorySpace {
                     };
                     page_table.map(vpn, ppn, pte_flags);
                     vma.pages.insert(vpn, page);
-                    unsafe { sfence_vma_vaddr(vpn.to_vaddr().into()) };
+                    unsafe { TLB::sfence_vma_vaddr(vpn.to_vaddr().into()) };
                 } else {
                     page_table.map(vpn, page.ppn(), perm.into());
                     vma.pages.insert(vpn, page);
-                    unsafe { sfence_vma_vaddr(vpn.to_vaddr().into()) };
+                    unsafe { TLB::sfence_vma_vaddr(vpn.to_vaddr().into()) };
                 }
             } else {
                 break;

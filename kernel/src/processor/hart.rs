@@ -1,11 +1,12 @@
 use alloc::sync::Arc;
-use core::{arch::asm, sync::atomic::AtomicBool};
+use core::{arch::asm, str::EncodeUtf16, sync::atomic::AtomicBool};
 
-use arch::interrupts::{disable_interrupt, enable_interrupt};
-use config::board::MAX_HARTS;
-use riscv::register::sstatus::{self, FS};
+use arch::{
+    config::board::MAX_HARTS,
+    env::EnvContext,
+    interrupts::{disable_interrupt, enable_interrupt},
+};
 
-use super::env::EnvContext;
 use crate::{mm, task::Task};
 
 const HART_EACH: Hart = Hart::new();
@@ -170,7 +171,7 @@ pub fn local_hart_disable_preemptable() {
 pub fn init(hart_id: usize) {
     unsafe {
         set_local_hart(hart_id);
-        sstatus::set_fs(FS::Initial);
+        arch::sstatus::set_fs_initial();
     }
 }
 

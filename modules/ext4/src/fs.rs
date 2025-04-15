@@ -1,8 +1,8 @@
 use alloc::sync::Arc;
 
+use arch::systype::{SysError, SysResult};
 use device_core::BlockDevice;
 use lwext4_rust::{Ext4BlockWrapper, InodeTypes};
-use systype::{SysError, SysResult};
 use vfs_core::{
     Dentry, FileSystemType, FileSystemTypeMeta, InodeType, MountFlags, OpenFlags, StatFs,
     SuperBlock, SuperBlockMeta,
@@ -80,7 +80,7 @@ impl SuperBlock for Ext4SuperBlock {
         todo!()
     }
 
-    fn sync_fs(&self, _wait: isize) -> systype::SysResult<()> {
+    fn sync_fs(&self, _wait: isize) -> arch::systype::SysResult<()> {
         todo!()
     }
 }

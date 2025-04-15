@@ -4,13 +4,14 @@ use core::{
     ops::{Deref, DerefMut},
 };
 
-use arch::time::get_time_duration;
+use arch::{
+    systype::{SysError, SyscallResult},
+    time::{get_time_duration, timespec::TimeSpec},
+};
 use async_utils::{Select2Futures, SelectOutput};
 use config::{board::BLOCK_SIZE, fs::PIPE_BUF_LEN};
 use driver::BLOCK_DEVICE;
 use strum::FromRepr;
-use systype::{SysError, SyscallResult};
-use time::timespec::TimeSpec;
 use vfs::{FS_MANAGER, fd_table::FdFlags, pipefs::new_pipe, simplefs::dentry, sys_root_dentry};
 use vfs_core::{
     AT_REMOVEDIR, AT_SYMLINK_FOLLOW, AT_SYMLINK_NOFOLLOW, AtFd, Dentry, Inode, InodeMode,

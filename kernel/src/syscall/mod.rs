@@ -16,10 +16,10 @@ mod time;
 
 use alloc::sync::Arc;
 
+use arch::systype::{SysError, SysResult, SyscallResult};
 pub use consts::SyscallNo;
 pub use mm::MmapFlags;
 pub use process::CloneFlags;
-use systype::{SysError, SysResult, SyscallResult};
 
 use crate::task::Task;
 

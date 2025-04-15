@@ -6,13 +6,16 @@ use core::{
     time::Duration,
 };
 
-use arch::time::get_time_duration;
+use arch::{
+    env::EnvContext,
+    time::get_time_duration,
+    timer::{TIMER_MANAGER, Timer},
+};
 use async_utils::{get_waker, suspend_now};
-use timer::{TIMER_MANAGER, Timer};
 
 use super::Task;
 use crate::{
-    processor::{env::EnvContext, hart},
+    processor::hart,
     task::{signal::*, task::TaskState::*},
     trap,
 };

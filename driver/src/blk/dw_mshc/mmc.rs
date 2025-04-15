@@ -8,11 +8,11 @@ use core::{
     mem::{self, size_of},
 };
 
+use arch::memory::{FrameTracker, PhysAddr, VirtAddr, alloc_frame_tracker, alloc_frame_trackers};
 use byte_slice_cast::*;
 use config::board::BLOCK_SIZE;
 use device_core::{BlockDevice, DevId, Device, DeviceMajor, DeviceMeta, DeviceType};
 use log::{debug, info, warn};
-use memory::{FrameTracker, PhysAddr, VirtAddr, alloc_frame_tracker, alloc_frame_trackers};
 
 use super::{
     dma::Descriptor,

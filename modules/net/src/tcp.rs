@@ -6,6 +6,7 @@ use core::{
     task::{Context, Poll, Waker},
 };
 
+use arch::{systype::*, timer::timelimited_task::ksleep_ms};
 use async_utils::{get_waker, suspend_now, yield_now};
 use log::*;
 use smoltcp::{
@@ -13,8 +14,6 @@ use smoltcp::{
     socket::tcp::{self, ConnectError, State},
     wire::{IpAddress, IpEndpoint, IpListenEndpoint},
 };
-use systype::*;
-use timer::timelimited_task::ksleep_ms;
 
 use super::{
     ETH0, LISTEN_TABLE, SOCKET_SET, SocketSetWrapper,

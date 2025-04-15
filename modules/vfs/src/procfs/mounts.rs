@@ -4,9 +4,9 @@ use alloc::{
     sync::Arc,
 };
 
+use arch::systype::{SysError, SysResult, SyscallResult};
 use async_trait::async_trait;
 use config::board::BLOCK_SIZE;
-use systype::{SysError, SysResult, SyscallResult};
 use vfs_core::{
     Dentry, DentryMeta, DirEntry, File, FileMeta, Inode, InodeMeta, InodeMode, Stat, SuperBlock,
 };

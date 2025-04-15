@@ -13,13 +13,14 @@ use core::{
     task::Waker,
 };
 
-use arch::memory::sfence_vma_all;
-use async_utils::block_on;
-use config::{
-    mm::DL_INTERP_OFFSET,
-    process::{INIT_PROC_PID, USER_STACK_SIZE},
+use arch::{
+    config::mm::DL_INTERP_OFFSET,
+    memory::{TLB, VirtAddr},
+    systype::{SysError, SysResult},
+    time::stat::TaskTimeStat,
 };
-use memory::VirtAddr;
+use async_utils::block_on;
+use config::process::{INIT_PROC_PID, USER_STACK_SIZE};
 use signal::{
     action::{SigHandlers, SigPending},
     siginfo::{SigDetails, SigInfo},
@@ -27,8 +28,6 @@ use signal::{
     sigset::{Sig, SigSet},
 };
 use sync::mutex::SpinNoIrqLock;
-use systype::{SysError, SysResult};
-use time::stat::TaskTimeStat;
 use vfs::{fd_table::FdTable, sys_root_dentry};
 use vfs_core::{
     AtFd, Dentry, File, InodeMode, InodeType, OpenFlags, Path, is_absolute_path, split_path,
@@ -401,7 +400,7 @@ impl Task {
             memory_space =
                 new_shared(self.with_mut_memory_space(|m| MemorySpace::from_user_lazily(m)));
             // TODO: avoid flushing global entries like kernel mappings
-            unsafe { sfence_vma_all() };
+            unsafe { TLB::sfence_vma_all() };
         }
 
         let fd_table = if flags.contains(CloneFlags::FILES) {

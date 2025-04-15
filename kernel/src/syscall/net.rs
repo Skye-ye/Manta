@@ -2,9 +2,9 @@ use alloc::{sync::Arc, vec::Vec};
 use core::intrinsics::unlikely;
 
 use addr::SockAddr;
+use arch::systype::{SysError, SysResult, SyscallResult};
 use log::info;
 use socket::*;
-use systype::{SysError, SysResult, SyscallResult};
 use vfs::pipefs::new_pipe;
 use vfs_core::OpenFlags;
 use virtio_drivers::PAGE_SIZE;

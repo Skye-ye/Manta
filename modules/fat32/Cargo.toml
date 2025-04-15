@@ -10,7 +10,7 @@ device-core = { path = "../device-core/" }
 vfs-core = { path = "../vfs-core/" }
 sync = { path = "../sync/" }
 arch = { path = "../../arch/" }
-systype = { path = "../systype/" }
+
 
 log = "0.4"
 fatfs = { git = "https://githubfast.com/ChenRuiwei/rust-fatfs", branch = "smp", default-features = false, features = [

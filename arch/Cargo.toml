@@ -5,16 +5,34 @@ edition = "2024"
 
 [dependencies]
 config = { path = "../config" }
+sbi-print = { path = "../crates/sbi-print/" }
+sync = { path = "../modules/sync/" }
 
-# Architecture-specific dependencies
+cfg-if = "1.0"
+paste = "1.0"# Architecture-specific dependencies
 riscv = { version = "0.13", optional = true }
 sbi-rt = { version = "0.0.3", optional = true }
 loongArch64 = { version = "0.2", optional = true }
+log = "0.4"
+buddy_system_allocator = "0.11"
+linked_list_allocator = "0.10"
+bitflags = "2.9"
+bitmap-allocator = { git = "https://githubfast.com/rcore-os/bitmap-allocator" }
+crate_interface = "0.1"
+strum = { version = "0.27", default-features = false, features = ["derive"] }
+spin = { version = "0.10", features = ["lazy"] }
+
 
 [features]
-default = ["irq", "riscv64"]
+default = ["irq", "riscv64","buddy"]
 # Kernel interrupt
 irq = []
 # CPU Architecture
 riscv64 = ["dep:riscv", "dep:sbi-rt"]
 loongarch64 = ["dep:loongArch64"]
+buddy = []
+linked = []
+kernel = []
+logger = []
+debug = []
+vf2=["config/vf2"]

@@ -1,21 +1,9 @@
 use alloc::{format, sync::Arc};
 
+use arch::timer::timelimited_task::{ksleep_ms, ksleep_s};
 use config::process::INIT_PROC_PID;
-use timer::timelimited_task::{ksleep_ms, ksleep_s};
 
 use crate::task::{self, TASK_MANAGER, Task};
-
-/// Code block that only runs in debug mode.
-#[macro_export]
-macro_rules! when_debug {
-    ($blk:expr) => {
-        cfg_if::cfg_if! {
-            if #[cfg(debug_assertions)] {
-                $blk
-            }
-        }
-    };
-}
 
 /// Used for debug.
 #[allow(unused)]

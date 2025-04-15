@@ -1,7 +1,7 @@
 use alloc::sync::Arc;
 
+use arch::systype::SysResult;
 use device_core::BlockDevice;
-use systype::SysResult;
 use vfs_core::{
     Dentry, FileSystemType, FileSystemTypeMeta, InodeMode, MountFlags, StatFs, SuperBlock,
     SuperBlockMeta,

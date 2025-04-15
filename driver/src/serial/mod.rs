@@ -10,13 +10,13 @@ use core::{
     task::Waker,
 };
 
+use arch::{config::mm::VIRT_RAM_OFFSET, memory::pte::PTEFlags};
 use async_trait::async_trait;
 use async_utils::{block_on, get_waker, suspend_now};
-use config::{board::UART_BUF_LEN, mm::VIRT_RAM_OFFSET};
+use config::board::UART_BUF_LEN;
 use device_core::{DevId, Device, DeviceMajor, DeviceMeta, DeviceType};
 use fdt::Fdt;
 use macro_utils::with_methods;
-use memory::pte::PTEFlags;
 use ring_buffer::RingBuffer;
 use spin::Once;
 use sync::mutex::SpinNoIrqLock;

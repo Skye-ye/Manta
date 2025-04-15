@@ -1,18 +1,27 @@
-pub mod entry;
+pub mod boot;
+pub mod config;
+pub mod consts;
+pub mod debug_console;
+pub mod env;
+pub mod instruction;
 pub mod interrupts;
 pub mod memory;
 pub mod register;
 pub mod satp;
 pub mod sstatus;
+pub mod systype;
 pub mod time;
 
-pub use entry::*;
+pub use boot::*;
 pub use interrupts::*;
 pub use memory::*;
 pub use register::*;
 pub use satp::*;
 pub use sstatus::*;
 pub use time::*;
+
+pub mod timer;
+pub mod trap;
 
 #[inline(never)]
 pub fn spin(cycle: usize) {

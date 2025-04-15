@@ -1,7 +1,7 @@
 #![no_std]
 #![no_main]
 
-use time::timeval::TimeVal;
+use arch::time::timeval::TimeVal;
 use user_lib::{gettimeofday, println};
 
 extern crate user_lib;

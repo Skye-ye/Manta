@@ -3,10 +3,10 @@
 
 use alloc::{ffi::CString, string::String, sync::Arc, vec};
 
+use arch::systype::{SysError, SysResult};
 use lwext4_rust::lwext4_readlink;
 pub(crate) use lwext4_rust::{Ext4Dir as LwExt4Dir, Ext4File as LwExt4File, InodeTypes};
 use sync::mutex::SpinNoIrqLock;
-use systype::{SysError, SysResult};
 use vfs_core::{Inode, InodeType};
 
 extern crate alloc;

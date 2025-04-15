@@ -2,13 +2,13 @@
 
 use alloc::sync::Arc;
 
+use arch::systype::SysResult;
 use config::board::BLOCK_SIZE;
 use device_core::BlockDevice;
 use lwext4_rust::{
     KernelDevOp,
     bindings::{SEEK_CUR, SEEK_END, SEEK_SET},
 };
-use systype::SysResult;
 
 /// A disk device with a cursor.
 pub struct Disk {

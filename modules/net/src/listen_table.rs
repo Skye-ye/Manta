@@ -4,13 +4,13 @@ use core::{
     task::Waker,
 };
 
+use arch::systype::{SysError, SysResult};
 use log::*;
 use smoltcp::{
     iface::{SocketHandle, SocketSet},
     socket::tcp::{self, State},
     wire::{IpAddress, IpEndpoint, IpListenEndpoint},
 };
-use systype::{SysError, SysResult};
 
 use super::{LISTEN_QUEUE_SIZE, SOCKET_SET, SocketSetWrapper};
 use crate::Mutex;

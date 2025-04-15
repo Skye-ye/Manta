@@ -15,7 +15,7 @@ extern crate alloc;
 use alloc::sync::Arc;
 use core::sync::atomic::{AtomicUsize, Ordering};
 
-use memory::FrameReleaseIf;
+use arch::memory::FrameReleaseIf;
 use sync::mutex::SpinNoIrqLock;
 
 type Mutex<T> = SpinNoIrqLock<T>;

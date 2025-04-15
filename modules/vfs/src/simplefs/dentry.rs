@@ -1,6 +1,6 @@
 use alloc::sync::Arc;
 
-use systype::{SysError, SysResult};
+use arch::systype::{SysError, SysResult};
 use vfs_core::{Dentry, DentryMeta, File, Inode, InodeMode, InodeType, SuperBlock};
 
 use super::{

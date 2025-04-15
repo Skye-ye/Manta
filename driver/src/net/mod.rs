@@ -4,12 +4,12 @@ pub mod virtio;
 use alloc::{boxed::Box, string::ToString, sync::Arc, vec, vec::Vec};
 use core::ptr::NonNull;
 
+use arch::memory::{PhysAddr, pte::PTEFlags};
 use device_core::{
     DevId, DeviceMajor, DeviceMeta, DeviceType,
     error::{DevError, DevResult},
 };
 use fdt::Fdt;
-use memory::{PhysAddr, pte::PTEFlags};
 
 use self::virtio::NetBufPtr;
 use crate::{Mutex, kernel_page_table_mut, virtio::probe_mmio_device};

@@ -1,8 +1,10 @@
+use arch::{
+    memory::VirtAddr,
+    systype::{SysError, SyscallResult},
+    time::timespec::TimeSpec,
+};
 use async_utils::suspend_now;
 use bitflags::Flags;
-use memory::VirtAddr;
-use systype::{SysError, SyscallResult};
-use time::timespec::TimeSpec;
 
 use super::Syscall;
 use crate::{

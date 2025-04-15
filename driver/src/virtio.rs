@@ -1,11 +1,13 @@
 use alloc::sync::Arc;
 use core::{mem, ptr::NonNull};
 
-use config::mm::VIRT_RAM_OFFSET;
+use arch::{
+    config::mm::VIRT_RAM_OFFSET,
+    memory::{PhysAddr, PhysPageNum, VirtAddr, alloc_frames, dealloc_frame, pte::PTEFlags},
+};
 use device_core::{Device, DeviceType, error::DevError};
 use fdt::Fdt;
 use log::{error, warn};
-use memory::{PhysAddr, PhysPageNum, VirtAddr, alloc_frames, dealloc_frame, pte::PTEFlags};
 use net::init_network;
 use virtio_drivers::{
     BufferDirection,

@@ -1,5 +1,9 @@
 use core::mem;
 
+use arch::{
+    systype::{SysError, SyscallResult},
+    time::timespec::TimeSpec,
+};
 use async_utils::suspend_now;
 use config::process::INIT_PROC_PID;
 use signal::{
@@ -8,8 +12,6 @@ use signal::{
     signal_stack::{SignalStack, UContext},
     sigset::{Sig, SigSet},
 };
-use systype::{SysError, SyscallResult};
-use time::timespec::TimeSpec;
 
 use super::Syscall;
 use crate::{

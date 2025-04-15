@@ -1,16 +1,17 @@
 use alloc::{boxed::Box, sync::Arc};
 use core::time::Duration;
 
-use arch::time::{get_time_duration, get_time_ms, get_time_us};
-use systype::{SysError, SyscallResult};
-use time::{
-    CLOCK_DEVIATION, CLOCK_MONOTONIC, CLOCK_PROCESS_CPUTIME_ID, CLOCK_REALTIME,
-    CLOCK_THREAD_CPUTIME_ID,
-    timespec::TimeSpec,
-    timeval::{ITimerVal, TimeVal},
-    tms::TMS,
+use arch::{
+    systype::{SysError, SyscallResult},
+    time::{
+        CLOCK_DEVIATION, CLOCK_MONOTONIC, CLOCK_PROCESS_CPUTIME_ID, CLOCK_REALTIME,
+        CLOCK_THREAD_CPUTIME_ID, get_time_duration, get_time_ms, get_time_us,
+        timespec::TimeSpec,
+        timeval::{ITimerVal, TimeVal},
+        tms::TMS,
+    },
+    timer::{TIMER_MANAGER, Timer},
 };
-use timer::{TIMER_MANAGER, Timer};
 
 use super::Syscall;
 use crate::{

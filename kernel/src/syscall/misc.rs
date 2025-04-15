@@ -2,8 +2,7 @@
 
 use core::mem::size_of;
 
-use arch::time::get_time_duration;
-use systype::SyscallResult;
+use arch::{systype::SyscallResult, time::get_time_duration};
 
 use super::Syscall;
 use crate::mm::UserWritePtr;

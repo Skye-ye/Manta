@@ -1,4 +1,4 @@
-use systype::SysError;
+use arch::systype::SysError;
 pub mod addr;
 pub mod socket;
 mod unix;

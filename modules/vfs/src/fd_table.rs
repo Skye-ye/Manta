@@ -1,8 +1,8 @@
 use alloc::{sync::Arc, vec::Vec};
 use core::fmt;
 
+use arch::systype::{RLimit, SysError, SysResult};
 use config::fs::MAX_FDS;
-use systype::{RLimit, SysError, SysResult};
 use vfs_core::{File, OpenFlags};
 
 use crate::devfs::tty::TTY;

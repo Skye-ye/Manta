@@ -8,13 +8,13 @@ use alloc::{
 };
 use core::{cmp, iter::zip};
 
+use arch::systype::{SysError, SysResult, SyscallResult};
 use async_trait::async_trait;
 use lwext4_rust::{
     InodeTypes,
     bindings::{O_RDONLY, O_RDWR, SEEK_SET},
     lwext4_readlink,
 };
-use systype::{SysError, SysResult, SyscallResult};
 use vfs_core::{DirEntry, File, FileMeta, Inode, InodeType, OpenFlags};
 
 use crate::{

@@ -11,10 +11,12 @@ use core::{
     time::Duration,
 };
 
-use arch::time::get_time_duration;
+use arch::{
+    systype::SysResult,
+    time::get_time_duration,
+    timer::{Timer, TimerEvent},
+};
 use signal::*;
-use systype::SysResult;
-use timer::{Timer, TimerEvent};
 
 use super::Task;
 use crate::mm::UserWritePtr;

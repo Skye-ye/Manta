@@ -5,8 +5,8 @@ use alloc::{
 };
 use core::cmp;
 
+use arch::systype::{SysError, SysResult, SyscallResult};
 use async_trait::async_trait;
-use systype::{SysError, SysResult, SyscallResult};
 use vfs_core::{
     Dentry, DentryMeta, DirEntry, File, FileMeta, Inode, InodeMeta, InodeMode, Stat, SuperBlock,
 };

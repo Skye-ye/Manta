@@ -13,11 +13,13 @@ use core::{
     ops::{self, ControlFlow},
 };
 
-use memory::VirtAddr;
+use arch::{
+    memory::VirtAddr,
+    systype::{SysError, SysResult},
+};
 use net::{IpAddress, IpEndpoint, IpListenEndpoint};
-use riscv::interrupt::supervisor;
-use systype::{SysError, SysResult};
 
+// use riscv::interrupt::supervisor;
 use super::memory_space::vm_area::MapPerm;
 use crate::{
     net::{
@@ -26,10 +28,7 @@ use crate::{
     },
     processor::{env::SumGuard, hart::current_task_ref},
     task::Task,
-    trap::{
-        kernel_trap::{set_kernel_user_rw_trap, will_read_fail, will_write_fail},
-        set_kernel_trap,
-    },
+    trap::{set_kernel_trap, set_kernel_user_rw_trap, will_read_fail, will_write_fail},
 };
 
 pub trait Policy: Clone + Copy + 'static {}
@@ -565,15 +564,15 @@ impl PageFaultAccessType {
     pub const RO: Self = Self::READ;
     pub const RW: Self = Self::RO.union(Self::WRITE);
     pub const RX: Self = Self::RO.union(Self::EXECUTE);
-
-    pub fn from_exception(e: supervisor::Exception) -> Self {
-        match e {
-            supervisor::Exception::InstructionPageFault => Self::RX,
-            supervisor::Exception::LoadPageFault => Self::RO,
-            supervisor::Exception::StorePageFault => Self::RW,
-            _ => panic!("unexcepted exception type for PageFaultAccessType"),
-        }
-    }
+    // 这个函数似乎没有用到，所以注释掉-zjy
+    // pub fn from_exception(e: supervisor::Exception) -> Self {
+    //     match e {
+    //         supervisor::Exception::InstructionPageFault => Self::RX,
+    //         supervisor::Exception::LoadPageFault => Self::RO,
+    //         supervisor::Exception::StorePageFault => Self::RW,
+    //         _ => panic!("unexcepted exception type for PageFaultAccessType"),
+    //     }
+    // }
 
     pub fn can_access(self, flag: MapPerm) -> bool {
         if self.contains(Self::WRITE) && !flag.contains(MapPerm::W) {

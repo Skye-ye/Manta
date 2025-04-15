@@ -1,4 +1,4 @@
-use systype::{SysError, SyscallResult};
+use arch::systype::{SysError, SyscallResult};
 use vfs::devfs::urandom::RNG;
 
 use super::Syscall;

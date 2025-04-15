@@ -1,6 +1,6 @@
+pub use arch::time::{timespec::TimeSpec, timeval::TimeVal};
 pub use signal::*;
 pub use sigset::*;
-pub use time::{timespec::TimeSpec, timeval::TimeVal};
 
 #[derive(Clone, Copy, Default)]
 #[repr(C)]

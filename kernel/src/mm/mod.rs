@@ -11,12 +11,11 @@ mod user_ptr;
 
 use core::cmp;
 
-use config::{
-    board::MEMORY_END,
-    mm::{K_SEG_DTB_BEG, MAX_DTB_SIZE, VIRT_RAM_OFFSET},
+pub use arch::memory::page_table::PageTable;
+use arch::{
+    config::mm::{K_SEG_DTB_BEG, MAX_DTB_SIZE, MEMORY_END, VIRT_RAM_OFFSET},
+    memory::{VirtAddr, frame, heap, pte::PTEFlags},
 };
-pub use memory::page_table::PageTable;
-use memory::{VirtAddr, frame, heap, pte::PTEFlags};
 pub use memory_space::MemorySpace;
 use sync::cell::static_cell::StaticCell;
 pub use user_ptr::{

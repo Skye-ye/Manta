@@ -1,11 +1,11 @@
 use alloc::sync::Arc;
 
+use arch::systype::{SysError, SysResult};
 use config::board::BLOCK_MASK;
 use lwext4_rust::{
     InodeTypes,
     bindings::{O_RDONLY, SEEK_CUR, SEEK_SET, ext4_flink},
 };
-use systype::{SysError, SysResult};
 use vfs_core::{Inode, InodeMeta, InodeMode, InodeType, Stat, SuperBlock};
 
 use crate::{LwExt4Dir, LwExt4File, Mutex, Shared, map_ext4_err, map_ext4_type};
