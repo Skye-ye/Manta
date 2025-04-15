@@ -4,12 +4,14 @@ use core::{
     hash::Hash,
 };
 
-use config::mm::{PAGE_MASK, PAGE_SIZE, PAGE_SIZE_BITS, PAGE_TABLE_LEVEL_NUM, PTES_PER_PAGE};
 use crate_interface::call_interface;
 
 use super::{
     super::address::{VA_WIDTH_SV39, VPN_WIDTH_SV39},
     __KernelMappingIf_mod, PhysAddr, PhysPageNum, impl_arithmetic_with_usize, impl_fmt, impl_step,
+};
+use crate::config::mm::{
+    PAGE_MASK, PAGE_SIZE, PAGE_SIZE_BITS, PAGE_TABLE_LEVEL_NUM, PTES_PER_PAGE,
 };
 
 /// Virtual address

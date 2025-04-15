@@ -3,34 +3,23 @@
 use alloc::sync::Arc;
 
 use arch::{
-    interrupts::{disable_interrupt, enable_interrupt},
+    interrupts::disable_interrupt,
     memory::VirtAddr,
     systype::SysError,
-    time::set_next_timer_irq,
-    timer::TIMER_MANAGER,
-    trap,
-    trap::TrapType,
+    trap::{self, TrapType},
 };
 use async_utils::yield_now;
-use riscv::{
-    interrupt::{Exception, Trap, supervisor},
-    register::{scause, sepc, sstatus::FS, stval},
-};
 use signal::{Sig, SigDetails, SigInfo};
 
-use super::{TrapContext, set_kernel_trap};
+use super::TrapContext;
 use crate::{mm::PageFaultAccessType, syscall::Syscall, task::Task, trap::set_user_trap};
 
 /// handle an interrupt, exception, or system call from user space
 /// return if it is syscall and has been interrupted
 #[unsafe(no_mangle)]
 pub async fn trap_handler(task: &Arc<Task>) -> bool {
-    #[cfg(feature = "debug")]
-    println!("traphandler");
     let cx = task.trap_context_mut();
-    let trap_type = trap::user_trap::trap_handler();
-    #[cfg(feature = "debug")]
-    println!("type : {}", trap_type);
+    let trap_type = trap::user_trap::trap_handler(cx);
 
     if task.time_stat_ref().need_schedule() && executor::has_task() {
         log::info!("time slice used up, yield now");
@@ -38,14 +27,8 @@ pub async fn trap_handler(task: &Arc<Task>) -> bool {
     }
 
     match trap_type {
-        TrapType::Breakpoint => {
-            cx.sepc += 4;
-        }
-        TrapType::SysCall => {
-            let syscall_no = cx.syscall_no();
-            #[cfg(feature = "debug")]
-            println!("sys: {}", syscall_no);
-            cx.set_user_pc_to_next();
+        TrapType::Breakpoint => {}
+        TrapType::SysCall(syscall_no) => {
             // get system call return value
             let ret = Syscall::new(task)
                 .syscall(syscall_no, cx.syscall_args())
@@ -100,19 +83,13 @@ pub async fn trap_handler(task: &Arc<Task>) -> bool {
                 );
             }
         }
-        TrapType::IllegalInstruction(stval, sepc) => {
-            log::warn!(
-                "[trap_handler] detected illegal instruction, stval {stval:#x}, sepc {sepc:#x}",
-            );
+        TrapType::IllegalInstruction => {
             task.set_terminated();
         }
-        TrapType::Timer(sepc) => {
+        TrapType::Timer => {
             // NOTE: User may trap into kernel frequently. As a consequence, this timer are
             // likely not triggered in user mode but rather be triggered in supervisor mode,
             // which will cause user program running on the cpu for a quite long time.
-            log::trace!("[trap_handler] timer interrupt, sepc {sepc:#x}");
-            TIMER_MANAGER.check();
-            unsafe { set_next_timer_irq() };
             if executor::has_task() {
                 yield_now().await;
             }
@@ -129,15 +106,9 @@ pub async fn trap_handler(task: &Arc<Task>) -> bool {
     return false;
 }
 
-unsafe extern "C" {
-    fn __return_to_user(cx: *mut TrapContext);
-}
-
 /// Trap return to user mode.
 #[unsafe(no_mangle)]
 pub fn trap_return(task: &Arc<Task>) {
-    #[cfg(feature = "debug")]
-    println!("trap return");
     log::info!("[kernel] trap return to user...");
     unsafe {
         disable_interrupt();
@@ -146,22 +117,9 @@ pub fn trap_return(task: &Arc<Task>) {
         // `UserPtr` implicitly which will change stvec to `__trap_from_kernel`.
     };
     task.time_stat().record_trap_return();
-
-    // Restore the float regs if needed.
-    // Two cases that may need to restore regs:
-    // 1. This task has yielded after last trap
-    // 2. This task encounter a signal handler
-    task.trap_context_mut().user_fx.restore();
-    task.trap_context_mut().sstatus.set_fs(FS::Clean);
-    assert!(!task.trap_context_mut().sstatus.sie());
     assert!(!task.is_terminated() && !task.is_zombie());
-    unsafe {
-        __return_to_user(task.trap_context_mut());
-        // NOTE: next time when user traps into kernel, it will come back here
-        // and return to `user_loop` function.
-    }
-    task.trap_context_mut()
-        .user_fx
-        .mark_save_if_needed(task.trap_context_mut().sstatus);
+
+    trap::user_trap::trap_return(task.trap_context_mut());
+
     task.time_stat().record_trap();
 }

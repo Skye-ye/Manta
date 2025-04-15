@@ -6,9 +6,10 @@ const VA_WIDTH_SV39: usize = 39;
 const PPN_WIDTH_SV39: usize = PA_WIDTH_SV39 - PAGE_SIZE_BITS;
 const VPN_WIDTH_SV39: usize = VA_WIDTH_SV39 - PAGE_SIZE_BITS;
 
-use config::mm::PAGE_SIZE_BITS;
 pub use phys::{PhysAddr, PhysPageNum};
 pub use virt::{VirtAddr, VirtPageNum};
+
+use crate::config::mm::PAGE_SIZE_BITS;
 
 macro_rules! impl_arithmetic_with_usize {
     ($t:ty) => {

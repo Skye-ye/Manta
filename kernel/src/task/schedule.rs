@@ -43,8 +43,6 @@ impl<F: Future + Send + 'static> Future for UserTaskFuture<F> {
     type Output = F::Output;
 
     fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
-        #[cfg(feature = "debug")]
-        println!("poll usertaskfuture");
         let this = unsafe { self.get_unchecked_mut() };
         let hart = hart::local_hart();
         hart.enter_user_task_switch(&mut this.task, &mut this.env);
@@ -72,8 +70,6 @@ impl<F: Future<Output = ()> + Send + 'static> Future for KernelTaskFuture<F> {
     type Output = F::Output;
 
     fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
-        #[cfg(feature = "debug")]
-        println!("poll kerneltaskfuture");
         let this = unsafe { self.get_unchecked_mut() };
         let hart = hart::local_hart();
         hart.kernel_task_switch(&mut this.env);
@@ -118,8 +114,6 @@ pub async fn task_loop(task: Arc<Task>) {
 
 /// Spawn a new async user task
 pub fn spawn_user_task(user_task: Arc<Task>) {
-    #[cfg(feature = "debug")]
-    println!("spawn use task");
     let future = UserTaskFuture::new(user_task.clone(), task_loop(user_task));
     let (runnable, task) = executor::spawn(future);
     runnable.schedule();
@@ -129,8 +123,6 @@ pub fn spawn_user_task(user_task: Arc<Task>) {
 /// Spawn a new async kernel task (used for doing some kernel init work or timed
 /// tasks)
 pub fn spawn_kernel_task<F: Future<Output = ()> + Send + 'static>(kernel_task: F) {
-    #[cfg(feature = "debug")]
-    println!("spawn kernel task");
     let future = KernelTaskFuture::new(kernel_task);
     let (runnable, task) = executor::spawn(future);
     runnable.schedule();

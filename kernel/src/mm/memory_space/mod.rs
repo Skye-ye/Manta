@@ -11,15 +11,18 @@ use core::{
 };
 
 use arch::{
+    config::mm::{
+        DL_INTERP_OFFSET, U_SEG_FILE_BEG, U_SEG_FILE_END, U_SEG_HEAP_BEG, U_SEG_HEAP_END,
+        U_SEG_SHARE_BEG, U_SEG_SHARE_END, U_SEG_STACK_BEG, U_SEG_STACK_END,
+    },
     memory::{PageTable, PhysAddr, TLB, VirtAddr, VirtPageNum, pte::PTEFlags},
     systype::{SysError, SysResult},
 };
 use async_utils::block_on;
 use config::{
     mm::{
-        DL_INTERP_OFFSET, MMAP_PRE_ALLOC_PAGES, PAGE_SIZE, U_SEG_FILE_BEG, U_SEG_FILE_END,
-        U_SEG_HEAP_BEG, U_SEG_HEAP_END, U_SEG_SHARE_BEG, U_SEG_SHARE_END, U_SEG_STACK_BEG,
-        U_SEG_STACK_END, USER_ELF_PRE_ALLOC_PAGE_CNT, is_aligned_to_page, round_down_to_page,
+        MMAP_PRE_ALLOC_PAGES, PAGE_SIZE, USER_ELF_PRE_ALLOC_PAGE_CNT, is_aligned_to_page,
+        round_down_to_page,
     },
     process::USER_STACK_PRE_ALLOC_SIZE,
 };

@@ -6,11 +6,10 @@ edition = "2024"
 [dependencies]
 config = { path = "../config" }
 sbi-print = { path = "../crates/sbi-print/" }
-signal = { path = "../modules/signal/" }
 sync = { path = "../modules/sync/" }
 
-
-# Architecture-specific dependencies
+cfg-if = "1.0"
+paste = "1.0"# Architecture-specific dependencies
 riscv = { version = "0.13", optional = true }
 sbi-rt = { version = "0.0.3", optional = true }
 loongArch64 = { version = "0.2", optional = true }
@@ -36,3 +35,4 @@ linked = []
 kernel = []
 logger = []
 debug = []
+vf2=["config/vf2"]

@@ -1,10 +1,13 @@
-use config::{
-    board,
-    board::MAX_HARTS,
-    mm::{HART_START_ADDR, KERNEL_STACK_SIZE, PTES_PER_PAGE, VIRT_RAM_OFFSET},
-};
+use config::mm::KERNEL_STACK_SIZE;
 
-use crate::debug_console::println;
+use crate::{
+    config::{
+        board,
+        board::MAX_HARTS,
+        mm::{HART_START_ADDR, PTES_PER_PAGE, VIRT_RAM_OFFSET},
+    },
+    debug_console::println,
+};
 const BOOT_BANNER: &str = r#"
     ____  __                     _
    / __ \/ /_  ____  ___  ____  (_)  __

@@ -1,14 +1,16 @@
 use riscv::{
     interrupt::{Exception, Trap, supervisor},
-    register::{scause, sepc, sstatus::FS, stval},
+    register::{scause, sepc, stval},
 };
 
 use super::{TrapContext, TrapType, set_kernel_trap};
-use crate::{interrupts::enable_interrupt, time::set_next_timer_irq, timer::TIMER_MANAGER};
+use crate::{
+    interrupts::enable_interrupt, sstatus, time::set_next_timer_irq, timer::TIMER_MANAGER,
+};
 
 // 内核中断回调
 // #[unsafe(no_mangle)]
-pub fn trap_handler() -> TrapType {
+pub fn trap_handler(cx: &mut TrapContext) -> TrapType {
     unsafe { set_kernel_trap() };
     let scause = scause::read();
     let stval = stval::read();
@@ -20,16 +22,24 @@ pub fn trap_handler() -> TrapType {
 
     let trap_type = match cause.try_into() {
         Ok(Trap::Exception(e)) => match e {
-            Exception::Breakpoint => TrapType::Breakpoint,
+            Exception::Breakpoint => {
+                cx.sepc += 4;
+                TrapType::Breakpoint
+            }
             Exception::UserEnvCall => {
-                // let syscall_no = cx.syscall_no();
-                // cx.set_user_pc_to_next();
-                TrapType::SysCall
+                let syscall_no = cx.syscall_no();
+                cx.set_user_pc_to_next();
+                TrapType::SysCall(syscall_no)
             }
             Exception::StorePageFault => TrapType::StorePageFault(stval, sepc),
             Exception::InstructionPageFault => TrapType::InstructionPageFault(stval, sepc),
             Exception::LoadPageFault => TrapType::LoadPageFault(stval, sepc),
-            Exception::IllegalInstruction => TrapType::IllegalInstruction(stval, sepc),
+            Exception::IllegalInstruction => {
+                log::warn!(
+                    "[trap_handler] detected illegal instruction, stval {stval:#x}, sepc {sepc:#x}",
+                );
+                TrapType::IllegalInstruction
+            }
             e => {
                 log::warn!("Unknown user exception: {:?}", e);
                 TrapType::Unknown
@@ -45,7 +55,7 @@ pub fn trap_handler() -> TrapType {
                     log::trace!("[trap_handler] timer interrupt, sepc {sepc:#x}");
                     TIMER_MANAGER.check();
                     unsafe { set_next_timer_irq() };
-                    TrapType::Timer(sepc)
+                    TrapType::Timer
                 }
                 supervisor::Interrupt::SupervisorExternal => TrapType::SupervisorExternal,
                 _ => {
@@ -63,4 +73,23 @@ pub fn trap_handler() -> TrapType {
         }
     };
     trap_type
+}
+unsafe extern "C" {
+    fn __return_to_user(cx: *mut TrapContext);
+}
+
+pub fn trap_return(cx: &mut TrapContext) {
+    // 2. This task encounter a signal handler
+    cx.user_fx.restore();
+    sstatus::set_fs_clean(cx.sstatus);
+    assert!(!cx.sstatus.sie());
+    unsafe {
+        __return_to_user(cx);
+        // NOTE: next time when user traps into kernel, it will come back here
+        // and return to `user_loop` function.
+    }
+
+    let need_save = sstatus::is_fs_dirty(cx.sstatus) as u8;
+
+    cx.user_fx.mark_save_if_needed(need_save);
 }

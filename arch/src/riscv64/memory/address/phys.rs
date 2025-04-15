@@ -5,7 +5,6 @@ use core::{
     ops::Range,
 };
 
-use config::mm::{PAGE_MASK, PAGE_SIZE, PAGE_SIZE_BITS, PTE_SIZE, PTES_PER_PAGE};
 use crate_interface::call_interface;
 
 use super::{
@@ -15,6 +14,7 @@ use super::{
     },
     __KernelMappingIf_mod, VirtAddr, impl_arithmetic_with_usize, impl_fmt, impl_step,
 };
+use crate::config::mm::{PAGE_MASK, PAGE_SIZE, PAGE_SIZE_BITS, PTE_SIZE, PTES_PER_PAGE};
 
 /// Physical address
 #[derive(Copy, Clone, Ord, PartialOrd, Eq, PartialEq, Hash)]

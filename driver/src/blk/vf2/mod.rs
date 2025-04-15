@@ -1,7 +1,7 @@
 use alloc::{string::ToString, sync::Arc};
 
-use arch::{memory::PhysAddr, time::get_time};
-use config::board::{BLOCK_SIZE, clock_freq};
+use arch::{config::board::clock_freq, memory::PhysAddr, time::get_time};
+use config::board::BLOCK_SIZE;
 use device_core::{BlockDevice, DevId, Device, DeviceMajor, DeviceMeta, DeviceType};
 use sync::mutex::SpinNoIrqLock;
 use visionfive2_sd::{SDIo, SleepOps, Vf2SdDriver};

@@ -14,15 +14,13 @@ use core::{
 };
 
 use arch::{
+    config::mm::DL_INTERP_OFFSET,
     memory::{TLB, VirtAddr},
     systype::{SysError, SysResult},
     time::stat::TaskTimeStat,
 };
 use async_utils::block_on;
-use config::{
-    mm::DL_INTERP_OFFSET,
-    process::{INIT_PROC_PID, USER_STACK_SIZE},
-};
+use config::process::{INIT_PROC_PID, USER_STACK_SIZE};
 use signal::{
     action::{SigHandlers, SigPending},
     siginfo::{SigDetails, SigInfo},

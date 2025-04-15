@@ -3,15 +3,16 @@
 use alloc::{vec, vec::Vec};
 use core::{iter::zip, ops::Range};
 
-use config::mm::{PAGE_SIZE, VIRT_RAM_OFFSET};
-
 use super::{
     PageTableEntry, PhysAddr,
     address::{PhysPageNum, VirtAddr, VirtPageNum},
     frame::{FrameTracker, alloc_frame_tracker},
     pte::PTEFlags,
 };
-use crate::satp;
+use crate::{
+    config::mm::{PAGE_SIZE, VIRT_RAM_OFFSET},
+    satp,
+};
 
 /// Write `page_table_token` into satp and sfence.vma
 pub unsafe fn switch_page_table(page_table_token: usize) {

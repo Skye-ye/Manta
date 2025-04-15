@@ -1,4 +1,5 @@
 pub mod boot;
+pub mod config;
 pub mod consts;
 pub mod debug_console;
 pub mod env;

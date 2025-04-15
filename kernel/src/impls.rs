@@ -2,8 +2,10 @@
 
 use alloc::{fmt, string::ToString, sync::Arc};
 
-use arch::memory::{KernelMappingIf, PageTable, PhysAddr, VirtAddr};
-use config::mm::VIRT_RAM_OFFSET;
+use arch::{
+    config::mm::VIRT_RAM_OFFSET,
+    memory::{KernelMappingIf, PageTable, PhysAddr, VirtAddr},
+};
 use driver::KernelPageTableIf;
 use log::Level;
 use logging::{ColorCode, LogIf};

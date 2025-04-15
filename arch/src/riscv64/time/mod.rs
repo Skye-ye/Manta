@@ -1,7 +1,9 @@
 use core::time::Duration;
 
-use config::{board::clock_freq, time::INTERRUPTS_PER_SECOND};
+use config::time::INTERRUPTS_PER_SECOND;
 use riscv::register::time;
+
+use crate::config::board::clock_freq;
 
 pub mod stat;
 pub mod timespec;

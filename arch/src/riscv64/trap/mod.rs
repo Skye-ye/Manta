@@ -9,6 +9,7 @@ use strum::Display;
 use crate::interrupts::set_trap_handler;
 
 global_asm!(include_str!("trap.asm"));
+global_asm!(include_str!("trampoline.asm"));
 
 unsafe extern "C" {
     fn __trap_from_user();
@@ -29,13 +30,12 @@ pub unsafe fn set_user_trap() {
 #[derive(Debug, Clone, Copy, Display)]
 pub enum TrapType {
     Breakpoint,
-    SysCall,
-    Timer(usize),
+    SysCall(usize),
+    Timer,
     Unknown,
     SupervisorExternal,
     StorePageFault(usize, usize),
     LoadPageFault(usize, usize),
     InstructionPageFault(usize, usize),
-    IllegalInstruction(usize, usize),
-    // Irq(IRQVector),
+    IllegalInstruction,
 }

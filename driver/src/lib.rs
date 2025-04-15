@@ -12,9 +12,11 @@ use alloc::sync::Arc;
 use core::fmt::{self, Write};
 
 use ::net::init_network;
-use arch::memory::PageTable;
+use arch::{
+    config::{board::clock_freq, mm::K_SEG_DTB_BEG},
+    memory::PageTable,
+};
 use async_utils::block_on;
-use config::{board::clock_freq, mm::K_SEG_DTB_BEG};
 use crate_interface::call_interface;
 use device_core::{BlockDevice, CharDevice, DeviceMajor, DeviceType};
 use manager::DeviceManager;
@@ -47,7 +49,7 @@ static DEVICE_MANAGER: StaticCell<DeviceManager> = StaticCell::new();
 
 pub fn init() {
     let device_tree = unsafe { fdt::Fdt::from_ptr(K_SEG_DTB_BEG as _).expect("Parse DTB failed") };
-    config::board::set_clock_freq(device_tree.cpus().next().unwrap().timebase_frequency());
+    arch::config::board::set_clock_freq(device_tree.cpus().next().unwrap().timebase_frequency());
     log::info!("clock freq set to {} Hz", clock_freq());
 
     init_device_manager();

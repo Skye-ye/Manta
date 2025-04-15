@@ -43,8 +43,6 @@ extern crate driver;
 #[macro_use]
 extern crate logging;
 
-global_asm!(include_str!("trampoline.asm"));
-
 static FIRST_HART: AtomicBool = AtomicBool::new(true);
 
 #[unsafe(no_mangle)]
