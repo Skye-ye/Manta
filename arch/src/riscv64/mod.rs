@@ -12,7 +12,7 @@ pub mod sstatus;
 pub mod systype;
 pub mod time;
 
-pub use entry::*;
+pub use boot::*;
 pub use interrupts::*;
 pub use memory::*;
 pub use register::*;

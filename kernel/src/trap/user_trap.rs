@@ -11,7 +11,6 @@ use arch::{
 use async_utils::yield_now;
 use signal::{Sig, SigDetails, SigInfo};
 
-use super::TrapContext;
 use crate::{mm::PageFaultAccessType, syscall::Syscall, task::Task, trap::set_user_trap};
 
 /// handle an interrupt, exception, or system call from user space
